@@ -1,6 +1,7 @@
 var titlescreen = function(game){};
 titlescreen.prototype = {
   create: function(){
+    //game.stage.backgroundColor = bgColors[game.rnd.between(0,bgColors.length - 1)];
     var titleBG = game.add.tileSprite(0, 0, game.width, game.height, "backsplash");
     titleBG.tint = bgColors[game.rnd.between(0, bgColors.length - 1)];
     var title = game.add.image(game.width / 2, 25, "title");
@@ -12,7 +13,6 @@ titlescreen.prototype = {
 			height:220
 		}, 1500, "Linear", true, 0, -1);
 		tween.yoyo(true);
-    
 		console.log("titlescreen started");
 	},
 	startGame: function(){
