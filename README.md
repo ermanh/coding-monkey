@@ -29,7 +29,8 @@ Bg tiles: Plain bg & tree trunk
   - Coffee - Monkey jump higher
   - Beer - Monkey jump lower
   - *Banana - Monkey invincible
-5. Group sprites: branches
+5. Bytes bar
+6. Group sprites: branches
   - Monkey can land on branches, can't go through from bottom
   (- *Can go through from bottom)
 
