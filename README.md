@@ -73,11 +73,11 @@ Bg tiles: Plain bg & tree trunk
 # Diary (Done/Goal)
 ## 23-6-2017 (Fri)
 #### Corah
-! Added code for Accelerometer, NEED TESTING
+- ! Added code for Accelerometer, NEED TESTING
 
-! Added code for branches (create and destroy), NEED TESTING
+- ! Added code for branches (create and destroy), NEED TESTING
 
-! Haven't coded how Monkey will stand on branches
+- ! Haven't coded how Monkey will stand on branches
 
 #### Herman
 #### Nick
@@ -87,18 +87,18 @@ Bg tiles: Plain bg & tree trunk
 ### To-do
 #### Corah
 
-titlescren, overscreen
+- titlescren, overscreen
 
-playgame: branches - NO PUSHING
+- playgame: branches - NO PUSHING
 
 #### Herman
-wait for Nick, playgame
+- wait for Nick, playgame
 
-sprite items (bytes, virus, beer, coffee, banana)
+- sprite items (bytes, virus, beer, coffee, banana)
 #### Nick
-playgame
+- playgame
 
-platform, auto jump, tree bgtile
+- platform, auto jump, tree bgtile
 
 
 ## 26-6-2017 (Mon)
