@@ -243,7 +243,7 @@ playgame.prototype = {
 var Branch = function (game, speed) {
     var positions = [Math.random()*(280-40)+40, Math.random()*(600-360)+360];
 	var position = game.rnd.between(0, 1);
-	Phaser.Sprite.call(this, game, positions[position], -100, "branch");
+	Phaser.Sprite.call(this, game, positions[position], 800, "branch");
 	game.physics.enable(this, Phaser.Physics.ARCADE);
 	this.anchor.set(position, 0.5);
 	this.body.velocity.y = speed;
@@ -256,10 +256,10 @@ Branch.prototype.update = function(){
 	if(this.y > game.height){
 		this.destroy();
 	}
-    if(this.placeBranch && this.y > branchGap){
-		this.placeBranch = false;
-		playgame.prototype.addBranch(this.parent);
-	}
+    // if(this.placeBranch && this.y > branchGap){
+	// 	this.placeBranch = false;
+	// 	playgame.prototype.addBranch(this.parent);
+	// }
 }
 
 // Bytes
