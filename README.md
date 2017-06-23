@@ -28,26 +28,26 @@ Bg tiles: Plain bg & tree trunk
 2. Reward: 0,1,10,11,100,101,111
   - sprite disappear
   - increase bytes
-3. Penalty - bugs & virus
+3. Penalty - bugs & virus (\*different color, trojan horse)
   - sprite disappear
   - decrease bytes
   - Monkey blinks & scream
-  - *Effect: 0's & 1's fly out from Monkey
-4. Helping/special effect items - coffee, beer, banana*
+  - \*Effect: 0's & 1's fly out from Monkey
+4. Helping/special effect items - coffee, beer, \*banana
   - Coffee - Monkey jump higher
   - Beer - Monkey jump lower
-  - *Banana - Monkey invincible
+  - \*Banana - Monkey invincible
 5. Bytes bar
 6. Group sprites: branches
   - Monkey can land on branches, can't go through from bottom
-  (- *Can go through from bottom)
+  (- \*Can go through from bottom)
 
 # Control
 1. Monkey's movement:
   - Jump - auto
   - land
   - Go left/right - tilting
-  - *Shooting bugs & virus - clicking
+  - \*Shooting bugs & virus - clicking
 
 # Functionality
 1. Group sprites & Bg tiles:
@@ -56,4 +56,13 @@ Bg tiles: Plain bg & tree trunk
 2. Scoring: bytes bar
   - increase with catching 0's & 1's
   - decrease with catching bugs $ virus
-3*. Monkey can jump across screen
+3\*. Monkey can jump across screen
+
+#To-do
+1. Auto jump
+2. Move monkey left to right on keyboard
+3. Accelerometer
+4. Generating random branches
+5. Generating random item sprites
+6. Set up bytes count, reward and penalty items (\*different scoring & penalty)
+7. Set up helping/special items
