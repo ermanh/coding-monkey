@@ -3,13 +3,13 @@ An asterisk* means the code can be considered in an upgrade at a later point.
 # Game concept
 Goal: To collect as much code (0's & 1's) as possible.
 
-Gameplay: 
+Gameplay:
 
-Coding Monkey collecting code (0's & 1's) among branches and trying to survive (not fall). 
+Coding Monkey collecting code (0's & 1's) among branches and trying to survive (not fall).
 
-Scoring in bytes. 
+Scoring in bytes.
 
-Avoiding bugs & virus. 
+Avoiding bugs & virus.
 
 Coffee, beer & banana change Monkey's jumping ability.
 
@@ -66,3 +66,38 @@ Bg tiles: Plain bg & tree trunk
 5. Generating random item sprites
 6. Set up bytes count, reward and penalty items (\*different scoring & penalty)
 7. Set up helping/special items
+8. titlescreen
+9. gamoverscreen
+10. music
+
+# Diary (Done/Goal)
+##### 23-6-2017 (Fri)
+###### Corah
+! Added code for Accelerometer, NEED TESTING
+
+! Added code for branches (create and destroy), NEED TESTING
+
+! Haven't coded how Monkey will stand on branches
+
+###### Herman
+###### Nick
+
+##### 24-6-2017, 25-6-2017 (Weekend)
+###### Corah
+###### Herman
+###### Nick
+
+##### 26-6-2017 (Mon)
+###### Corah
+###### Herman
+###### Nick
+
+##### 27-6-2017 (Tue)
+###### Corah
+###### Herman
+###### Nick
+
+##### 28-6-2017 (Wed)
+###### Corah
+###### Herman
+###### Nick
