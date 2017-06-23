@@ -6,9 +6,10 @@ window.onload = function() {
 	game.state.add("Preload", preload);
 	game.state.add("Titlescreen", titlescreen);
 	game.state.add("Playgame", playgame);
-    //game.state.add("GameOverScreen", gameoverscreen);
+	game.state.add("GameOverScreen", gameoverscreen);
 	game.state.start("Boot");
-}
+};
+
 var boot = function(game){};
 boot.prototype = {
 	preload: function(){
@@ -18,6 +19,9 @@ boot.prototype = {
 		game.scale.pageAlignHorizontally = true;
 		game.scale.pageAlignVertically = true;
 		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+		this.scale.maxWidth = this.game.width;
+    	this.scale.maxHeight = this.game.height;
+		//this.scale.setScreenSize( true );
 		game.state.start("Preload");
 	}
-}
+};

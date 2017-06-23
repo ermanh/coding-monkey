@@ -1,5 +1,11 @@
 var monkeyverticalhigh = 100;
-var shipMoveDelay = 0;
+var monkeyMoveDelay = 0;
+
+var monkeySpeed; // Herman: this should be related to the screen moving down when the monkey jumps up
+                 //         need this for movement of sprites down the screen
+
+var branchSpeed = 0; //not sure about the speed as it will move with monkey
+var branchGap = 60;
 
 var byteGap = 120;          // controls how often bytes appear
 var virusGap = 600;         // controls how often viruses appear (once every 500px)
@@ -7,35 +13,38 @@ var beerGap = 1000;         // controls how often beer appears
 var coffeeGap = 1000;         // controls how often coffee appears
 var bananaGap = 2000;       // controls how often banana appears
 
-var monkeySpeed; // this is related to the screen moving down when the monkey jumps up
-
-var scoreKey = {'0':1, '1':100, '10':200, '11':300, '100':400, '101':500, '110':600, '111':700}
+var scoreKey = {'0':1, '1':100, '10':200, '11':300, '100':400, '101':500, '110':600, '111':700};
 
 var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
-  		//var tintColor = bgColors[game.rnd.between(0, bgColors.length - 1)];
-        game.stage.backgroundColor = "#4488AA";
+  		game.stage.backgroundColor = "#4488AA";
   		var tunnelBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
-  		//tunnelBG.tint = tintColor;
+
+        this.physics.startSystem( Phaser.Physics.ARCADE );
         console.log("playgame started");
 
-        //create monkey
-        this.monkey = game.add.sprite(game.width/4, game.height-50, "monkey");
-        //this.monkey.side = 0;
-        this.monkey.anchor.set(0.5);
-        this.game.physics.enable(this.monkey, Phaser.Physics.ARCADE);
-        this.monkey.canMove = true;
-        game.input.onDown.add(this.moveMonkey, this);
-        this.monkey.invincible = false;
+        // camera and platform tracking vars
+        this.cameraYMin = 99999;
+        this.platformYMin = 99999;
 
+        // create platforms
+        this.platformsCreate();
 
-        // Bytes score
+        // create hero
+        this.monkeyCreate();
+
+        // cursor controls
+        this.cursor = this.input.keyboard.createCursorKeys();
+        //tilting
+
+        // Bytes score setup
         score = 0;
         this.scoreText = game.add.bitmapText(game.width-20, game.height-65, "font", "0", 48);
         this.scoreText.alpha = 0.75;
         this.scoreText.anchor.set(1,0);
 
+        /* Herman: Just for visualization -- can delete later
         this.byte = game.add.sprite(Math.round(Math.random()*(game.width-100))+50, 100, "101");
         this.byte.anchor.set(0.5);
         this.virus = game.add.sprite(Math.round(Math.random()*(game.width-100))+50, 150, "virus");
@@ -52,7 +61,17 @@ playgame.prototype = {
         this.byte3.anchor.set(0.5);
         this.byte4 = game.add.sprite(Math.round(Math.random()*(game.width-100))+50, 450, "1");
         this.byte4.anchor.set(0.5);
+        */
 
+        // //create branches
+        // this.branchGroup = game.add.group();
+        // var branch = new Branch(game, branchSpeed);
+        // game.add.existing(branch);
+        // this.branchGroup.add(branch);
+        this.branchGroup = game.add.group();
+        this.addBranch(this.branchGroup);
+
+        // Create sprite groups
         this.bytesGroup = game.add.group();
         this.addByte(this.bytesGroup);
         this.virusGroup = game.add.group();
@@ -63,39 +82,28 @@ playgame.prototype = {
         this.addCoffee(this.coffeeGroup);
         this.bananaGroup = game.add.group();
         this.addBanana(this.bananaGroup);
-        /* */
-
-    },
-    moveMonkey:function() {
-        // handle the left and right movement of the hero
-        if( this.cursor.left.isDown ) {
-        this.monkey.body.velocity.x = -200;
-        } else if( this.cursor.right.isDown ) {
-        this.monkey.body.velocity.x = 200;
-        } else {
-        this.monkey.body.velocity.x = 0;
-        }
-
-        // handle hero jumping
-        if( this.cursor.up.isDown && this.monkey.body.touching.down ) {
-        this.monkey.body.velocity.y = -350;
-        }
-
-        // wrap world coordinated so that you can warp from left to right and right to left
-        this.game.wrap( this.monkey, this.monkey.width / 2, false );
-
-        // track the maximum amount that the hero has travelled
-        this.monkey.yChange = Math.max( this.monkey.yChange, Math.abs( this.monkey.y - this.monkey.yOrig ) );
-
-        // if the hero falls below the camera view, gameover
-        if( this.monkey.y > this.cameraYMin + this.game.height && this.monkey.alive ) {
-        this.state.start( 'Play' );
-        }
 
     },
 
-    update: function(){
+    update: function() {
+        // this is where the main magic happens
+        // the y offset and the height of the world are adjusted
+        // to match the highest point the hero has reached
+        this.world.setBounds( 0, -this.monkey.yChange, this.world.width, this.game.height + this.monkey.yChange );
 
+        // the built in camera follow methods won't work for our needs
+        // this is a custom follow style that will not ever move down, it only moves up
+        this.cameraYMin = Math.min( this.cameraYMin, this.monkey.y - this.game.height + 70 );
+        this.camera.y = this.cameraYMin;
+
+        // hero collisions and movement
+        this.physics.arcade.collide( this.monkey, this.platforms );
+        this.monkeyMove();
+
+        //this.tunnelBG.tilePosition.y += 50;
+
+
+        /* Collision conditions - belongs inside the "update" function [Herman] */
         if (!this.monkey.destroyed && this.monkey.alpha == 1){
 
             game.physics.arcade.collide(this.monkey, this.bytesGroup, function(m,b){
@@ -134,12 +142,72 @@ playgame.prototype = {
                 m.invincible = true;
             }, null, this);
 
-            /* For reference only
-            updateScore: function(addScore) {
-                score += addScore;
-                this.scoreText.text = score.toString();
-            }*/
         }
+
+    },
+    monkeyCreate: function(){
+        this.monkey = game.add.sprite(game.width/2, game.height-50, "monkey");
+        this.monkey.anchor.set(0.5);
+        this.game.physics.enable(this.monkey, Phaser.Physics.ARCADE);
+
+        this.monkey.yOrig = this.monkey.y;
+        this.monkey.ychange=0;
+
+        this.monkey.body.gravity.y = 500;
+        this.monkey.body.checkCollision.up = false;
+        this.monkey.body.checkCollision.left = false;
+        this.monkey.body.checkCollision.right = false;
+
+        this.monkey.invincible = false; // Herman: for implementing banana effects
+    },
+    platformsCreate: function(){
+        this.platforms = this.add.group();
+        this.platforms.enableBody = true;
+        this.platforms.createMultiple( 10, 'wall' );
+
+        this.platformsCreateOne(-16, this.world.height - 16, this.world.width + 16 );
+    },
+    platformsCreateOne:function(x,y,width){
+        var platform = this.platforms.getFirstDead();
+        platform.reset( x, y );
+        platform.scale.x = width;
+        platform.scale.y = 16;
+        platform.body.immovable = true;
+        return platform;
+    },
+    monkeyMove: function() {
+        // handle the left and right movement of the hero
+        if( this.cursor.left.isDown ) {
+          this.monkey.body.velocity.x = -200;
+        } else if( this.cursor.right.isDown ) {
+          this.monkey.body.velocity.x = 200;
+        } else {
+          this.monkey.body.velocity.x = 0;
+        }
+
+        // handle hero jumping
+        if( this.cursor.up.isDown && this.monkey.body.touching.down ) {
+            this.monkey.body.velocity.y = -350;
+        }
+
+
+        // wrap world coordinated so that you can warp from left to right and right to left
+        this.world.wrap( this.monkey, this.monkey.width / 2, false );
+
+        // track the maximum amount that the hero has travelled
+        this.monkey.yChange = Math.max( this.monkey.yChange, Math.abs( this.monkey.y - this.monkey.yOrig ) );
+
+        // if the hero falls below the camera view, gameover
+        if( this.monkey.y > this.cameraYMin + this.game.height && this.monkey.alive ) {
+            this.state.start( 'GameOverScreen' );
+        }
+
+    },
+
+    addBranch: function(group){
+      var branch = new Branch(game, branchSpeed);
+      game.add.existing(branch);
+      group.add(branch);
     },
 
     addByte: function(group) {
@@ -171,7 +239,28 @@ playgame.prototype = {
 };
 
 
-/* Sprites */
+// Generate branches
+var Branch = function (game, speed) {
+    var positions = [Math.random()*(280-40)+40, Math.random()*(600-360)+360];
+	var position = game.rnd.between(0, 1);
+	Phaser.Sprite.call(this, game, positions[position], -100, "branch");
+	game.physics.enable(this, Phaser.Physics.ARCADE);
+	this.anchor.set(position, 0.5);
+	this.body.velocity.y = speed;
+    this.body.velocity.y = speed;
+	this.placeBranch = true;
+};
+Branch.prototype = Object.create(Phaser.Sprite.prototype);
+Branch.prototype.constructor = Branch;
+Branch.prototype.update = function(){
+	if(this.y > game.height){
+		this.destroy();
+	}
+    if(this.placeBranch && this.y > branchGap){
+		this.placeBranch = false;
+		playgame.prototype.addBranch(this.parent);
+	}
+}
 
 // Bytes
 var Bytes = function(game, speed) {  // speed = moving of the screen elements when monkey jumps up
@@ -185,7 +274,7 @@ var Bytes = function(game, speed) {  // speed = moving of the screen elements wh
                     "111"];                             // value 7
 
     var byte = bytesArr[game.rnd.between(0,bytesArr.length)]; // randomized byte value
-    Phaser.Sprite.call(this, game, Math.round(Math.random()*(game.width-100))+50, -100, byte);
+    Phaser.Sprite.call(this, game, Math.round(Math.random()*(game.width-100))+50, -50, byte);
                                    // randomized x position
     game.physics.enable(this, Phaser.Physics.ARCADE);
     this.anchor.set(0.5);
@@ -230,7 +319,7 @@ Virus.prototype.update = function() {
 
 // Beer
 var Beer = function(game, speed) { // speed = moving of the screen elements when monkey jumps up
-    Phaser.Sprite.call(this, game, Math.round(Math.random()*(game.width-100))+50, -100, "beer");
+    Phaser.Sprite.call(this, game, Math.round(Math.random()*(game.width-100))+50, -150, "beer");
     game.physics.enable(this, Phaser.Physics.ARCADE);
     this.anchor.set(0.5);
     this.body.immovable = true;
@@ -251,7 +340,7 @@ Beer.prototype.update = function() {
 
 // Coffee
 var Coffee = function(game, speed) { // speed = moving of the screen elements when monkey jumps up
-    Phaser.Sprite.call(this, game, Math.round(Math.random()*(game.width-100))+50, -100, "coffee");
+    Phaser.Sprite.call(this, game, Math.round(Math.random()*(game.width-100))+50, -125, "coffee");
     game.physics.enable(this, Phaser.Physics.ARCADE);
     this.anchor.set(0.5);
     this.body.immovable = true;
@@ -272,7 +361,7 @@ Coffee.prototype.update = function() {
 
 // Bananas
 var Banana = function(game, speed) { // speed = moving of the screen elements when monkey jumps up
-    Phaser.Sprite.call(this, game, Math.round(Math.random()*(game.width-100))+50, -100, "banana");
+    Phaser.Sprite.call(this, game, Math.round(Math.random()*(game.width-100))+50, -150, "banana");
     game.physics.enable(this, Phaser.Physics.ARCADE);
     this.anchor.set(0.5);
     this.body.immovable = true;
