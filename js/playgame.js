@@ -23,7 +23,7 @@ playgame.prototype = {
         // cursor controls
         this.cursor = this.input.keyboard.createCursorKeys();
         //tilting
-        window.addEventListener("deviceorientation", this.handleOrientation, true);
+        
 
     },
     update: function() {
@@ -100,12 +100,7 @@ playgame.prototype = {
            game.state.start("GameOverScreen");
        }
     },
-    handleOrientation: function(e) {
-        var x = e.gamma;
-        var y = e.beta;
-        Ball._player.body.velocity.x += x;
-        Ball._player.body.velocity.y += y;
-    },
+
 
 
 }
