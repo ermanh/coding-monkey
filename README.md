@@ -83,9 +83,21 @@ Bg tiles: Plain bg & tree trunk
 ###### Nick
 
 ##### 24-6-2017, 25-6-2017 (Weekend)
+### To-do
 ###### Corah
+
+titlescreen, overscreen
+
+playgame: branches - NO PUSHING
+
 ###### Herman
+wait for Nick, playgame
+
+sprite items (bytes, virus, beer, coffee, banana)
 ###### Nick
+playgame
+
+platform, auto jump, tree bgtile
 
 ##### 26-6-2017 (Mon)
 ###### Corah
