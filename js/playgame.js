@@ -1,6 +1,9 @@
 var tunnelWidth = 440;
 var monkeyverticalhigh = 100;
 var shipMoveDelay = 0;
+var branchSpeed = 0; //not sure about the speed as it will move with monkey
+var branchGap = 60;
+
 var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
@@ -17,7 +20,23 @@ playgame.prototype = {
       this.game.physics.enable(this.monkey, Phaser.Physics.ARCADE);
       this.monkey.canMove = true;
       game.input.onDown.add(this.moveMonkey, this);
-    },
+
+      // //create branches
+      // this.branchGroup = game.add.group();
+      // var branch = new Branch(game, branchSpeed);
+      // game.add.existing(branch);
+      // this.branchGroup.add(branch);
+      this.branchGroup = game.add.group();
+      this.addBranch(this.branchGroup);
+
+      },
+      //create branches
+      addBranch: function(group){
+        var branch = new Branch(game, branchSpeed);
+        game.add.existing(branch);
+        group.add(branch);
+      },
+
     moveMonkey:function() {
       // handle the left and right movement of the hero
       if( this.cursor.left.isDown ) {
@@ -44,6 +63,31 @@ playgame.prototype = {
         this.state.start( 'Play' );
       }
 
-    }
+    },
 
+
+}
+
+// Generate branches
+var Branch = function (game, speed) {
+    var positions = [Math.random()*(280-40)+40, Math.random()*(600-360)+360];
+	var position = game.rnd.between(0, 1);
+	Phaser.Sprite.call(this, game, positions[position], -100, "branch");
+	game.physics.enable(this, Phaser.Physics.ARCADE);
+	this.anchor.set(position, 0.5);
+	this.body.velocity.y = speed;
+    this.body.velocity.y = speed;
+	this.placeBranch = true;
+};
+Branch.prototype = Object.create(Phaser.Sprite.prototype);
+Branch.prototype.constructor = Branch;
+
+Branch.prototype.update = function(){
+	if(this.y > game.height){
+		this.destroy();
+	}
+    if(this.placeBranch && this.y > branchGap){
+		this.placeBranch = false;
+		playgame.prototype.addBranch(this.parent);
+	}
 }
