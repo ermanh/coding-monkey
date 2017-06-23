@@ -66,8 +66,11 @@ Bg tiles: Plain bg & tree trunk
 5. Generating random item sprites
 6. Set up bytes count, reward and penalty items (\*different scoring & penalty)
 7. Set up helping/special items
+8. titlescreen
+9. gamoverscreen
+10. music
 
-# Diary
+# Diary (Done/Goal)
 ##### 23-6-2017 (Fri)
 ###### Corah
 ! Added code for Accelerometer, NEED TESTING
