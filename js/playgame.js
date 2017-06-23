@@ -1,11 +1,12 @@
 var tunnelWidth = 440;
 var monkeyverticalhigh = 100;
 var monkeyMoveDelay = 0;
+var tunnelBG;
 var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
   		game.stage.backgroundColor = "#4488AA";
-  		var tunnelBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
+  	    tunnelBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
 
         this.physics.startSystem( Phaser.Physics.ARCADE );
         console.log("playgame started");
@@ -23,7 +24,7 @@ playgame.prototype = {
         // cursor controls
         this.cursor = this.input.keyboard.createCursorKeys();
         //tilting
-        
+
 
     },
     update: function() {
@@ -41,8 +42,8 @@ playgame.prototype = {
         this.physics.arcade.collide( this.monkey, this.platforms );
         this.monkeyMove();
 
+        tunnelBG.tilePosition.y += 5;
 
-        //this.tunnelBG.tilePosition.y += 50;
 
     },
     monkeyCreate: function(){
@@ -87,7 +88,6 @@ playgame.prototype = {
         if( this.cursor.up.isDown && this.monkey.body.touching.down ) {
           this.monkey.body.velocity.y = -350;
         }
-
 
         // wrap world coordinated so that you can warp from left to right and right to left
         this.world.wrap( this.monkey, this.monkey.width / 2, false );
