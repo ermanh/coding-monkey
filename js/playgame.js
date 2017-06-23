@@ -1,8 +1,8 @@
 var monkeyverticalhigh = 100;
 var monkeyMoveDelay = 0;
-<<<<<<< HEAD
+
 var tunnelBG;
-=======
+
 
 var monkeySpeed; // Herman: this should be related to the screen moving down when the monkey jumps up
                  //         need this for movement of sprites down the screen
@@ -18,7 +18,7 @@ var bananaGap = 2000;       // controls how often banana appears
 
 var scoreKey = {'0':1, '1':100, '10':200, '11':300, '100':400, '101':500, '110':600, '111':700};
 
->>>>>>> 64e0c110b8725c537e8861d52ee034fa735a49d2
+
 var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
@@ -42,8 +42,7 @@ playgame.prototype = {
         this.cursor = this.input.keyboard.createCursorKeys();
         //tilting
 
-<<<<<<< HEAD
-=======
+
         // Bytes score setup
         score = 0;
         this.scoreText = game.add.bitmapText(game.width-20, game.height-65, "font", "0", 48);
@@ -88,7 +87,6 @@ playgame.prototype = {
         this.addCoffee(this.coffeeGroup);
         this.bananaGroup = game.add.group();
         this.addBanana(this.bananaGroup);
->>>>>>> 64e0c110b8725c537e8861d52ee034fa735a49d2
 
     },
 
@@ -107,12 +105,12 @@ playgame.prototype = {
         this.physics.arcade.collide( this.monkey, this.platforms );
         this.monkeyMove();
 
-<<<<<<< HEAD
+
         tunnelBG.tilePosition.y += 5;
 
-=======
-        //this.tunnelBG.tilePosition.y += 50;
->>>>>>> 64e0c110b8725c537e8861d52ee034fa735a49d2
+
+        
+
 
 
         /* Collision conditions - belongs inside the "update" function [Herman] */
