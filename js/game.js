@@ -6,7 +6,7 @@ window.onload = function() {
   game.state.add("Preload", preload);
   game.state.add("Titlescreen", titlescreen);
   game.state.add("Playgame", playgame);
-  game.state.add("GameOverScreen", gameoverscreen);
+  //game.state.add("GameOverScreen", gameoverscreen);
 	game.state.start("Boot");
 }
 var boot = function(game){};
