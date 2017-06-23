@@ -58,7 +58,7 @@ Bg tiles: Plain bg & tree trunk
   - decrease with catching bugs $ virus
 3\*. Monkey can jump across screen
 
-#To-do
+# To-do
 1. Auto jump
 2. Move monkey left to right on keyboard
 3. Accelerometer
