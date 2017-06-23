@@ -8,7 +8,8 @@ window.onload = function() {
 	game.state.add("Playgame", playgame);
 	game.state.add("GameOverScreen", gameoverscreen);
 	game.state.start("Boot");
-}
+};
+
 var boot = function(game){};
 boot.prototype = {
 	preload: function(){
@@ -23,4 +24,4 @@ boot.prototype = {
 		//this.scale.setScreenSize( true );
 		game.state.start("Preload");
 	}
-}
+};
