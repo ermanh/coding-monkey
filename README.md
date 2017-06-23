@@ -2,10 +2,17 @@ An asterisk* means the code can be considered in an upgrade at a later point.
 
 # Game concept
 Goal: To collect as much code (0's & 1's) as possible.
-Gameplay: Coding Monkey collecting code (0's & 1's) among branches and trying to survive (not fall). 
+
+Gameplay: 
+
+Coding Monkey collecting code (0's & 1's) among branches and trying to survive (not fall). 
+
 Scoring in bytes. 
+
 Avoiding bugs & virus. 
+
 Coffee, beer & banana change Monkey's jumping ability.
+
 Monkey jumps vertically upwards. Can land on branches.
 
 # States
@@ -13,6 +20,7 @@ Boot, preload, title screen, etc.
 
 # Background
 Environment: Tree trunk & branches
+
 Bg tiles: Plain bg & tree trunk
 
 # Sprites
