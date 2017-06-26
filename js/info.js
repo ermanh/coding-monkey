@@ -9,12 +9,17 @@ info.prototype = {
         //C: need to arrange info image spacing & adjust sizes
         var info = game.add.image(game.width / 2, 20, "info");
         	info.anchor.set(0.5,0);
-        var info0 = game.add.image(game.width / 2, 90, "info0");
+            info.scale.setTo(0.8, 0.8);
+        var info0 = game.add.image(game.width / 2, 75, "info0");
         	info0.anchor.set(0.5,0);
-        var info2 = game.add.image(game.width / 2, 150, "info2");
+            info0.scale.setTo(0.8, 0.8);
+        var info2 = game.add.image(game.width / 2, 130, "info2");
             info2.anchor.set(0.5,0);
+            info2.scale.setTo(0.8, 0.8);
+
         var info3 = game.add.image(game.width / 2, 210, "info3");
             info3.anchor.set(0.5,0);
+            info3.scale.setTo(0.7, 0.7);
 
         var zero = game.add.image(game.width / 2, 290, "0");
             zero.anchor.set(0.5,0);
@@ -26,30 +31,36 @@ info.prototype = {
             oneone.anchor.set(0.5,0);
         var info4 = game.add.image(game.width / 2, 350, "info4");
             info4.anchor.set(0.5,0);
+            info4.scale.setTo(0.7, 0.7);
 
         var virus = game.add.image(game.width / 2, 25, "virus");
             virus.anchor.set(0.5,0);
         var info5 = game.add.image(game.width / 2, 300, "info5");
         	info5.anchor.set(0.5,0);
+            info5.scale.setTo(0.7, 0.7);
 
         var coffee = game.add.image(game.width / 2, 25, "coffee");
             coffee.anchor.set(0.5,0);
         var info6 = game.add.image(game.width / 2, 350, "info6");
             info6.anchor.set(0.5,0);
+            info6.scale.setTo(0.7, 0.7);
 
         var beer = game.add.image(game.width / 2, 25, "beer");
             beer.anchor.set(0.5,0);
         var info7 = game.add.image(game.width / 2, 400, "info7");
         	info7.anchor.set(0.5,0);
+            info7.scale.setTo(0.7, 0.7);
 
         var banana = game.add.image(game.width / 2, 25, "banana");
             banana.anchor.set(0.5,0);
         var info8 = game.add.image(game.width / 2, 450, "info8");
             info8.anchor.set(0.5,0);
+            info8.scale.setTo(0.7, 0.7);
 
         //C: need to adjust size of image
-        var continueButton = game.add.button(game.width / 2, game.height - 150, "continueButton", this.startGame);
+        var continueButton = game.add.button(game.width / 2, game.height - 150, "playbutton", this.startGame);
         	continueButton.anchor.set(0.5);
+            continueButton.scale.setTo(0.3, 0.3);
         var tween = game.add.tween(continueButton).to({
         		width: 220,
         		height:220
