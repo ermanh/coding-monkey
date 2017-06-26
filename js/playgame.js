@@ -19,6 +19,7 @@ var bananaGap = 2000;       // controls how often banana appears
 var scoreKey = {'0':1, '1':100, '10':200, '11':300, '100':400, '101':500, '110':600, '111':700};
 
 
+
 var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
@@ -76,6 +77,9 @@ playgame.prototype = {
         this.branchGroup = game.add.group();
         this.addBranch(this.branchGroup);
 
+
+
+
         // Create sprite groups
         this.bytesGroup = game.add.group();
         this.addByte(this.bytesGroup);
@@ -87,10 +91,10 @@ playgame.prototype = {
         this.addCoffee(this.coffeeGroup);
         this.bananaGroup = game.add.group();
         this.addBanana(this.bananaGroup);
-
     },
 
     update: function() {
+
         // this is where the main magic happens
         // the y offset and the height of the world are adjusted
         // to match the highest point the hero has reached
@@ -197,7 +201,7 @@ playgame.prototype = {
 
         // handle hero jumping
         if( this.cursor.up.isDown && this.monkey.body.touching.down ) {
-            this.monkey.body.velocity.y = -350;
+            this.monkey.body.velocity.y = -400;
         }
 
         // wrap world coordinated so that you can warp from left to right and right to left
@@ -214,7 +218,10 @@ playgame.prototype = {
     },
 
     addBranch: function(group){
-      var branch = new Branch(game, branchSpeed);
+        if(!this.currentBranchPosition){
+            this.currentBranchPosition = 800;
+        }
+      var branch = new Branch(game, branchSpeed, this.currentBranchPosition);
       game.add.existing(branch);
       group.add(branch);
     },
@@ -243,18 +250,27 @@ playgame.prototype = {
         var banana = new Banana(game, monkeySpeed);
         game.add.existing(banana);
         group.add(banana);
+    },
+    setCurrentBranchPosition: function(currentBranchPosition){
+        this.currentBranchPosition = currentBranchPosition;
     }
 
 };
 
 
 // Generate branches
-var Branch = function (game, speed) {
-    var positions = [Math.random()*(280-40)+40, Math.random()*(600-360)+360];
-	var position = game.rnd.between(0, 1);
-	Phaser.Sprite.call(this, game, positions[position], 800, "branch");
+var Branch = function (game, speed,currentBranchPosition) {
+
+    var xpositions = [Math.random()*(220-40)+40, Math.random()*(540-360)+360];
+	var xposition = game.rnd.between(0, 1);
+    // var ypositions = Math.random()*(this.monkey.y + this.monkey.body.velocity.y)-200;
+
+    Phaser.Sprite.call(this, game, xpositions[xposition], currentBranchPosition, "branch");
+    playgame.prototype.setCurrentBranchPosition( currentBranchPosition-180);
+
 	game.physics.enable(this, Phaser.Physics.ARCADE);
-	this.anchor.set(position, 0.5);
+
+	this.anchor.set(0, 0);
 	this.body.velocity.y = speed;
     this.body.velocity.y = speed;
 	this.placeBranch = true;
@@ -265,10 +281,10 @@ Branch.prototype.update = function(){
 	if(this.y > game.height){
 		this.destroy();
 	}
-    // if(this.placeBranch && this.y > branchGap){
-	// 	this.placeBranch = false;
-	// 	playgame.prototype.addBranch(this.parent);
-	// }
+    if(this.placeBranch && this.y > branchGap){
+        this.placeBranch = false;
+        playgame.prototype.addBranch(this.parent);
+	}
 }
 
 // Bytes
