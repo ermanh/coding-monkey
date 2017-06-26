@@ -27,4 +27,4 @@ titlescreen.prototype = {
     }
 
 
-}
+};
