@@ -21,7 +21,6 @@ boot.prototype = {
 		game.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
 		this.scale.maxWidth = this.game.width;
     	this.scale.maxHeight = this.game.height;
-		//this.scale.setScreenSize( true );
 		game.state.start("Preload");
 	}
 };

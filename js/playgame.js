@@ -22,9 +22,10 @@ var scoreKey = {'0':1, '1':100, '10':200, '11':300, '100':400, '101':500, '110':
 var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
-  		game.stage.backgroundColor = "#4488AA";
-  	    tunnelBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
+  		//game.stage.backgroundColor = "#4488AA";
 
+  	    tunnelBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
+        tunnelBG.autoScroll(0,100);
         this.physics.startSystem( Phaser.Physics.ARCADE );
         console.log("playgame started");
 
@@ -106,10 +107,16 @@ playgame.prototype = {
         this.monkeyMove();
 
 
-        tunnelBG.tilePosition.y += 5;
+        //tunnelBG.tilePosition.y += 5;
 
+        this.platforms.forEachAlive( function( elem ) {
+              this.platformYMin = Math.min( this.platformYMin, elem.y );
+              if( elem.y > this.camera.y + this.game.height ) {
+                elem.kill();
+                this.platformsCreateOne( this.rnd.integerInRange( 0, this.world.width - 50 ), this.platformYMin - 100, 50 );
+              }
+        }, this );
 
-        
 
 
 
@@ -163,7 +170,8 @@ playgame.prototype = {
         this.monkey.yOrig = this.monkey.y;
         this.monkey.ychange=0;
 
-        this.monkey.body.gravity.y = 500;
+        this.monkey.body.gravity.y = 1000;
+        //this.monkey.body.velocity.y = -1500;
         this.monkey.body.checkCollision.up = false;
         this.monkey.body.checkCollision.left = false;
         this.monkey.body.checkCollision.right = false;
@@ -173,7 +181,7 @@ playgame.prototype = {
     platformsCreate: function(){
         this.platforms = this.add.group();
         this.platforms.enableBody = true;
-        this.platforms.createMultiple( 10, 'wall' );
+        this.platforms.createMultiple( 10, "branch");
 
         this.platformsCreateOne(-16, this.world.height - 16, this.world.width + 16 );
     },
@@ -188,12 +196,14 @@ playgame.prototype = {
     monkeyMove: function() {
         // handle the left and right movement of the hero
         if( this.cursor.left.isDown ) {
-          this.monkey.body.velocity.x = -200;
+          this.monkey.body.velocity.x = -3000;
         } else if( this.cursor.right.isDown ) {
-          this.monkey.body.velocity.x = 200;
+          this.monkey.body.velocity.x = 3000;
+
         } else {
           this.monkey.body.velocity.x = 0;
         }
+
 
         // handle hero jumping
         if( this.cursor.up.isDown && this.monkey.body.touching.down ) {
@@ -208,7 +218,7 @@ playgame.prototype = {
 
         // if the hero falls below the camera view, gameover
         if( this.monkey.y > this.cameraYMin + this.game.height && this.monkey.alive ) {
-            this.state.start( 'GameOverScreen' );
+            this.state.start("Titlescreen");
         }
 
     },

@@ -8,7 +8,6 @@ preload.prototype = {
 		game.load.image("playbutton", "assets/sprites/playbutton.png");
     	game.load.image("backsplash", "assets/sprites/backsplash.png");
 		game.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
-		game.load.image("wall", "assets/sprites/wall.png");
 		game.load.image("monkey", "assets/images/monkey_left_75x73.png");
 		game.load.image("tree", "assets/images/trees_640.png");
 		game.load.image("branch", "assets/images/branch.png");
