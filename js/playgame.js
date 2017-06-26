@@ -18,7 +18,6 @@ var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
       		//game.stage.backgroundColor = "#4488AA";
-
       	    var treeBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
             treeBG.autoScroll(0,50);
             game.physics.startSystem(Phaser.Physics.ARCADE);
