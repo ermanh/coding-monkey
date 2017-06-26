@@ -126,7 +126,7 @@ playgame.prototype = {
         var coffee2 = new Coffee(game, monkeySpeed, game.height-75);
         game.add.existing(coffee2);
         this.coffeeGroup.add(coffee2);
-        
+
     },
 
     update: function() {

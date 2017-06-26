@@ -1,12 +1,10 @@
 var info = function(game){};
 info.prototype = {
     create: function(){
-        //need bg, continueButton, images and words
-        //images and continueButton need to be added to preload
         //C: need to change background image
         var titleBG = game.add.tileSprite(0, 0, game.width, game.height,"testbg");
 
-        //C: need to arrange info image spacing & adjust sizes
+        //C: images spacing & sizes adjusted
         var info = game.add.image(game.width / 2, 20, "info");
         	info.anchor.set(0.5,0);
             info.scale.setTo(0.8, 0.8);
@@ -66,7 +64,6 @@ info.prototype = {
             info8.anchor.set(0,0);
             info8.scale.setTo(0.7, 0.7);
 
-        //C: need to adjust size of image
         var continueButton = game.add.button(game.width / 2, game.height - 120, "playbutton", this.startGame);
         	continueButton.anchor.set(0.5);
             continueButton.scale.setTo(0.25, 0.25);
