@@ -5,12 +5,26 @@ preload.prototype = {
 		loadingBar.anchor.setTo(0.5,0.5);
 		game.load.setPreloadSprite(loadingBar);
 		game.load.image("title", "assets/sprites/title.png");
-		game.load.image("playbutton", "assets/sprites/playbutton.png");
-    	game.load.image("backsplash", "assets/sprites/backsplash.png");
+		game.load.image("playbutton", "assets/sprites/playbutton.png");//C:changed button image
+		game.load.image("testbg", "testbg.png");//C: need to change bg image
+		game.load.image("continueButton", "assets/sprites/continueButton.png")
+
+		//C: info text images:
+		game.load.image("info", "assets/images/info.png")
+		game.load.image("info0", "assets/images/info0.png")
+		game.load.image("info2", "assets/images/info2.png")
+		game.load.image("info3", "assets/images/info3.png")
+		game.load.image("info4", "assets/images/info4.png")
+		game.load.image("info5", "assets/images/info5.png")
+		game.load.image("info6", "assets/images/info6.png")
+		game.load.image("info7", "assets/images/info7.png")
+		game.load.image("info8", "assets/images/info8.png")
+
 		game.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
 		game.load.image("monkey", "assets/images/monkey_left_75x73.png");
 		game.load.image("tree", "assets/images/trees_640.png");
 		game.load.image("branch", "assets/images/branch.png");
+		game.load.image("ground", "assets/images/platform.png");
 		game.load.image("beer", "assets/images/beer_50x62.png");
 		game.load.image("coffee", "assets/images/coffee_50x50.png");
 		game.load.image("virus", "assets/images/virus_50x50.png");
