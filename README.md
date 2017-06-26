@@ -78,6 +78,7 @@ become invincible
 8. titlescreen
 9. gamoverscreen
 10. music
+! 11. instructions
 
 # Diary (Done/Goal)
 ## 23-6-2017 (Fri)
@@ -96,8 +97,9 @@ become invincible
 ### To-do
 #### Corah
 
-- titlescren, overscreen
-
+- titlescren
+- instructions
+- gameoverscreen
 - playgame: branches - NO PUSHING
 
 #### Herman
