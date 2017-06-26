@@ -37,9 +37,10 @@ preload.prototype = {
 		game.load.image("101", "assets/images/101.png");
 		game.load.image("110", "assets/images/110.png");
 		game.load.image("111", "assets/images/111.png");
+		game.load.image("bananaDart", "assets/images/bananaDart_25x27.png");
 		},
 	create: function(){
 		game.state.start("Titlescreen");
 		console.log("preload started");
 	}
-}
+};
