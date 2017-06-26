@@ -1,13 +1,7 @@
-var monkeyverticalhigh = 100;
-var monkeyMoveDelay = 0;
-var monkeyJumpHeight = -400;
 
-var treeBG;
-
-
+var monkeyJumpHeight = -700;
 var monkeySpeed; // Herman: this should be related to the screen moving down when the monkey jumps up
                  //         need this for movement of sprites down the screen
-
 var branchSpeed = 0; //not sure about the speed as it will move with monkey
 var branchGap = 60;
 
@@ -20,29 +14,59 @@ var bananaGap = 2000;       // controls how often banana appears
 var scoreKey = {'0':1, '1':100, '10':200, '11':300, '100':400, '101':500, '110':600, '111':700};
 var mouseTouchDown = false;
 
+
 var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
-  		game.stage.backgroundColor = "#4488AA";
-  	    treeBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
-
-        this.physics.startSystem( Phaser.Physics.ARCADE );
+  	    var treeBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
+        treeBG.autoScroll(0,50);
+        game.physics.startSystem(Phaser.Physics.ARCADE);
+        //this.physics.startSystem( Phaser.Physics.ARCADE );
         console.log("playgame started");
 
-        // camera and platform tracking vars
-        this.cameraYMin = 99999;
-        this.platformYMin = 99999;
+        //  The platforms group contains the ground and the 2 ledges we can jump on
+        platforms = game.add.group();
 
-        // create platforms
-        this.platformsCreate();
+        //  We will enable physics for any object that is created in this group
+        platforms.enableBody = true;
+        //ground.enableBody = true;
 
-        // create hero
-        this.monkeyCreate();
+        // Here we create the ground.
+        var ground = platforms.create(0, game.world.height - 50, 'ground');
 
-        // cursor controls
-        this.cursor = this.input.keyboard.createCursorKeys();
-        //tilting
+        //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
+        ground.scale.setTo(2, 2);
 
+        //  This stops it from falling away when you jump on it
+        ground.body.immovable = true;
+
+        //  Now let's create two ledges
+        var ledge = platforms.create(370, 500, 'branch');
+
+        ledge.body.immovable = true;
+
+        ledge = platforms.create(50, 700, 'branch');
+
+        ledge.body.immovable = true;
+
+        // The monkey and its settings
+        this.monkey = game.add.sprite(200, game.world.height - 150, 'monkey');
+        this.monkey.anchor.set( 0.5 );
+        //  We need to enable physics on the monkey
+        game.physics.arcade.enable(this.monkey);
+        this.monkey.destroyed = false;
+        this.monkey.invincible = false;
+
+        //  monkey physics properties. Give the little guy a slight bounce.
+        this.monkey.body.bounce.y = 0.2;
+        this.monkey.body.gravity.y = 1000;
+        this.monkey.body.collideWorldBounds = true;
+
+        this.cursors = this.input.keyboard.createCursorKeys();
+        this.monkey.body.checkCollision.up = false;
+        this.monkey.body.checkCollision.left = false;
+        this.monkey.body.checkCollision.right = false;
+        game.world.setBounds(-80, 0, 850, 960);
 
         // Bytes score setup
         score = 0;
@@ -106,26 +130,10 @@ playgame.prototype = {
     },
 
     update: function() {
-        // this is where the main magic happens
-        // the y offset and the height of the world are adjusted
-        // to match the highest point the hero has reached
-        this.world.setBounds( 0, -this.monkey.yChange, this.world.width, this.game.height + this.monkey.yChange );
 
-        // the built in camera follow methods won't work for our needs
-        // this is a custom follow style that will not ever move down, it only moves up
-        this.cameraYMin = Math.min( this.cameraYMin, this.monkey.y - this.game.height + 70 );
-        this.camera.y = this.cameraYMin;
-
-        // hero collisions and movement
-        this.physics.arcade.collide( this.monkey, this.platforms );
+        hitPlatform = game.physics.arcade.collide(this.monkey, platforms);
+        hitPlatform1 = game.physics.arcade.collide(this.monkey, this.branchGroup);
         this.monkeyMove();
-
-
-        //treeBG.tilePosition.y += 5;
-
-
-
-
 
         /* Collision conditions - belongs inside the "update" function [Herman] */
         if (!this.monkey.destroyed && this.monkey.alpha == 1){
@@ -256,72 +264,58 @@ playgame.prototype = {
                 item.destroy();
             }
         }, this);
-
     },
-    monkeyCreate: function(){
-        this.monkey = game.add.sprite(game.width/2, game.height-50, "monkey");
-        this.monkey.anchor.set(0.5);
-        this.game.physics.enable(this.monkey, Phaser.Physics.ARCADE);
 
-        this.monkey.yOrig = this.monkey.y;
-        this.monkey.ychange=0;
-
-        this.monkey.body.gravity.y = 500;
-        this.monkey.body.checkCollision.up = false;
-        this.monkey.body.checkCollision.left = false;
-        this.monkey.body.checkCollision.right = false;
-
-        this.monkey.destroyed = false;
-        this.monkey.invincible = false; // Herman: for implementing banana effects
-    },
-    platformsCreate: function(){
-        this.platforms = this.add.group();
-        this.platforms.enableBody = true;
-        this.platforms.createMultiple( 10, 'wall' );
-
-        this.platformsCreateOne(-16, this.world.height - 16, this.world.width + 16 );
-    },
-    platformsCreateOne:function(x,y,width){
-        var platform = this.platforms.getFirstDead();
-        platform.reset( x, y );
-        platform.scale.x = width;
-        platform.scale.y = 16;
-        platform.body.immovable = true;
-        return platform;
-    },
     monkeyMove: function() {
-        // handle the left and right movement of the hero
-        if( this.cursor.left.isDown ) {
-          this.monkey.body.velocity.x = -200;
-        } else if( this.cursor.right.isDown ) {
-          this.monkey.body.velocity.x = 200;
-        } else {
-          this.monkey.body.velocity.x = 0;
-        }
+        //  Reset the monkeys velocity (movement)
+            this.monkey.body.velocity.x = 0;
 
-        // handle hero jumping
-        if( this.cursor.up.isDown && this.monkey.body.touching.down ) {
-            this.monkey.body.velocity.y = monkeyJumpHeight;
-                                       // Herman: I added this variable so it can be manipulated
-        }
+            if (this.cursors.left.isDown)
+            {
+                //  Move to the left
+                this.monkey.scale.x = 1;
+                this.monkey.body.velocity.x = -500;
+                if (this.monkey.x < 0) {
+                    this.monkey.x += 640;
+                }
+                //monkey.animations.play('left');
+            }
+            else if (this.cursors.right.isDown)
+            {
+                //  Move to the right
+                this.monkey.scale.x = -1;
+                this.monkey.body.velocity.x = 500;
+                if (this.monkey.x > 640) {
+                    this.monkey.x -= 640;
+                }
 
-        // wrap world coordinated so that you can warp from left to right and right to left
-        this.world.wrap( this.monkey, this.monkey.width / 2, false );
+                //monkey.animations.play('right');
+            }
+            else
+            {
+                //  Stand still
+                this.monkey.animations.stop();
 
-        // track the maximum amount that the hero has travelled
-        this.monkey.yChange = Math.max( this.monkey.yChange, Math.abs( this.monkey.y - this.monkey.yOrig ) );
+                this.monkey.frame = 4;
+            }
 
-        // if the hero falls below the camera view, gameover
-        if( this.monkey.y > this.cameraYMin + this.game.height && this.monkey.alive ) {
-            this.state.start( 'GameOverScreen' );
-        }
-
+            //  Allow the monkey to jump if they are touching the ground.
+            if (hitPlatform || hitPlatform1)
+            {
+                this.monkey.body.velocity.y = monkeyJumpHeight;
+            }
     },
 
     addBranch: function(group){
-      var branch = new Branch(game, branchSpeed);
+        if(!this.currentBranchPosition){
+            this.currentBranchPosition = 800;
+        }
+      var branch = new Branch(game, branchSpeed, this.currentBranchPosition);
       game.add.existing(branch);
       group.add(branch);
+    },
+    setCurrentBranchPosition: function(currentBranchPosition){
+        this.currentBranchPosition = currentBranchPosition;
     },
 
     addByte: function(group) {
@@ -391,12 +385,18 @@ playgame.prototype = {
 
 
 // Generate branches
-var Branch = function (game, speed) {
-    var positions = [Math.random()*(280-40)+40, Math.random()*(600-360)+360];
-	var position = game.rnd.between(0, 1);
-	Phaser.Sprite.call(this, game, positions[position], 800, "branch");
+var Branch = function (game, speed,currentBranchPosition) {
+
+    var xpositions = [Math.random()*(220-40)+40, Math.random()*(540-360)+360];
+	var xposition = game.rnd.between(0, 1);
+    // var ypositions = Math.random()*(this.monkey.y + this.monkey.body.velocity.y)-200;
+
+    Phaser.Sprite.call(this, game, xpositions[xposition], currentBranchPosition, "branch");
+    playgame.prototype.setCurrentBranchPosition( currentBranchPosition-180);
+
 	game.physics.enable(this, Phaser.Physics.ARCADE);
-	this.anchor.set(position, 0.5);
+
+	this.anchor.set(0, 0);
 	this.body.velocity.y = speed;
     this.body.velocity.y = speed;
 	this.placeBranch = true;
@@ -407,10 +407,10 @@ Branch.prototype.update = function(){
 	if(this.y > game.height){
 		this.destroy();
 	}
-    // if(this.placeBranch && this.y > branchGap){
-	// 	this.placeBranch = false;
-	// 	playgame.prototype.addBranch(this.parent);
-	// }
+    if(this.placeBranch && this.y > branchGap){
+        this.placeBranch = false;
+        playgame.prototype.addBranch(this.parent);
+	}
 };
 
 // Bytes
