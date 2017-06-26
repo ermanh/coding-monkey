@@ -42,6 +42,15 @@ Bg tiles: Plain bg & tree trunk
   - Monkey can land on branches, can't go through from bottom
   (- \*Can go through from bottom)
 
+#### for Info screen
+Goal: Get as many bytes as you can!
+Catch these to:
+increase bytes
+lose bytes
+jump higher
+jump lower
+become invincible
+
 # Control
 1. Monkey's movement:
   - Jump - auto
