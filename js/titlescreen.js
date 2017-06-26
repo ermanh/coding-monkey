@@ -5,19 +5,19 @@ titlescreen.prototype = {
         var titleBG = game.add.tileSprite(0, 0, game.width, game.height,"testbg");
 
         //C: need to add title
-        var title = game.add.image(game.width / 2, 25, "title");
+        var title = game.add.image(game.width / 2, 60, "title");
         	title.anchor.set(0.5,0);
             title.scale.setTo(0.6, 0.6);
 
         //C: need to adjust size of button image at beginning
-        var playButton = game.add.button(game.width / 2, game.height - 150, "playbutton", this.startInfo);
+        var playButton = game.add.button(game.width / 2, game.height - 120, "playbutton", this.startInfo);
         	playButton.anchor.set(0.5);
-            playButton.scale.setTo(0.3, 0.3);
+            playButton.scale.setTo(0.25, 0.25);
 
         var tween = game.add.tween(playButton).to({
-        		width: 220,
-        		height:220
-        	}, 1500, "Linear", true, 0, -1);
+        		width: 180,
+        		height:180
+        	}, 900, "Linear", true, 0, -1);
         	tween.yoyo(true);
         	console.log("titlescreen started");
     },
@@ -27,4 +27,4 @@ titlescreen.prototype = {
     }
 
 
-};
+}
