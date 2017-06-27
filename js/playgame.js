@@ -76,11 +76,7 @@ playgame.prototype = {
         this.scoreText.alpha = 0.75;
         this.scoreText.anchor.set(1,0);
 
-        // //create branches
-        // this.branchGroup = game.add.group();
-        // var branch = new Branch(game, branchSpeed);
-        // game.add.existing(branch);
-        // this.branchGroup.add(branch);
+        //create branches
         this.branchGroup = game.add.group();
         this.addBranch(this.branchGroup);
 
@@ -189,10 +185,19 @@ playgame.prototype = {
                         width: 100,
                     }, 500, "Linear", true);
 
-                    //monkey blinks
+                    //monkey emits 0 & 1 on virus
+                    this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
+                    this.smokeEmitter.makeParticles(["0","1"]);
+                    this.smokeEmitter.start(false, 600, 50);
+                    var smokeEmitter = this.smokeEmitter;
+                    setTimeout(function(){
+                        smokeEmitter.on = false;
+                    }, 300);
+
+                    //monkey blinks on virus
                     this.monkeyTween = game.add.tween(this.monkey).to({
 	                      tint: 0xeeeeee,
-                     },
+                    },
                     500, Phaser.Easing.Linear.None, true);
                     console.log("monkey blinks");
 
@@ -254,6 +259,23 @@ playgame.prototype = {
                 // collide action between monkey and a banana sprite
                 this.becomeInvincible();
                 b.destroy();
+
+                //monkey emits star on banana (in progress)
+                this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
+                this.smokeEmitter.makeParticles("star");
+                this.smokeEmitter.start(false, 600, 50);
+                var smokeEmitter = this.smokeEmitter;
+                setTimeout(function(){
+                    smokeEmitter.on = false;
+                }, 600);
+
+                //monkey blinks on banana
+                this.monkeyTween = game.add.tween(this.monkey).to({
+                      tint: 0xffcc00,
+                 },
+                500, Phaser.Easing.Linear.None, true);
+                console.log("monkey blinks");
+
             }, null, this);
             game.physics.arcade.overlap(this.dartsGroup, this.bananaGroup, function(d,b){
                 // collide condition between dart and a banana sprite
