@@ -7,7 +7,6 @@ preload.prototype = {
 		game.load.image("title", "assets/sprites/title.png");
 		game.load.image("playbutton", "assets/sprites/playbutton.png");//C:changed button image
 		game.load.image("testbg", "testbg.png");//C: need to change bg image
-		game.load.image("continueButton", "assets/sprites/continueButton.png")
 
 		//C: info text images:
 		game.load.image("info", "assets/images/info.png")
@@ -39,6 +38,9 @@ preload.prototype = {
 		game.load.image("110", "assets/images/110.png");
 		game.load.image("111", "assets/images/111.png");
 		game.load.image("bananaDart", "assets/images/bananaDart_25x27.png");
+
+		game.load.image("star", "assets/images/star.png");
+
 		game.load.image("horse", "assets/images/horse_75x74.png");
 		},
 	create: function(){

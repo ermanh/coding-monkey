@@ -54,7 +54,7 @@ playgame.prototype = {
 
         //  monkey physics properties. Give the little guy a slight bounce.
         this.monkey.body.bounce.y = 0.2;
-        this.monkey.body.gravity.y = 1000;
+        this.monkey.body.gravity.y = 700;
         this.monkey.body.collideWorldBounds = true;
 
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -69,7 +69,8 @@ playgame.prototype = {
         this.scoreText.alpha = 0.75;
         this.scoreText.anchor.set(1,0);
 
-        // create branches
+
+        //create branches
         this.branchGroup = game.add.group();
         this.addBranch(this.branchGroup);
         this.addBranch(this.branchGroup, 200, false);
@@ -139,10 +140,19 @@ playgame.prototype = {
                         width: 100,
                     }, 500, Phaser.Easing.Linear.None, true);
 
-                    //monkey blinks
+                    //monkey emits 0 & 1 on virus
+                    this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
+                    this.smokeEmitter.makeParticles(["0","1"]);
+                    this.smokeEmitter.start(false, 600, 50);
+                    var smokeEmitter = this.smokeEmitter;
+                    setTimeout(function(){
+                        smokeEmitter.on = false;
+                    }, 300);
+
+                    //monkey blinks on virus
                     this.monkeyTween = game.add.tween(this.monkey).to({
 	                      tint: 0xeeeeee,
-                     },
+                    },
                     500, Phaser.Easing.Linear.None, true);
                     console.log("monkey blinks");
 
@@ -172,6 +182,23 @@ playgame.prototype = {
                         height: 125,
                         width: 125,
                     }, 500, "Linear", true);
+
+                    //monkey emits 0 & 1 on virus
+                    this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
+                    this.smokeEmitter.makeParticles(["0","1"]);
+                    this.smokeEmitter.start(false, 600, 50);
+                    var smokeEmitter = this.smokeEmitter;
+                    setTimeout(function(){
+                        smokeEmitter.on = false;
+                    }, 300);
+
+                    //monkey blinks on virus
+                    this.monkeyTween = game.add.tween(this.monkey).to({
+                          tint: 0xeeeeee,
+                    },
+                    500, Phaser.Easing.Linear.None, true);
+                    console.log("monkey blinks");
+
                     virusTween.onComplete.add(function(){
                         score -= 1000;
                         scoreText.text = score.toString(); // update score
@@ -202,31 +229,71 @@ playgame.prototype = {
             game.physics.arcade.overlap(this.dartsGroup, this.beerGroup, function(d,b){
                 // collide condition between dart and a beer sprite
                 d.destroy();
-                var disappearTween = game.add.tween(b).to({
-                    alpha: 0
-                }, 500, "Linear", true);
+                if (b.alpha === 1) {
+                    var disappearTween = game.add.tween(b).to({
+                        alpha: 0
+                    }, 500, "Linear", true);
+                }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.coffeeGroup, function(m,c){
                 // collide condition between monkey and a coffee sprite
                 // temporarily make monkey jump higher
                 this.higherJump();
-                c.destroy();
-                var disappearTween = game.add.tween(c).to({
-                    alpha: 0
-                }, 500, "Linear", true);
+                if (c.alpha === 1) {
+                    var disappearTween = game.add.tween(c).to({
+                        alpha: 0
+                    }, 500, "Linear", true);
+                }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.bananaGroup, function(m,b){
                 // collide action between monkey and a banana sprite
                 this.becomeInvincible();
-                b.destroy();
-                var disappearTween = game.add.tween(b).to({
-                    alpha: 0
-                }, 500, "Linear", true);
+                if (b.alpha === 1) {
+                    var disappearTween = game.add.tween(b).to({
+                        alpha: 0
+                    }, 500, "Linear", true);
+                }
+                //monkey emits star on banana (in progress)
+                this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
+                this.smokeEmitter.makeParticles("star");
+                this.smokeEmitter.start(false, 600, 50);
+                var smokeEmitter = this.smokeEmitter;
+                setTimeout(function(){
+                   smokeEmitter.on = false;
+                }, 600);
+
+                //monkey blinks on banana
+                this.monkeyTween = game.add.tween(this.monkey).to({
+                     tint: 0xffcc00,
+                }, 500, Phaser.Easing.Linear.None, true);
+                console.log("monkey blinks");
+
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.horseGroup, function(m,h){
                 // collide action between monkey and a trojan horse
+                //monkey emits 0 & 1 on horse
                 if (!this.monkey.invincible){
-                    game.state.start("GameOverScreen");
+                    this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
+                    this.smokeEmitter.makeParticles(["0","1"]);
+                    this.smokeEmitter.start(false, 1500, 40);
+                    var smokeEmitter = this.smokeEmitter;
+                    setTimeout(function(){
+                        smokeEmitter.on = false;
+                    }, 300);
+
+                    //monkey disappear
+                    this.monkey.visible = false;
+
+                    //velocity becomes zero, otherwise trail of emitters follow
+                    this.monkey.body.velocity.x = 0;
+                    this.monkey.body.velocity.y = 0;
+                    this.monkey.destroyed = true;
+
+                    console.log("monkey killed");
+
+                    game.time.events.add(Phaser.Timer.SECOND * 2, function(){
+    	                   game.state.start("GameOverScreen");
+                    });
                 }
             }, null, this);
             game.physics.arcade.overlap(this.dartsGroup, this.horseGroup, function(d,h){
