@@ -1,5 +1,6 @@
 var gameoverscreen = function(game){};
 gameoverscreen.prototype = {
+
      create: function(){
 
         var finalScore = score.toString();
@@ -33,4 +34,4 @@ gameoverscreen.prototype = {
             game.state.start("Playgame");
             console.log("playButton pressed");
      }
-}
+};
