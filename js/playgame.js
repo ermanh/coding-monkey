@@ -1,7 +1,7 @@
 var treeBG;
 var ground;
 var startLine = 600;
-var monkeyJumpHeight = -700;
+var monkeyJumpHeight = -900;
 var monkeySpeed; // Herman: this should be related to the screen moving down when the monkey jumps up
                  //         need this for movement of sprites down the screen
 var branchSpeed = 0; //not sure about the speed as it will move with monkey
@@ -63,7 +63,7 @@ playgame.prototype = {
 
         //  monkey physics properties. Give the little guy a slight bounce.
         this.monkey.body.bounce.y = 0.2;
-        this.monkey.body.gravity.y = 1000;
+        this.monkey.body.gravity.y = 700;
         this.monkey.body.collideWorldBounds = true;
 
         this.cursors = this.input.keyboard.createCursorKeys();
@@ -78,11 +78,8 @@ playgame.prototype = {
         this.scoreText.alpha = 0.75;
         this.scoreText.anchor.set(1,0);
 
-<<<<<<< HEAD
+
         //create branches
-=======
-        // create branches
->>>>>>> 7d94ec0bbf031d1be5248f4924bbe204b744129a
         this.branchGroup = game.add.group();
         this.addBranch(this.branchGroup);
 
@@ -231,6 +228,23 @@ playgame.prototype = {
                         height: 125,
                         width: 125,
                     }, 500, "Linear", true);
+
+                    //monkey emits 0 & 1 on virus
+                    this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
+                    this.smokeEmitter.makeParticles(["0","1"]);
+                    this.smokeEmitter.start(false, 600, 50);
+                    var smokeEmitter = this.smokeEmitter;
+                    setTimeout(function(){
+                        smokeEmitter.on = false;
+                    }, 300);
+
+                    //monkey blinks on virus
+                    this.monkeyTween = game.add.tween(this.monkey).to({
+                          tint: 0xeeeeee,
+                    },
+                    500, Phaser.Easing.Linear.None, true);
+                    console.log("monkey blinks");
+
                     virusTween.onComplete.add(function(){
                         v.destroy();
                         score -= 1000;
@@ -298,7 +312,28 @@ playgame.prototype = {
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.horseGroup, function(m,h){
                 // collide action between monkey and a trojan horse
-                game.state.start("GameOverScreen");
+                //monkey emits 0 & 1 on horse
+                this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
+                this.smokeEmitter.makeParticles(["0","1"]);
+                this.smokeEmitter.start(false, 1500, 40);
+                var smokeEmitter = this.smokeEmitter;
+                setTimeout(function(){
+                    smokeEmitter.on = false;
+                }, 300);
+
+                //monkey disappear
+                this.monkey.visible = false;
+
+                //velocity becomes zero, otherwise trail of emitters follow
+                this.monkey.body.velocity.x = 0;
+                this.monkey.body.velocity.y = 0;
+
+                console.log("monkey killed");
+
+                game.time.events.add(Phaser.Timer.SECOND * 2, function(){
+	                   game.state.start("GameOverScreen");
+                });
+
             }, null, this);
             game.physics.arcade.overlap(this.dartsGroup, this.horseGroup, function(d,h){
                 // collide condition between dart and a beer sprite
@@ -470,14 +505,14 @@ var Branch = function (game, speed, currentBranchPosition) {
     // var ypositions = Math.random()*(this.monkey.y + this.monkey.body.velocity.y)-200;
 
     Phaser.Sprite.call(this, game, xpositions[xposition], currentBranchPosition, "branch");
-    playgame.prototype.setCurrentBranchPosition( currentBranchPosition-180);
+    playgame.prototype.setCurrentBranchPosition( currentBranchPosition-150);
 
 	game.physics.enable(this, Phaser.Physics.ARCADE);
 
 	this.anchor.set(0, 0);
 	this.body.velocity.y = speed;
 	this.placeBranch = true;
-    //this.body.immovable = true;
+    this.body.immovable = true;
 };
 Branch.prototype = Object.create(Phaser.Sprite.prototype);
 Branch.prototype.constructor = Branch;

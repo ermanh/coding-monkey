@@ -38,12 +38,10 @@ preload.prototype = {
 		game.load.image("110", "assets/images/110.png");
 		game.load.image("111", "assets/images/111.png");
 		game.load.image("bananaDart", "assets/images/bananaDart_25x27.png");
-<<<<<<< HEAD
 
 		game.load.image("star", "assets/images/star.png");
-=======
+
 		game.load.image("horse", "assets/images/horse_75x74.png");
->>>>>>> 7d94ec0bbf031d1be5248f4924bbe204b744129a
 		},
 	create: function(){
 		game.state.start("Titlescreen");
