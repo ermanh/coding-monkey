@@ -28,6 +28,7 @@ preload.prototype = {
 		game.load.image("beer", "assets/images/beer_50x62.png");
 		game.load.image("coffee", "assets/images/coffee_50x50.png");
 		game.load.image("virus", "assets/images/virus_50x50.png");
+		game.load.image("virusSuper", "assets/images/virusSuper_50x50.png");
 		game.load.image("banana", "assets/images/banana_50x50.png");
 		game.load.image("0", "assets/images/0.png");
 		game.load.image("1", "assets/images/1.png");
@@ -38,6 +39,7 @@ preload.prototype = {
 		game.load.image("110", "assets/images/110.png");
 		game.load.image("111", "assets/images/111.png");
 		game.load.image("bananaDart", "assets/images/bananaDart_25x27.png");
+		game.load.image("horse", "assets/images/horse_75x74.png");
 		},
 	create: function(){
 		game.state.start("Titlescreen");
