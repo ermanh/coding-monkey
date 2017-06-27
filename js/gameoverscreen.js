@@ -1,10 +1,6 @@
-var finalScore = this.score.toString();
 var gameoverscreen = function(game){};
 gameoverscreen.prototype = {
 create: function(){
-<<<<<<< HEAD
-    console.log("game over");
-=======
     var titleBG = game.add.tileSprite(0, 0, game.width, game.height,"testbg");
 
     game.add.bitmapText(game.width / 2, 50 , "font", "Your score", 48).anchor.x = 0.5;
@@ -23,6 +19,5 @@ create: function(){
     startGame: function(){
         game.state.start("Playgame");
         console.log("continueButton pressed");
->>>>>>> 776f1aba60321d304f7cf45fc704fdce169d51f5
-    }
+     }
 }

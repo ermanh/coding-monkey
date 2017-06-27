@@ -6,7 +6,7 @@ var monkeySpeed; // Herman: this should be related to the screen moving down whe
                  //         need this for movement of sprites down the screen
 var branchSpeed = 0; //not sure about the speed as it will move with monkey
 var branchGap = 60;
-
+var branchIncreaseSpeed = 50;
 var byteGap = 120;          // controls how often bytes appear
 var virusGap = 600;         // controls how often viruses appear (once every 500px)
 var beerGap = 1000;         // controls how often beer appears
@@ -21,7 +21,7 @@ var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
   	    treeBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
-        //treeBG.autoScroll(0,50);
+
         game.physics.startSystem(Phaser.Physics.ARCADE);
         //this.physics.startSystem( Phaser.Physics.ARCADE );
         console.log("playgame started");
@@ -76,11 +76,7 @@ playgame.prototype = {
         this.scoreText.alpha = 0.75;
         this.scoreText.anchor.set(1,0);
 
-        // //create branches
-        // this.branchGroup = game.add.group();
-        // var branch = new Branch(game, branchSpeed);
-        // game.add.existing(branch);
-        // this.branchGroup.add(branch);
+        // create branches
         this.branchGroup = game.add.group();
         this.addBranch(this.branchGroup);
 
@@ -278,7 +274,12 @@ playgame.prototype = {
     startScroll:function(){
         treeBG.autoScroll(0,100);
         ground.destroy();
-
+        if(branchSpeed == 0){
+            branchSpeed += branchIncreaseSpeed;
+			for(var i = 0; i < this.branchGroup.length; i++){
+				this.branchGroup.getChildAt(i).body.velocity.y = branchSpeed;
+			}
+        }
     },
 
     monkeyMove: function() {
