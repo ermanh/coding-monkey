@@ -140,6 +140,11 @@ playgame.prototype = {
                         width: 100,
                     }, 500, Phaser.Easing.Linear.None, true);
 
+                    virusTween.onComplete.add(function(){
+                        score -= 250;
+                        scoreText.text = score.toString(); // update score
+                    });
+                    
                     //monkey emits 0 & 1 on virus
                     this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
                     this.smokeEmitter.makeParticles(["0","1"]);
@@ -156,21 +161,17 @@ playgame.prototype = {
                     500, Phaser.Easing.Linear.None, true);
                     console.log("monkey blinks");
 
-                    virusTween.onComplete.add(function(){
-                        score -= 250;
-                        scoreText.text = score.toString(); // update score
-                    });
                 }
             }, null, this);
             game.physics.arcade.overlap(this.dartsGroup, this.virusGroup, function(d,v){
                 // collide condition between dart and a virus sprite
                 if (v.alpha === 1 && !this.monkey.invincible){
+                    d.kill();
                     var virusTween = game.add.tween(v).to({
                         alpha: 0,
                         height: 100,
                         width: 100,
                     }, 500, "Linear", true);
-                    d.kill();
                 }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.virusSuperGroup, function(m,v){
@@ -182,6 +183,11 @@ playgame.prototype = {
                         height: 125,
                         width: 125,
                     }, 500, "Linear", true);
+
+                    virusTween.onComplete.add(function(){
+                        score -= 1000;
+                        scoreText.text = score.toString(); // update score
+                    });
 
                     //monkey emits 0 & 1 on virus
                     this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
@@ -199,60 +205,44 @@ playgame.prototype = {
                     500, Phaser.Easing.Linear.None, true);
                     console.log("monkey blinks");
 
-                    virusTween.onComplete.add(function(){
-                        score -= 1000;
-                        scoreText.text = score.toString(); // update score
-                    });
                 }
             }, null, this);
             game.physics.arcade.overlap(this.dartsGroup, this.virusSuperGroup, function(d,v){
                 // collide condition between dart and a virus sprite
                 if (v.alpha === 1 && !this.monkey.invincible){
+                    d.kill();
                     var virusTween = game.add.tween(v).to({
                         alpha: 0,
                         height: 125,
                         width: 125,
                     }, 500, "Linear", true);
-                    d.kill();
                 }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.beerGroup, function(m,b){
                 // collide condition between monkey and a beer sprite
                 // temporarily make monkey jump lower
                 if (b.alpha === 1 && !this.monkey.invincible){
+                    b.alpha = 0;
                     this.lowerJump();
-                    var disappearTween = game.add.tween(b).to({
-                        alpha: 0
-                    }, 500, "Linear", true);
                 }
             }, null, this);
             game.physics.arcade.overlap(this.dartsGroup, this.beerGroup, function(d,b){
                 // collide condition between dart and a beer sprite
+                b.alpha = 0;
                 d.destroy();
-                if (b.alpha === 1) {
-                    var disappearTween = game.add.tween(b).to({
-                        alpha: 0
-                    }, 500, "Linear", true);
-                }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.coffeeGroup, function(m,c){
                 // collide condition between monkey and a coffee sprite
                 // temporarily make monkey jump higher
-                this.higherJump();
                 if (c.alpha === 1) {
-                    var disappearTween = game.add.tween(c).to({
-                        alpha: 0
-                    }, 500, "Linear", true);
+                    c.alpha = 0;
+                    this.higherJump();
                 }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.bananaGroup, function(m,b){
                 // collide action between monkey and a banana sprite
                 this.becomeInvincible();
-                if (b.alpha === 1) {
-                    var disappearTween = game.add.tween(b).to({
-                        alpha: 0
-                    }, 500, "Linear", true);
-                }
+                b.destroy();
                 //monkey emits star on banana (in progress)
                 this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
                 this.smokeEmitter.makeParticles("star");
