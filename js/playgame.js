@@ -2,7 +2,7 @@ var treeBG;
 var ground;
 var startLine = 600;
 var monkeyJumpHeight = -500;
-var monkeySpeed; // Herman: this should be related to the screen moving down when the monkey jumps up
+var monkeySpeed = 0; // Herman: this should be related to the screen moving down when the monkey jumps up
                  //         need this for movement of sprites down the screen
 var branchSpeed = 0; //not sure about the speed as it will move with monkey
 var branchGap = 200;
