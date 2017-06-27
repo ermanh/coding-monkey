@@ -5,14 +5,14 @@ var monkeyJumpHeight = -500;
 var monkeySpeed; // Herman: this should be related to the screen moving down when the monkey jumps up
                  //         need this for movement of sprites down the screen
 var branchSpeed = 0; //not sure about the speed as it will move with monkey
-var branchGap = 60;
-var branchIncreaseSpeed = 50;
-var byteGap = 120;          // controls how often bytes appear
-var virusGap = 600;         // controls how often viruses appear (once every 600px)
+var branchGap = 200;
+var branchIncreaseSpeed = 100;
+var byteGap = 150;          // controls how often bytes appear
+var virusGap = 800;         // controls how often viruses appear (once every 600px)
 var virusSuperGap = 2000;   // controls how often super viruses appear
 var beerGap = 1000;         // controls how often beer appears
-var coffeeGap = 1000;       // controls how often coffee appears
-var bananaGap = 2000;       // controls how often banana appears
+var coffeeGap = 1200;       // controls how often coffee appears
+var bananaGap = 2400;       // controls how often banana appears
 var horseGap = 5000;
 
 var scoreKey = {'0':1, '1':100, '10':200, '11':300, '100':400, '101':500, '110':600, '111':700};
@@ -44,15 +44,6 @@ playgame.prototype = {
         //  This stops it from falling away when you jump on it
         ground.body.immovable = true;
 
-        //  Now let's create two ledges
-        var ledge = platforms.create(370, 500, 'branch');
-
-        ledge.body.immovable = true;
-
-        ledge = platforms.create(50, 700, 'branch');
-
-        ledge.body.immovable = true;
-
         // The monkey and its settings
         this.monkey = game.add.sprite(200, game.world.height - 150, 'monkey');
         this.monkey.anchor.set( 0.5 );
@@ -82,6 +73,10 @@ playgame.prototype = {
         //create branches
         this.branchGroup = game.add.group();
         this.addBranch(this.branchGroup);
+        this.addBranch(this.branchGroup, 200, false);
+        this.addBranch(this.branchGroup, 400, false);
+        this.addBranch(this.branchGroup, 600, false);
+        this.addBranch(this.branchGroup, 800, false);
 
         // Create other sprite groups
         this.bytesGroup = game.add.group();
@@ -100,44 +95,6 @@ playgame.prototype = {
         this.horseGroup = game.add.group();
         this.addHorse(this.horseGroup);
 
-        // For testing
-        var byte = new Bytes(game, monkeySpeed, game.height-200);
-        game.add.existing(byte);
-        this.bytesGroup.add(byte);
-        var byte2 = new Bytes(game, monkeySpeed, game.height-225);
-        game.add.existing(byte2);
-        this.bytesGroup.add(byte2);
-        var byte3 = new Bytes(game, monkeySpeed, game.height-210);
-        game.add.existing(byte3);
-        this.bytesGroup.add(byte3);
-        var byte4 = new Bytes(game, monkeySpeed, game.height-215);
-        game.add.existing(byte4);
-        this.bytesGroup.add(byte4);
-        var byte5 = new Bytes(game, monkeySpeed, game.height-230);
-        game.add.existing(byte5);
-        this.bytesGroup.add(byte5);
-        var byte6 = new Bytes(game, monkeySpeed, game.height-205);
-        game.add.existing(byte6);
-        this.bytesGroup.add(byte6);
-        var virus = new Virus(game, monkeySpeed, game.height-200);
-        game.add.existing(virus);
-        this.virusGroup.add(virus);
-        var virusSuper = new VirusSuper(game, monkeySpeed, game.height-600);
-        game.add.existing(virusSuper);
-        this.virusSuperGroup.add(virusSuper);
-        var banana2 = new Banana(game, monkeySpeed, game.height-300);
-        game.add.existing(banana2);
-        this.bananaGroup.add(banana2);
-        var beer2 = new Beer(game, monkeySpeed, game.height-175);
-        game.add.existing(beer2);
-        this.beerGroup.add(beer2);
-        var coffee2 = new Coffee(game, monkeySpeed, game.height-75);
-        game.add.existing(coffee2);
-        this.coffeeGroup.add(coffee2);
-        var horse2 = new Horse(game, monkeySpeed, game.height-600);
-        game.add.existing(horse2);
-        this.horseGroup.add(horse2);
-
     },
 
     update: function() {
@@ -146,8 +103,10 @@ playgame.prototype = {
         hitPlatform1 = game.physics.arcade.collide(this.monkey, this.branchGroup);
         this.monkeyMove();
 
-        if(this.monkey.y < startLine ) {
+        if (this.monkey.y < startLine) {
             this.startScroll();
+        } else if (this.monkey.y >= startLine) {
+            this.stopScroll();
         }
         if(this.monkey.y > 960) {
             this.monkey.destroy();
@@ -164,9 +123,8 @@ playgame.prototype = {
                 if (b.alpha === 1){ // make byte disappear to alpha 0
                     var byteTween = game.add.tween(b).to({
                         alpha: 0
-                    }, 500, Phaser.Easing.Bounce.Out, true);
+                    }, 500, Phaser.Easing.Linear.None, true);
                     byteTween.onComplete.add(function(){
-                        b.destroy();
                         score += addScore;
                         scoreText.text = score.toString();
                     });
@@ -180,7 +138,7 @@ playgame.prototype = {
                         alpha: 0,
                         height: 100,
                         width: 100,
-                    }, 500, "Linear", true);
+                    }, 500, Phaser.Easing.Linear.None, true);
 
                     //monkey emits 0 & 1 on virus
                     this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
@@ -199,7 +157,6 @@ playgame.prototype = {
                     console.log("monkey blinks");
 
                     virusTween.onComplete.add(function(){
-                        v.destroy();
                         score -= 250;
                         scoreText.text = score.toString(); // update score
                     });
@@ -214,9 +171,6 @@ playgame.prototype = {
                         width: 100,
                     }, 500, "Linear", true);
                     d.kill();
-                    virusTween.onComplete.add(function(){
-                        v.destroy();
-                    });
                 }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.virusSuperGroup, function(m,v){
@@ -246,7 +200,6 @@ playgame.prototype = {
                     console.log("monkey blinks");
 
                     virusTween.onComplete.add(function(){
-                        v.destroy();
                         score -= 1000;
                         scoreText.text = score.toString(); // update score
                     });
@@ -261,85 +214,96 @@ playgame.prototype = {
                         width: 125,
                     }, 500, "Linear", true);
                     d.kill();
-                    virusTween.onComplete.add(function(){
-                        v.destroy();
-                    });
                 }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.beerGroup, function(m,b){
                 // collide condition between monkey and a beer sprite
                 // temporarily make monkey jump lower
-                //var monkey = this.monkey;
-                if (!this.monkey.invincible){
+                if (b.alpha === 1 && !this.monkey.invincible){
                     this.lowerJump();
-                    b.destroy();
+                    var disappearTween = game.add.tween(b).to({
+                        alpha: 0
+                    }, 500, "Linear", true);
                 }
             }, null, this);
             game.physics.arcade.overlap(this.dartsGroup, this.beerGroup, function(d,b){
                 // collide condition between dart and a beer sprite
-                if (!this.monkey.invincible){
-                    d.destroy();
-                    b.destroy();
+                d.destroy();
+                if (b.alpha === 1) {
+                    var disappearTween = game.add.tween(b).to({
+                        alpha: 0
+                    }, 500, "Linear", true);
                 }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.coffeeGroup, function(m,c){
                 // collide condition between monkey and a coffee sprite
                 // temporarily make monkey jump higher
                 this.higherJump();
-                c.destroy();
+                if (c.alpha === 1) {
+                    var disappearTween = game.add.tween(c).to({
+                        alpha: 0
+                    }, 500, "Linear", true);
+                }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.bananaGroup, function(m,b){
                 // collide action between monkey and a banana sprite
                 this.becomeInvincible();
-                b.destroy();
-
+                if (b.alpha === 1) {
+                    var disappearTween = game.add.tween(b).to({
+                        alpha: 0
+                    }, 500, "Linear", true);
+                }
                 //monkey emits star on banana (in progress)
                 this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
                 this.smokeEmitter.makeParticles("star");
                 this.smokeEmitter.start(false, 600, 50);
                 var smokeEmitter = this.smokeEmitter;
                 setTimeout(function(){
-                    smokeEmitter.on = false;
+                   smokeEmitter.on = false;
                 }, 600);
 
                 //monkey blinks on banana
                 this.monkeyTween = game.add.tween(this.monkey).to({
-                      tint: 0xffcc00,
-                 },
-                500, Phaser.Easing.Linear.None, true);
+                     tint: 0xffcc00,
+                }, 500, Phaser.Easing.Linear.None, true);
                 console.log("monkey blinks");
 
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.horseGroup, function(m,h){
                 // collide action between monkey and a trojan horse
                 //monkey emits 0 & 1 on horse
-                this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
-                this.smokeEmitter.makeParticles(["0","1"]);
-                this.smokeEmitter.start(false, 1500, 40);
-                var smokeEmitter = this.smokeEmitter;
-                setTimeout(function(){
-                    smokeEmitter.on = false;
-                }, 300);
+                if (!this.monkey.invincible){
+                    this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
+                    this.smokeEmitter.makeParticles(["0","1"]);
+                    this.smokeEmitter.start(false, 1500, 40);
+                    var smokeEmitter = this.smokeEmitter;
+                    setTimeout(function(){
+                        smokeEmitter.on = false;
+                    }, 300);
 
-                //monkey disappear
-                this.monkey.visible = false;
+                    //monkey disappear
+                    this.monkey.visible = false;
 
-                //velocity becomes zero, otherwise trail of emitters follow
-                this.monkey.body.velocity.x = 0;
-                this.monkey.body.velocity.y = 0;
+                    //velocity becomes zero, otherwise trail of emitters follow
+                    this.monkey.body.velocity.x = 0;
+                    this.monkey.body.velocity.y = 0;
+                    this.monkey.destroyed = true;
 
-                console.log("monkey killed");
+                    console.log("monkey killed");
 
-                game.time.events.add(Phaser.Timer.SECOND * 2, function(){
-	                   game.state.start("GameOverScreen");
-                });
-
+                    game.time.events.add(Phaser.Timer.SECOND * 2, function(){
+    	                   game.state.start("GameOverScreen");
+                    });
+                }
             }, null, this);
             game.physics.arcade.overlap(this.dartsGroup, this.horseGroup, function(d,h){
                 // collide condition between dart and a beer sprite
-                if (!this.monkey.invincible){
-                    d.destroy();
-                    h.destroy();
+                d.destroy();
+                h.destroy();
+                if (h.alpha === 1) {
+                    var disappearTween = game.add.tween(h).to({
+                        alpha: 0
+                    }, 500, "Linear", true);
                 }
             }, null, this);
 
@@ -363,8 +327,15 @@ playgame.prototype = {
                 item.destroy();
             }
         }, this);
+
+        // Trojan horse loop along x-axis
+        this.horseGroup.forEach(function(horse){
+            if (horse.x < 0) {
+                horse.x += 640;
+            }
+        }, this);
     },
-    startScroll:function(){
+    startScroll: function(){
         treeBG.autoScroll(0,100);
         ground.destroy();
         if(branchSpeed == 0){
@@ -372,6 +343,13 @@ playgame.prototype = {
 			for(var i = 0; i < this.branchGroup.length; i++){
 				this.branchGroup.getChildAt(i).body.velocity.y = branchSpeed;
 			}
+        }
+    },
+    stopScroll: function() {
+        treeBG.autoScroll(0,0);
+        branchSpeed = 0;
+        for (var i=0; i<this.branchGroup.length; i++) {
+            this.branchGroup.getChildAt(i).body.velocity.y = branchSpeed;
         }
     },
 
@@ -409,45 +387,39 @@ playgame.prototype = {
             }
     },
 
-    addBranch: function(group){
-        if(!this.currentBranchPosition){
-            this.currentBranchPosition = 800;
-        }
-      var branch = new Branch(game, branchSpeed, this.currentBranchPosition);
-      game.add.existing(branch);
-      group.add(branch);
-    },
-    setCurrentBranchPosition: function(currentBranchPosition){
-        this.currentBranchPosition = currentBranchPosition;
+    addBranch: function(group, positionY=0, placement=true){
+        var branch = new Branch(game, branchSpeed, positionY, placement);
+        game.add.existing(branch);
+        group.add(branch);
     },
 
     addByte: function(group) {
-        var byte = new Bytes(game, monkeySpeed);
+        var byte = new Bytes(game, itemsSpeed);
         game.add.existing(byte);
         group.add(byte);
     },
     addVirus: function(group) {
-        var virus = new Virus(game, monkeySpeed);
+        var virus = new Virus(game, itemsSpeed);
         game.add.existing(virus);
         group.add(virus);
     },
     addVirusSuper: function(group) {
-        var virusSuper = new VirusSuper(game, monkeySpeed);
+        var virusSuper = new VirusSuper(game, itemsSpeed);
         game.add.existing(virusSuper);
         group.add(virusSuper);
     },
     addBeer: function(group) {
-        var beer = new Beer(game, monkeySpeed);
+        var beer = new Beer(game, itemsSpeed);
         game.add.existing(beer);
         group.add(beer);
     },
     addCoffee: function(group) {
-        var coffee = new Coffee(game, monkeySpeed);
+        var coffee = new Coffee(game, itemsSpeed);
         game.add.existing(coffee);
         group.add(coffee);
     },
     addBanana: function(group) {
-        var banana = new Banana(game, monkeySpeed);
+        var banana = new Banana(game, itemsSpeed);
         game.add.existing(banana);
         group.add(banana);
     },
@@ -457,7 +429,7 @@ playgame.prototype = {
         group.add(dart);
     },
     addHorse: function(group) {
-        var horse = new Horse(game, monkeySpeed);
+        var horse = new Horse(game, itemsSpeed);
         game.add.existing(horse);
         group.add(horse);
     },
@@ -498,31 +470,30 @@ playgame.prototype = {
 
 
 // Generate branches
-var Branch = function (game, speed, currentBranchPosition) {
+var Branch = function (game, speed, currentBranchPosition=0, placement=true) {
 
     var xpositions = [Math.random()*(220-40)+40, Math.random()*(540-360)+360];
 	var xposition = game.rnd.between(0, 1);
     // var ypositions = Math.random()*(this.monkey.y + this.monkey.body.velocity.y)-200;
 
     Phaser.Sprite.call(this, game, xpositions[xposition], currentBranchPosition, "branch");
-    playgame.prototype.setCurrentBranchPosition( currentBranchPosition-150);
 
 	game.physics.enable(this, Phaser.Physics.ARCADE);
 
 	this.anchor.set(0, 0);
 	this.body.velocity.y = speed;
-	this.placeBranch = true;
+	this.placeBranch = placement;
     this.body.immovable = true;
 };
 Branch.prototype = Object.create(Phaser.Sprite.prototype);
 Branch.prototype.constructor = Branch;
 Branch.prototype.update = function(){
-	if(this.y > game.height){
-		this.destroy();
-	}
     if(this.placeBranch && this.y > branchGap){
         this.placeBranch = false;
         playgame.prototype.addBranch(this.parent);
+	}
+	if(this.y > game.height){
+		this.destroy();
 	}
 };
 
@@ -554,7 +525,14 @@ Bytes.prototype.update = function() {
         this.placeByte = false;
         playgame.prototype.addByte(this.parent);
     }
-    if (this.y > game.height) {
+    if (branchSpeed > 0) {
+        itemsSpeed = branchIncreaseSpeed;
+        this.body.velocity.y = itemsSpeed;
+    } else {
+        itemsSpeed = 0;
+        this.body.velocity.y = 0;
+    }
+    if (this.y > Math.max(game.height, byteGap)) {
         this.destroy();
     }
 };
@@ -576,13 +554,20 @@ Virus.prototype.update = function() {
         this.placeVirus = false;
         playgame.prototype.addVirus(this.parent);
     }
-    if (this.y > game.height) {
+    if (branchSpeed > 0) {
+        itemsSpeed = branchIncreaseSpeed;
+        this.body.velocity.y = itemsSpeed;
+    } else {
+        itemsSpeed = 0;
+        this.body.velocity.y = 0;
+    }
+    if (this.y > Math.max(game.height, virusGap)) {
         this.destroy();
     }
 };
 
 // Super Viruses
-var VirusSuper = function(game, speed, positionY=-350) { // speed = moving of the screen elements when monkey jumps up
+var VirusSuper = function(game, speed, positionY=-500) { // speed = moving of the screen elements when monkey jumps up
     // var virusArr = [] // for future development of different types of viruses
     Phaser.Sprite.call(this, game, Math.round(Math.random()*(game.width-100))+50, positionY, "virusSuper");
     game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -596,15 +581,22 @@ VirusSuper.prototype.constructor = VirusSuper;
 VirusSuper.prototype.update = function() {
     if (this.placeVirusSuper && this.y > virusSuperGap) {
         this.placeVirusSuper = false;
-        playgame.prototype.addVirus(this.parent);
+        playgame.prototype.addVirusSuper(this.parent);
     }
-    if (this.y > game.height) {
+    if (branchSpeed > 0) {
+        itemsSpeed = branchIncreaseSpeed;
+        this.body.velocity.y = itemsSpeed;
+    } else {
+        itemsSpeed = 0;
+        this.body.velocity.y = 0;
+    }
+    if (this.y > Math.max(game.height, virusSuperGap)) {
         this.destroy();
     }
 };
 
 // Beer
-var Beer = function(game, speed, positionY=-150) { // speed = moving of the screen elements when monkey jumps up
+var Beer = function(game, speed, positionY=-250) { // speed = moving of the screen elements when monkey jumps up
     Phaser.Sprite.call(this, game, Math.round(Math.random()*(game.width-100))+50, positionY, "beer");
     game.physics.enable(this, Phaser.Physics.ARCADE);
     this.anchor.set(0.5);
@@ -619,13 +611,20 @@ Beer.prototype.update = function() {
         this.placeBeer = false;
         playgame.prototype.addBeer(this.parent);
     }
-    if (this.y > game.height) {
+    if (branchSpeed > 0) {
+        itemsSpeed = branchIncreaseSpeed;
+        this.body.velocity.y = itemsSpeed;
+    } else {
+        itemsSpeed = 0;
+        this.body.velocity.y = 0;
+    }
+    if (this.y > Math.max(game.height, beerGap)) {
         this.destroy();
     }
 };
 
 // Coffee
-var Coffee = function(game, speed, positionY=-125) { // speed = moving of the screen elements when monkey jumps up
+var Coffee = function(game, speed, positionY=-800) { // speed = moving of the screen elements when monkey jumps up
     Phaser.Sprite.call(this, game, Math.round(Math.random()*(game.width-100))+50, positionY, "coffee");
     game.physics.enable(this, Phaser.Physics.ARCADE);
     this.anchor.set(0.5);
@@ -640,13 +639,20 @@ Coffee.prototype.update = function() {
         this.placeCoffee = false;
         playgame.prototype.addCoffee(this.parent);
     }
-    if (this.y > game.height) {
+    if (branchSpeed > 0) {
+        itemsSpeed = branchIncreaseSpeed;
+        this.body.velocity.y = itemsSpeed;
+    } else {
+        itemsSpeed = 0;
+        this.body.velocity.y = 0;
+    }
+    if (this.y > Math.max(game.height, coffeeGap)) {
         this.destroy();
     }
 };
 
 // Bananas
-var Banana = function(game, speed, positionY=-150) { // speed = moving of the screen elements when monkey jumps up
+var Banana = function(game, speed, positionY=-1000) { // speed = moving of the screen elements when monkey jumps up
     Phaser.Sprite.call(this, game, Math.round(Math.random()*(game.width-100))+50, positionY, "banana");
     game.physics.enable(this, Phaser.Physics.ARCADE);
     this.anchor.set(0.5);
@@ -661,7 +667,14 @@ Banana.prototype.update = function() {
         this.placeBanana = false;
         playgame.prototype.addBanana(this.parent);
     }
-    if (this.y > game.height) {
+    if (branchSpeed > 0) {
+        itemsSpeed = branchIncreaseSpeed;
+        this.body.velocity.y = itemsSpeed;
+    } else {
+        itemsSpeed = 0;
+        this.body.velocity.y = 0;
+    }
+    if (this.y > Math.max(game.height, bananaGap)) {
         this.destroy();
     }
 };
@@ -688,11 +701,23 @@ var Horse = function(game, speed, positionY=-5000) {
     this.anchor.set(0.5);
     this.body.velocity.x = -100;
     this.body.velocity.y = speed;
+    this.placeHorse = true;
 };
 Horse.prototype = Object.create(Phaser.Sprite.prototype);
 Horse.prototype.constructor = Horse;
 Horse.prototype.update = function() {
-    if (this.y > game.height) {
+    if (this.placeHorse && this.y > horseGap) {
+        this.placeHorse = false;
+        playgame.prototype.addHorse(this.parent);
+    }
+    if (branchSpeed > 0) {
+        itemsSpeed = branchIncreaseSpeed;
+        this.body.velocity.y = itemsSpeed;
+    } else {
+        itemsSpeed = 0;
+        this.body.velocity.y = 0;
+    }
+    if (this.y > Math.max(game.height, horseGap)) {
         this.destroy();
     }
 };
