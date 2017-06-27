@@ -1,4 +1,4 @@
-var finalScore = this.score.toString();
+var finalScore = score.toString();
 var gameoverscreen = function(game){};
 gameoverscreen.prototype = {
 create: function(){
