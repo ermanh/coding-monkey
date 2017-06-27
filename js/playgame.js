@@ -184,6 +184,14 @@ playgame.prototype = {
                         height: 100,
                         width: 100,
                     }, 500, "Linear", true);
+
+                    //monkey blinks
+                    this.monkeyTween = game.add.tween(this.monkey).to({
+	                      tint: 0xeeeeee,
+                     },
+                    500, Phaser.Easing.Linear.None, true);
+                    console.log("monkey blinks");
+
                     virusTween.onComplete.add(function(){
                         v.destroy();
                         score -= 250;
