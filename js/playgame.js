@@ -1,10 +1,12 @@
-
-var monkeyJumpHeight = -600;
-var monkeySpeed = 0; // Herman: this should be related to the screen moving down when the monkey jumps up
+var treeBG;
+var ground;
+var startLine = 600;
+var monkeyJumpHeight = -700;
+var monkeySpeed; // Herman: this should be related to the screen moving down when the monkey jumps up
                  //         need this for movement of sprites down the screen
 var branchSpeed = 0; //not sure about the speed as it will move with monkey
 var branchGap = 60;
-
+var branchIncreaseSpeed = 50;
 var byteGap = 120;          // controls how often bytes appear
 var virusGap = 600;         // controls how often viruses appear (once every 600px)
 var virusSuperGap = 2000;   // controls how often super viruses appear
@@ -20,8 +22,8 @@ var mouseTouchDown = false;
 var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
-  	    var treeBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
-        treeBG.autoScroll(0,50);
+  	    treeBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
+
         game.physics.startSystem(Phaser.Physics.ARCADE);
         //this.physics.startSystem( Phaser.Physics.ARCADE );
         console.log("playgame started");
@@ -34,7 +36,7 @@ playgame.prototype = {
         //ground.enableBody = true;
 
         // Here we create the ground.
-        var ground = platforms.create(0, game.world.height - 50, 'ground');
+        ground = platforms.create(0, game.world.height - 50, 'ground');
 
         //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
         ground.scale.setTo(2, 2);
@@ -68,7 +70,7 @@ playgame.prototype = {
         this.monkey.body.checkCollision.up = false;
         this.monkey.body.checkCollision.left = false;
         this.monkey.body.checkCollision.right = false;
-        game.world.setBounds(-80, 0, 850, 960);
+        game.world.setBounds(-80, 0, 850, 1000);
 
         // Bytes score setup
         score = 0;
@@ -76,11 +78,7 @@ playgame.prototype = {
         this.scoreText.alpha = 0.75;
         this.scoreText.anchor.set(1,0);
 
-        // //create branches
-        // this.branchGroup = game.add.group();
-        // var branch = new Branch(game, branchSpeed);
-        // game.add.existing(branch);
-        // this.branchGroup.add(branch);
+        // create branches
         this.branchGroup = game.add.group();
         this.addBranch(this.branchGroup);
 
@@ -147,6 +145,14 @@ playgame.prototype = {
         hitPlatform1 = game.physics.arcade.collide(this.monkey, this.branchGroup);
         this.monkeyMove();
 
+        if(this.monkey.y < startLine ) {
+            this.startScroll();
+        }
+        if(this.monkey.y > 960) {
+            this.monkey.destroy();
+            game.state.start("GameOverScreen");
+        }
+
         /* Collision conditions - belongs inside the "update" function [Herman] */
         if (!this.monkey.destroyed && this.monkey.alpha == 1){
 
@@ -174,6 +180,14 @@ playgame.prototype = {
                         height: 100,
                         width: 100,
                     }, 500, "Linear", true);
+
+                    //monkey blinks
+                    this.monkeyTween = game.add.tween(this.monkey).to({
+	                      tint: 0xeeeeee,
+                     },
+                    500, Phaser.Easing.Linear.None, true);
+                    console.log("monkey blinks");
+
                     virusTween.onComplete.add(function(){
                         v.destroy();
                         score -= 250;
@@ -285,6 +299,16 @@ playgame.prototype = {
             }
         }, this);
     },
+    startScroll:function(){
+        treeBG.autoScroll(0,100);
+        ground.destroy();
+        if(branchSpeed == 0){
+            branchSpeed += branchIncreaseSpeed;
+			for(var i = 0; i < this.branchGroup.length; i++){
+				this.branchGroup.getChildAt(i).body.velocity.y = branchSpeed;
+			}
+        }
+    },
 
     monkeyMove: function() {
         //  Reset the monkeys velocity (movement)
@@ -292,31 +316,25 @@ playgame.prototype = {
 
             if (this.cursors.left.isDown)
             {
-                //  Move to the left
+                //image turn left
                 this.monkey.scale.x = 1;
+                //  Move to the left
                 this.monkey.body.velocity.x = -500;
                 if (this.monkey.x < 0) {
                     this.monkey.x += 640;
                 }
-                //monkey.animations.play('left');
+
             }
             else if (this.cursors.right.isDown)
             {
-                //  Move to the right
+                //image turn right
                 this.monkey.scale.x = -1;
+                //  Move to the right
                 this.monkey.body.velocity.x = 500;
                 if (this.monkey.x > 640) {
                     this.monkey.x -= 640;
                 }
 
-                //monkey.animations.play('right');
-            }
-            else
-            {
-                //  Stand still
-                this.monkey.animations.stop();
-
-                this.monkey.frame = 4;
             }
 
             //  Allow the monkey to jump if they are touching the ground.
@@ -429,6 +447,7 @@ var Branch = function (game, speed, currentBranchPosition) {
 	this.anchor.set(0, 0);
 	this.body.velocity.y = speed;
 	this.placeBranch = true;
+    //this.body.immovable = true;
 };
 Branch.prototype = Object.create(Phaser.Sprite.prototype);
 Branch.prototype.constructor = Branch;
