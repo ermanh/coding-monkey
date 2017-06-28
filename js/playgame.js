@@ -144,7 +144,7 @@ playgame.prototype = {
                         score -= 250;
                         scoreText.text = score.toString(); // update score
                     });
-                    
+
                     //monkey emits 0 & 1 on virus
                     this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
                     this.smokeEmitter.makeParticles(["0","1"]);
