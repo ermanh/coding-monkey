@@ -6,7 +6,7 @@ var itemsSpeed = 0; // Herman: this should be related to the screen moving down 
                  //         need this for movement of sprites down the screen
 var branchSpeed = 0; //not sure about the speed as it will move with monkey
 var branchGap = 200;
-var branchIncreaseSpeed = 100;
+var branchIncreaseSpeed = 400;
 var byteGap = 150;          // controls how often bytes appear
 var virusGap = 800;         // controls how often viruses appear (once every 600px)
 var virusSuperGap = 2000;   // controls how often super viruses appear
