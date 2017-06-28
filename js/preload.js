@@ -27,7 +27,7 @@ preload.prototype = {
 
 		game.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
 		game.load.image("monkey", "assets/images/monkey_left_75x73.png");
-		game.load.image("monkeyBig", "assets/images/monkey_left_100x97");
+		game.load.image("monkeyBig", "assets/images/monkey_left_100x97.png");
 		game.load.image("tree", "assets/images/trees_640.png");
 		game.load.image("branch", "assets/images/branch.png");
 		game.load.image("ground", "assets/images/platform.png");
