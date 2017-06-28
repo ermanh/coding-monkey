@@ -24,6 +24,8 @@ var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
   	    treeBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
+        bgmusic = game.add.audio("bgmusic");
+        bgmusic.play();
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
         //this.physics.startSystem( Phaser.Physics.ARCADE );
@@ -99,6 +101,18 @@ playgame.prototype = {
         this.horseGroup = game.add.group();
         this.addHorse(this.horseGroup);
 
+        // declare audio
+        touchVirus = game.add.audio("touchVirus");
+        touchHorse = game.add.audio("touchHorse");
+        touchBanana = game.add.audio("touchBanana");
+        touchCoffee = game.add.audio("touchCoffee");
+        touchBeer = game.add.audio("touchBeer");
+        touchByte = game.add.audio("touchByte");
+        dartHit = game.add.audio("dartHit");
+        fallToDeath = game.add.audio("fallToDeath");
+        shootDart = game.add.audio("shootDart");
+        horseOnScreen = game.add.audio("horseOnScreen");
+
     },
 
     update: function() {
@@ -133,6 +147,8 @@ playgame.prototype = {
                         score += addScore;
                         scoreText.text = score.toString();
                     });
+                    // play audio
+                    touchByte.play();
                 }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.virusGroup, function(m,v){
@@ -164,7 +180,10 @@ playgame.prototype = {
 	                      tint: 0xeeeeee,
                     },
                     500, Phaser.Easing.Linear.None, true);
+                    // play audio
+                    touchVirus.play();
                     console.log("monkey blinks");
+
 
                 }
             }, null, this);
@@ -177,6 +196,8 @@ playgame.prototype = {
                         height: 100,
                         width: 100,
                     }, 500, "Linear", true);
+                    // play audio
+                    dartHit.play();
                 }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.virusSuperGroup, function(m,v){
@@ -208,6 +229,10 @@ playgame.prototype = {
                           tint: 0xeeeeee,
                     },
                     500, Phaser.Easing.Linear.None, true);
+
+                    // play audio
+                    touchVirus.play();
+
                     console.log("monkey blinks");
 
                 }
@@ -221,6 +246,8 @@ playgame.prototype = {
                         height: 125,
                         width: 125,
                     }, 500, "Linear", true);
+                    // play audio
+                    dartHit.play();
                 }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.beerGroup, function(m,b){
@@ -229,10 +256,14 @@ playgame.prototype = {
                 if (b.alpha === 1 && !this.monkey.invincible){
                     b.alpha = 0;
                     this.lowerJump();
+                    // play audio
+                    touchBeer.play();
                 }
             }, null, this);
             game.physics.arcade.overlap(this.dartsGroup, this.beerGroup, function(d,b){
                 // collide condition between dart and a beer sprite
+                // play audio
+                dartHit.play();
                 b.alpha = 0;
                 d.destroy();
             }, null, this);
@@ -242,11 +273,21 @@ playgame.prototype = {
                 if (c.alpha === 1) {
                     c.alpha = 0;
                     this.higherJump();
+                    // play audio
+                    touchCoffee.play();
                 }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.bananaGroup, function(m,b){
                 // collide action between monkey and a banana sprite
                 this.becomeInvincible();
+                // play audio
+                touchBanana.play();
+                // touchBanana.loopFull();
+                // setTimeout(function(){
+                    // touchBanana.mute = true;
+                    // touchBanana.play() = false;
+                // }, 5000);
+
                 b.destroy();
                 //monkey emits star on banana (in progress)
                 this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
@@ -270,11 +311,13 @@ playgame.prototype = {
                 if (!this.monkey.invincible){
                     this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
                     this.smokeEmitter.makeParticles(["0","1"]);
-                    this.smokeEmitter.start(false, 1500, 40);
+                    this.smokeEmitter.start(false, 1500, 50);
                     var smokeEmitter = this.smokeEmitter;
                     setTimeout(function(){
                         smokeEmitter.on = false;
-                    }, 300);
+                    }, 1000);
+                    // play audio
+                    touchHorse.play();
 
                     //monkey disappear
                     this.monkey.visible = false;
@@ -293,6 +336,8 @@ playgame.prototype = {
             }, null, this);
             game.physics.arcade.overlap(this.dartsGroup, this.horseGroup, function(d,h){
                 // collide condition between dart and a beer sprite
+                // play audio
+                dartHit.play();
                 d.destroy();
                 h.destroy();
                 if (h.alpha === 1) {
@@ -327,6 +372,10 @@ playgame.prototype = {
         this.horseGroup.forEach(function(horse){
             if (horse.x < 0) {
                 horse.x += 640;
+            }
+            // play audio horse on screen
+            if (horse.y > 0 && horse.y < game.height){
+                horseOnScreen.play();
             }
         }, this);
     },
@@ -753,4 +802,5 @@ Horse.prototype.update = function() {
     if (this.y > Math.max(game.height, horseGap)) {
         this.destroy();
     }
+
 };
