@@ -6,7 +6,8 @@ var itemsSpeed = 0; // Herman: this should be related to the screen moving down 
                  //         need this for movement of sprites down the screen
 var branchSpeed = 0; //not sure about the speed as it will move with monkey
 var branchGap = 200;
-var branchIncreaseSpeed = 100;
+var moveBranchGap = 250;
+var branchIncreaseSpeed = 400;
 var byteGap = 150;          // controls how often bytes appear
 var virusGap = 800;         // controls how often viruses appear (once every 600px)
 var virusSuperGap = 2000;   // controls how often super viruses appear
@@ -77,6 +78,9 @@ playgame.prototype = {
         this.addBranch(this.branchGroup, 400, false);
         this.addBranch(this.branchGroup, 600, false);
         this.addBranch(this.branchGroup, 800, false);
+        //fall down branches
+        this.moveBranchGroup = game.add.group();
+        this.addMoveBranch(this.moveBranchGroup);
 
         // Create other sprite groups
         this.bytesGroup = game.add.group();
@@ -101,6 +105,7 @@ playgame.prototype = {
 
         hitPlatform = game.physics.arcade.collide(this.monkey, platforms);
         hitPlatform1 = game.physics.arcade.collide(this.monkey, this.branchGroup);
+        hitPlatform2 = game.physics.arcade.collide(this.monkey,this.moveBranchGroup);
         this.monkeyMove();
 
         if (this.monkey.y < startLine) {
@@ -333,6 +338,9 @@ playgame.prototype = {
 			for(var i = 0; i < this.branchGroup.length; i++){
 				this.branchGroup.getChildAt(i).body.velocity.y = branchSpeed;
 			}
+            for(var i=0; i<this.moveBranchGroup.length; i++) {
+                this.moveBranchGroup.getChildAt(i).body.velocity.y = branchSpeed;
+            }
         }
     },
     stopScroll: function() {
@@ -340,6 +348,9 @@ playgame.prototype = {
         branchSpeed = 0;
         for (var i=0; i<this.branchGroup.length; i++) {
             this.branchGroup.getChildAt(i).body.velocity.y = branchSpeed;
+        }
+        for(var i=0; i<this.moveBranchGroup.length; i++) {
+            this.moveBranchGroup.getChildAt(i).body.velocity.y = branchSpeed;
         }
     },
 
@@ -371,7 +382,7 @@ playgame.prototype = {
             }
 
             //  Allow the monkey to jump if they are touching the ground.
-            if (hitPlatform || hitPlatform1)
+            if (hitPlatform || hitPlatform1 || hitPlatform2)
             {
                 this.monkey.body.velocity.y = monkeyJumpHeight;
             }
@@ -381,6 +392,11 @@ playgame.prototype = {
         var branch = new Branch(game, branchSpeed, positionY, placement);
         game.add.existing(branch);
         group.add(branch);
+    },
+    addMoveBranch: function(group, positionY=0, placement=true){
+        var moveBranch = new MoveBranch(game, branchSpeed, positionY, placement);
+        game.add.existing(moveBranch);
+        group.add(moveBranch);
     },
 
     addByte: function(group) {
@@ -481,6 +497,33 @@ Branch.prototype.update = function(){
     if(this.placeBranch && this.y > branchGap){
         this.placeBranch = false;
         playgame.prototype.addBranch(this.parent);
+	}
+	if(this.y > game.height){
+		this.destroy();
+	}
+};
+
+// fall down branches
+var MoveBranch = function (game, speed, currentBranchPosition=0, placement=true) {
+
+    var xpositions = [Math.random()*(220-40)+40, Math.random()*(540-360)+360];
+	var xposition = game.rnd.between(0, 1);
+
+    Phaser.Sprite.call(this, game, xpositions[xposition], currentBranchPosition, "branch");
+
+	game.physics.enable(this, Phaser.Physics.ARCADE);
+
+	this.anchor.set(0, 0);
+	this.body.velocity.y = speed;
+	this.placeMoveBranch = placement;
+    //this.body.immovable = true;
+};
+MoveBranch.prototype = Object.create(Phaser.Sprite.prototype);
+MoveBranch.prototype.constructor = MoveBranch;
+MoveBranch.prototype.update = function(){
+    if(this.placeMoveBranch && this.y > moveBranchGap){
+        this.placeMoveBranch = false;
+        playgame.prototype.addMoveBranch(this.parent);
 	}
 	if(this.y > game.height){
 		this.destroy();
