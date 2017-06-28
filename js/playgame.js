@@ -490,6 +490,7 @@ playgame.prototype = {
     },
 
     // Shooting banana darts
+
     touchDown: function() {
         mouseTouchDown = true;
         this.fireDart();

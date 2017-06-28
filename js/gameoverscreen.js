@@ -21,6 +21,14 @@ gameoverscreen.prototype = {
         game.add.bitmapText(game.width / 2, 490 , "font", finalScore, 120).anchor.x = 0.5;
         game.add.bitmapText(game.width -220, game.height -50 , "font", "Music credit: http://www.bensound.com, http://www.noiseforfun.com", 12).anchor.x = 0.5;
 
+        // Monkey image
+        var monkeyImage = game.add.image(400, 630, "monkey");
+            monkeyImage.anchor.set(0.5,0);
+        var monkeyTween = game.add.tween(monkeyImage).to({
+                y: 450
+            }, 700, "Linear", true, 0, -1);
+            monkeyTween.yoyo(true);
+
         var playButton = game.add.button(game.width / 2, game.height - 120, "playbutton", this.startGame);
             playButton.anchor.set(0.5);
             playButton.scale.setTo(0.25, 0.25);
