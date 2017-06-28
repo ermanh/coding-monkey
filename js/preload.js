@@ -53,7 +53,7 @@ preload.prototype = {
 		game.load.image("star", "assets/images/star.png");
 
 		game.load.image("horse", "assets/images/horse_75x74.png");
-		game.load.image("horseParticle", "assets/images/horse_50x49");
+		game.load.image("horseParticle", "assets/images/horse_50x49.png");
 
 		//audio
 		game.load.audio("bgmusic", "assets/audio/bensound-funkyelement.mp3")
