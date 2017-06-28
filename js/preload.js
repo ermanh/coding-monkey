@@ -21,13 +21,16 @@ preload.prototype = {
 
 		game.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
 		game.load.image("monkey", "assets/images/monkey_left_75x73.png");
+		game.load.image("monkeyBig", "assets/images/monkey_left_100x97");
 		game.load.image("tree", "assets/images/trees_640.png");
 		game.load.image("branch", "assets/images/branch.png");
 		game.load.image("ground", "assets/images/platform.png");
 		game.load.image("beer", "assets/images/beer_50x62.png");
 		game.load.image("coffee", "assets/images/coffee_50x50.png");
 		game.load.image("virus", "assets/images/virus_50x50.png");
+		game.load.image("virusParticle", "assets/images/virus_35x35.png");
 		game.load.image("virusSuper", "assets/images/virusSuper_50x50.png");
+		game.load.image("virusSuperParticle", "assets/images/virusSuper_35x35.png");
 		game.load.image("banana", "assets/images/banana_50x50.png");
 		game.load.image("0", "assets/images/0.png");
 		game.load.image("1", "assets/images/1.png");
@@ -37,11 +40,14 @@ preload.prototype = {
 		game.load.image("101", "assets/images/101.png");
 		game.load.image("110", "assets/images/110.png");
 		game.load.image("111", "assets/images/111.png");
+		game.load.image("0Particle", "assets/images/0_small.png");
+		game.load.image("1Particle", "assets/images/1_small.png");
 		game.load.image("bananaDart", "assets/images/bananaDart_25x27.png");
 
 		game.load.image("star", "assets/images/star.png");
 
 		game.load.image("horse", "assets/images/horse_75x74.png");
+		game.load.image("horseParticle", "assets/images/horse_50x49");
 		},
 	create: function(){
 		game.state.start("Titlescreen");
