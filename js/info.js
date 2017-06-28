@@ -15,9 +15,9 @@ info.prototype = {
         var leftAndRight = game.add.image(405, 70, "leftAndRight");
         	leftAndRight.anchor.set(0,0);
             leftAndRight.scale.setTo(0.6, 0.6);
-        var spacebar = game.add.image(game.width / 2, 120, "spacebar");
-            spacebar.anchor.set(0.5,0);
-            spacebar.scale.setTo(0.6, 0.6);
+        var clickMouse = game.add.image(game.width / 2, 120, "clickMouse");
+            clickMouse.anchor.set(0.5,0);
+            clickMouse.scale.setTo(0.6, 0.6);
 
         var goal = game.add.image(game.width / 2, 175, "goal");
         	goal.anchor.set(0.5,0);

@@ -23,7 +23,7 @@ preload.prototype = {
 		game.load.image("howTo", "assets/images/info_howto.png")
 		game.load.image("useArrowToMove", "assets/images/info_usearrowtomove.png")
 		game.load.image("leftAndRight", "assets/images/info_leftandright.png")
-		game.load.image("spacebar", "assets/images/info_spacebar.png")
+		game.load.image("clickMouse", "assets/images/info_clickmouse.png")
 
 		game.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
 		game.load.image("monkey", "assets/images/monkey_left_75x73.png");
