@@ -1,6 +1,7 @@
 var treeBG;
 var ground;
 var startLine = 600;
+var stopLine = 800;
 var monkeyJumpHeight = -500;
 var itemsSpeed = 0; // Herman: this should be related to the screen moving down when the monkey jumps up
                  //         need this for movement of sprites down the screen
@@ -19,14 +20,13 @@ var horseGap = 5000;
 var scoreKey = {'0':1, '1':100, '10':200, '11':300, '100':400, '101':500, '110':600, '111':700};
 var mouseTouchDown = false;
 
-
 var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
   	    treeBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
-        //this.physics.startSystem( Phaser.Physics.ARCADE );
+
         console.log("playgame started");
 
         //  The platforms group contains the ground and the 2 ledges we can jump on
@@ -34,7 +34,6 @@ playgame.prototype = {
 
         //  We will enable physics for any object that is created in this group
         platforms.enableBody = true;
-        //ground.enableBody = true;
 
         // Here we create the ground.
         ground = platforms.create(0, game.world.height - 50, 'ground');
@@ -98,6 +97,22 @@ playgame.prototype = {
         this.dartsGroup = game.add.group(); // only add dart when mouseTouchDown (see lower down)
         this.horseGroup = game.add.group();
         this.addHorse(this.horseGroup);
+        //play on the mobile
+
+        // if (window.DeviceMotionEvent) {
+        //     var self = this;
+        //     window.addEventListener('devicemotion', function(e) {
+        //         var x = e.gamma; // range [-90,90], left-right
+        //
+        //         self.monkey.body.velocity.x += x;
+        //         // Acceleration
+        //         console.log(e.acceleration.x);
+        //         // Acceleration including gravity
+        //         console.log(e.accelerationIncludingGravity.x);
+        //         // Rotation rate
+        //         console.log(e.rotationRate.gamma);
+        //     }, false);
+        // }
 
     },
 
@@ -108,9 +123,13 @@ playgame.prototype = {
         hitPlatform2 = game.physics.arcade.collide(this.monkey,this.moveBranchGroup);
         this.monkeyMove();
 
+        selfPlayer = this.monkey;
+		window.addEventListener("deviceorientation", this.handleOrientation, true);
+        //this.handleOrientation();
+
         if (this.monkey.y < startLine) {
             this.startScroll();
-        } else if (this.monkey.y >= startLine) {
+        } else if (this.monkey.y >= stopLine) {
             this.stopScroll();
         }
         if(this.monkey.y > 960) {
@@ -351,6 +370,30 @@ playgame.prototype = {
         }
         for(var i=0; i<this.moveBranchGroup.length; i++) {
             this.moveBranchGroup.getChildAt(i).body.velocity.y = branchSpeed;
+        }
+    },
+
+    handleOrientation:function(e){
+        var x = e.gamma; // range [-90,90], left-right
+        if (x < 0)
+        {
+            //image turn left
+            selfPlayer.scale.x = 1;
+            //  Move to the left
+            selfPlayer.body.velocity.x += x-300;
+            if (selfPlayer.x < 0) {
+                selfPlayer.x += 640;
+            }
+        }
+        else if (x > 0)
+        {
+            //image turn right
+            selfPlayer.scale.x = -1;
+            //  Move to the right
+            selfPlayer.body.velocity.x += x+300;
+            if (selfPlayer.x > 640) {
+                selfPlayer.x -= 640;
+            }
         }
     },
 
