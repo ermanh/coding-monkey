@@ -22,16 +22,19 @@ var horseGap = 5000;
 var scoreKey = {'0':1, '1':100, '10':200, '11':300, '100':400, '101':500, '110':600, '111':700};
 var mouseTouchDown = false;
 
-
 var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
   	    treeBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
+
         monkeyJumpHeight = savedMonkeyJumpHeight;
         branchIncreaseSpeed = savedBranchIncreaseSpeed;
 
+        bgmusic = game.add.audio("bgmusic");
+        bgmusic.play();
+
         game.physics.startSystem(Phaser.Physics.ARCADE);
-        //this.physics.startSystem( Phaser.Physics.ARCADE );
+
         console.log("playgame started");
 
         //  The platforms group contains the ground and the 2 ledges we can jump on
@@ -39,7 +42,6 @@ playgame.prototype = {
 
         //  We will enable physics for any object that is created in this group
         platforms.enableBody = true;
-        //ground.enableBody = true;
 
         // Here we create the ground.
         ground = platforms.create(0, game.height - 50, 'ground');
@@ -109,6 +111,34 @@ playgame.prototype = {
         this.dartsGroup = game.add.group(); // only add dart when mouseTouchDown (see lower down)
         this.horseGroup = game.add.group();
         this.addHorse(this.horseGroup);
+        //play on the mobile
+
+        // if (window.DeviceMotionEvent) {
+        //     var self = this;
+        //     window.addEventListener('devicemotion', function(e) {
+        //         var x = e.gamma; // range [-90,90], left-right
+        //
+        //         self.monkey.body.velocity.x += x;
+        //         // Acceleration
+        //         console.log(e.acceleration.x);
+        //         // Acceleration including gravity
+        //         console.log(e.accelerationIncludingGravity.x);
+        //         // Rotation rate
+        //         console.log(e.rotationRate.gamma);
+        //     }, false);
+        // }
+
+        // declare audio
+        touchVirus = game.add.audio("touchVirus");
+        touchHorse = game.add.audio("touchHorse");
+        touchBanana = game.add.audio("touchBanana");
+        touchCoffee = game.add.audio("touchCoffee");
+        touchBeer = game.add.audio("touchBeer");
+        touchByte = game.add.audio("touchByte");
+        dartHit = game.add.audio("dartHit");
+        fallToDeath = game.add.audio("fallToDeath");
+        shootDart = game.add.audio("shootDart");
+        horseOnScreen = game.add.audio("horseOnScreen");
 
     },
 
@@ -118,6 +148,10 @@ playgame.prototype = {
         hitPlatform1 = game.physics.arcade.collide(this.monkey, this.branchGroup);
         hitPlatform2 = game.physics.arcade.collide(this.monkey, this.moveBranchGroup);
         this.monkeyMove();
+
+        selfPlayer = this.monkey;
+		window.addEventListener("deviceorientation", this.handleOrientation, true);
+        //this.handleOrientation();
 
         if (this.monkey.y < startLine) {
             this.startScroll();
@@ -143,6 +177,8 @@ playgame.prototype = {
                     }, 500, Phaser.Easing.Linear.None, true);
                     score += addScore;
                     scoreText.text = score.toString();
+                    // play audio
+                    touchByte.play();
                 } else if (!b.destroyed && m.drinkingBeer) {
                     b.destroyed = true;
                     game.add.tween(b).to({
@@ -182,8 +218,9 @@ playgame.prototype = {
 	                      tint: 0xeeeeee,
                     },
                     500, Phaser.Easing.Linear.None, true);
+                    // play audio
+                    touchVirus.play();
                     console.log("monkey blinks on virus");
-
                 }
             }, null, this);
             game.physics.arcade.overlap(this.dartsGroup, this.virusGroup, function(d,v){
@@ -205,6 +242,8 @@ playgame.prototype = {
                         height: 100,
                         width: 100,
                     }, 500, "Linear", true);
+                    // play audio
+                    dartHit.play();
                 }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.virusSuperGroup, function(m,v){
@@ -235,8 +274,9 @@ playgame.prototype = {
                           tint: 0xeeeeee,
                     },
                     500, Phaser.Easing.Linear.None, true);
+                    // play audio
+                    touchVirus.play();
                     console.log("monkey blinks on super virus");
-
                 }
             }, null, this);
             game.physics.arcade.overlap(this.dartsGroup, this.virusSuperGroup, function(d,v){
@@ -258,6 +298,8 @@ playgame.prototype = {
                         height: 125,
                         width: 125,
                     }, 500, "Linear", true);
+                    // play audio
+                    dartHit.play();
                 }
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.beerGroup, function(m,b){
@@ -269,6 +311,8 @@ playgame.prototype = {
                     b.destroyed = true;
                     b.alpha = 0;
                     spinMonkey(m);
+                    // play audio
+                    touchBeer.play();
                 }
             }, null, this);
             game.physics.arcade.overlap(this.dartsGroup, this.beerGroup, function(d,b){
@@ -281,6 +325,8 @@ playgame.prototype = {
                         height: 1,
                         width: 1
                     }, 500, "Linear", true);
+                    // play audio
+                    dartHit.play();
                 }
                 d.destroy();
             }, null, this);
@@ -299,7 +345,8 @@ playgame.prototype = {
                         m.drinkingCoffee = false;
                         m.loadTexture('monkey');
                     }, 5000);
-                    //this.higherJump();
+                    // play audio
+                    touchCoffee.play();
                 }
             }, null, this);
             game.physics.arcade.overlap(this.dartsGroup, this.coffeeGroup, function(d,c){
@@ -321,6 +368,8 @@ playgame.prototype = {
                     b.destroyed = true;
                     this.becomeInvincible();
                     b.alpha = 0;
+                    // play audio
+                    touchBanana.play();
                 }
                 //monkey emits star on banana (in progress)
                 this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 20);
@@ -346,6 +395,8 @@ playgame.prototype = {
                     setTimeout(function(){
                         smokeEmitter.on = false;
                     }, 3000);
+                    // play audio
+                    touchHorse.play();
 
                     //monkey disappear
                     this.monkey.visible = false;
@@ -364,6 +415,8 @@ playgame.prototype = {
             }, null, this);
             game.physics.arcade.overlap(this.dartsGroup, this.horseGroup, function(d,h){
                 // collide condition between dart and a beer sprite
+                // play audio
+                dartHit.play();
                 d.destroy();
                 if (!h.destroyed) {
                     h.destroyed = true;
@@ -414,6 +467,10 @@ playgame.prototype = {
                     horse.x -= 640;
                 }
             }
+            // play audio horse on screen
+            if (horse.y > 0 && horse.y < game.height){
+                horseOnScreen.play();
+            }
         }, this);
 
         // increase falling speed when score gets higher
@@ -454,6 +511,30 @@ playgame.prototype = {
     },
     adjustFallSpeed: function(){
         branchIncreaseSpeed = savedBranchIncreaseSpeed + 65 * Math.floor(score/10000);
+    },
+
+    handleOrientation:function(e){
+        var x = e.gamma; // range [-90,90], left-right
+        if (x < 0)
+        {
+            //image turn left
+            selfPlayer.scale.x = 1;
+            //  Move to the left
+            selfPlayer.body.velocity.x += x-300;
+            if (selfPlayer.x < 0) {
+                selfPlayer.x += 640;
+            }
+        }
+        else if (x > 0)
+        {
+            //image turn right
+            selfPlayer.scale.x = -1;
+            //  Move to the right
+            selfPlayer.body.velocity.x += x+300;
+            if (selfPlayer.x > 640) {
+                selfPlayer.x -= 640;
+            }
+        }
     },
 
     monkeyMove: function() {
@@ -543,9 +624,11 @@ playgame.prototype = {
     },
 
     // Shooting banana darts
+
     touchDown: function() {
         mouseTouchDown = true;
         this.fireDart();
+        shootDart.play();
     },
     touchUp: function() {
         mouseTouchDown = false;
@@ -885,4 +968,5 @@ Horse.prototype.update = function() {
     if (this.y > Math.max(game.height, horseGap)) {
         this.destroy();
     }
+
 };

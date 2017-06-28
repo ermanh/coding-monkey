@@ -2,67 +2,83 @@ var info = function(game){};
 info.prototype = {
     create: function(){
         //C: need to change background image
-        var titleBG = game.add.tileSprite(0, 0, game.width, game.height,"testbg");
+        var infoBG = game.add.tileSprite(0, 0, game.width, game.height,"infobg");
 
         //C: images spacing & sizes adjusted
-        var info = game.add.image(game.width / 2, 20, "info");
-        	info.anchor.set(0.5,0);
-            info.scale.setTo(0.8, 0.8);
-        var info0 = game.add.image(game.width / 2, 75, "info0");
-        	info0.anchor.set(0.5,0);
-            info0.scale.setTo(0.8, 0.8);
-        var info2 = game.add.image(game.width / 2, 130, "info2");
-            info2.anchor.set(0.5,0);
-            info2.scale.setTo(0.8, 0.8);
 
-        var info3 = game.add.image(game.width / 2, 200, "info3");
-            info3.anchor.set(0.5,0);
-            info3.scale.setTo(0.7, 0.7);
+        var howTo = game.add.image(game.width / 2, 10, "howTo");
+            howTo.anchor.set(0.5,0);
+            howTo.scale.setTo(0.7, 0.7);
+        var useArrowToMove = game.add.image(30, 70, "useArrowToMove");
+            useArrowToMove.anchor.set(0,0);
+            useArrowToMove.scale.setTo(0.6, 0.6);
+        var leftAndRight = game.add.image(405, 70, "leftAndRight");
+        	leftAndRight.anchor.set(0,0);
+            leftAndRight.scale.setTo(0.6, 0.6);
+        var clickMouse = game.add.image(game.width / 2, 120, "clickMouse");
+            clickMouse.anchor.set(0.5,0);
+            clickMouse.scale.setTo(0.6, 0.6);
 
-        var zero = game.add.image(30, 260, "0");
+        var goal = game.add.image(game.width / 2, 175, "goal");
+        	goal.anchor.set(0.5,0);
+            goal.scale.setTo(0.6, 0.6);
+        var getAsManyBytes = game.add.image(30, 230, "getAsManyBytes");
+        	getAsManyBytes.anchor.set(0,0);
+            getAsManyBytes.scale.setTo(0.6, 0.6);
+        var asPossible = game.add.image(385, 230, "asPossible");
+            asPossible.anchor.set(0,0);
+            asPossible.scale.setTo(0.6, 0.6);
+
+        var catchTheseTo = game.add.image(game.width / 2, 285, "catchTheseTo");
+            catchTheseTo.anchor.set(0.5,0);
+            catchTheseTo.scale.setTo(0.7, 0.7);
+
+        var zero = game.add.image(30, 355, "0");
             zero.anchor.set(0.5,0);
-        var one = game.add.image(70, 260, "1");
+        var one = game.add.image(70, 355, "1");
             one.anchor.set(0.5,0);
-        var onezerozero = game.add.image(140, 260, "100");
+        var onezerozero = game.add.image(140, 355, "100");
             onezerozero.anchor.set(0.5,0);
-        var onezeroone = game.add.image(230, 260, "101");
+        var onezeroone = game.add.image(230, 355, "101");
             onezeroone.anchor.set(0.5,0);
-        var onezero = game.add.image(30, 290, "10");
+        var onezero = game.add.image(30, 385, "10");
             onezero.anchor.set(0.5,0);
-        var oneone = game.add.image(90, 290, "11");
+        var oneone = game.add.image(90, 385, "11");
             oneone.anchor.set(0.5,0);
-        var oneonezero = game.add.image(160, 290, "110");
+        var oneonezero = game.add.image(158, 385, "110");
             oneonezero.anchor.set(0.5,0);
-        var oneoneone = game.add.image(250, 290, "111");
+        var oneoneone = game.add.image(248, 385, "111");
             oneoneone.anchor.set(0.5,0);
 
-        var info4 = game.add.image(280, 255, "info4");
-            info4.anchor.set(0,0);
-            info4.scale.setTo(0.7, 0.7);
+        var increaseBytes = game.add.image(270, 360, "increaseBytes");
+            increaseBytes.anchor.set(0,0);
+            increaseBytes.scale.setTo(0.6, 0.6);
 
-        var virus = game.add.image(180, 350, "virus");
+        var virus = game.add.image(140, 440, "virus");
             virus.anchor.set(0.5,0);
-        var info5 = game.add.image(240, 345, "info5");
-        	info5.anchor.set(0,0);
-            info5.scale.setTo(0.7, 0.7);
+        var virusSuper = game.add.image(210, 440, "virusSuper");
+            virusSuper.anchor.set(0.5,0);
+        var loseBytes = game.add.image(270, 440, "loseBytes");
+        	loseBytes.anchor.set(0,0);
+            loseBytes.scale.setTo(0.6, 0.6);
 
-        var coffee = game.add.image(180, 460, "coffee");
+        var coffee = game.add.image(180, 510, "coffee");
         coffee.anchor.set(0.5,0);
-        var info6 = game.add.image(240, 460, "info6");
-            info6.anchor.set(0,0);
-            info6.scale.setTo(0.7, 0.7);
+        var jumpHigher = game.add.image(270, 510, "jumpHigher");
+            jumpHigher.anchor.set(0,0);
+            jumpHigher.scale.setTo(0.6, 0.6);
 
-        var beer = game.add.image(180, 570, "beer");
+        var beer = game.add.image(180, 590, "beer");
             beer.anchor.set(0.5,0);
-        var info7 = game.add.image(240, 570, "info7");
-        	info7.anchor.set(0,0);
-            info7.scale.setTo(0.7, 0.7);
+        var jumpLower = game.add.image(270, 590, "jumpLower");
+        	jumpLower.anchor.set(0,0);
+            jumpLower.scale.setTo(0.6, 0.6);
 
-        var banana = game.add.image(180, 685, "banana");
+        var banana = game.add.image(180, 670, "banana");
             banana.anchor.set(0.5,0);
-        var info8 = game.add.image(240, 685, "info8");
-            info8.anchor.set(0,0);
-            info8.scale.setTo(0.7, 0.7);
+        var becomeInvincible = game.add.image(270, 670, "becomeInvincible");
+            becomeInvincible.anchor.set(0,0);
+            becomeInvincible.scale.setTo(0.6, 0.6);
 
         var playButton = game.add.button(game.width / 2, game.height - 120, "playbutton", this.startGame);
         	playButton.anchor.set(0.5);
