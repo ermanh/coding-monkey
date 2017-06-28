@@ -493,6 +493,7 @@ playgame.prototype = {
     touchDown: function() {
         mouseTouchDown = true;
         this.fireDart();
+        shootDart.play();
     },
     touchUp: function() {
         mouseTouchDown = false;
