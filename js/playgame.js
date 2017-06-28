@@ -287,7 +287,7 @@ playgame.prototype = {
                     //velocity becomes zero, otherwise trail of emitters follow
                     this.monkey.body.velocity.x = 0;
                     this.monkey.body.velocity.y = 0;
-                    this.monkey.destroyed = true;
+                    // this.monkey.destroyed = true;
 
                     console.log("monkey killed");
 
