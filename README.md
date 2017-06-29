@@ -11,27 +11,27 @@ The hero can move forward in the game infinitely by 'jumping upwards'. It moves 
 # Gameplay
 The goal of the game is for the Coding Monkey (the hero) to collect as many bits as possible. 
 
-#### About the Sprites
-##### The Monkey has the ability to:
+### About the Sprites
+#### The Monkey has the ability to:
 - jump upwards
 - bounce upwards when it lands on a branch (barrier sprite)
 - collect bits (reward items) to increase its bytes (score)
 - collide with special item sprites to change its interaction with the environments and the other sprites
 
-##### Other sprites and their effects on collision with Monkey:
-###### Barrier sprite:
+#### Other sprites and their effects on collision with Monkey:
+##### Barrier sprite:
 - Branches \- Monkey can jump upwards
-###### Reward sprite:
+##### Reward sprite:
 - Bits (0, 1, 10, 11, 100, 101, 110, 111) \- increase bytes
-###### Penalty sprites:
+##### Penalty sprites:
 - Viruses (purple viruse, red super virus) \- lose bytes
 - Trojan horse \- Monkey dies and the game is over
-###### Special item sprites: 
+##### Special item sprites: 
 - Coffee \- Monkey gets more energy, spins around and jumps higher
 - Beer \- Monkey gets drunk, spins around, and can't collect bits
 - Banana \- Monkey becomes invicible, and doesn't lose bytes or die when it collides with Viruses or the Trojan Horse
 
-##### Scoring sprite:
+#### Scoring sprite:
 Bytes bar \- number increases or decreases depending on which sprite the Monkey collides with
 
 #### The game is over when:
