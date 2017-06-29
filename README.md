@@ -1,9 +1,31 @@
-An asterisk* means the code can be considered in an upgrade at a later point.
+# Game project - Coding Monkey
+?? Link: 
+
+# Group members
+Corah Chiu, Herman Leung, Nick Tsai
 
 # Game concept
-Goal: To collect as much code (0's & 1's) as possible.
+Coding Monkey is an endless runner game. It can be played on the computer and ??????? on any mobile device.
+The hero can move forward in the game infinitely by 'jumping upwards'. It moves up and down according to Phaser's physics and gravity setup, while its environment moves downwards with reference to the hero's coordination or other special conditions (such as the hero touching a special item sprite). The hero would appear to be jumping upwards as it lands on barriers and bounce back. The hero collect reward items to score points and loses points when it collides with penalty items. Colliding with other special effect items will have different effects on the hero and its interaction with other sprite items. The hero can shoot certain item sprites. The game becomes more difficult as it goes on, or when the hero collides with certain special item sprites. The game is over when the hero moves lower than the game height (falls out of the screen), or when it hits a certain special item sprites. The user controls the hero sprite by using the keyboard on the computer,??????? and by tilting or tapping on a mobile device.
 
-Gameplay:
+# Gameplay
+The goal of the game is for the Coding Monkey (the hero) to collect as many bits as possible. 
+
+The Monkey has the ability to:
+- jump upwards
+- bounce upwards when it lands on a branch (barrier sprite)
+- collect bits (reward items) to increase its bytes (score)
+- collide with special item sprites to change its interaction with the environments and the other sprites
+
+Other sprites and their effects on Monkey's collision:
+- Branches \- Monkey can jump upwards
+- Bits (0, 1, 10, 11, 100, 101, 110, 111) \- increase bytes
+- Viruses (purple viruse, red super virus) \- lose bytes
+- Trojan horse \- Monkey dies and the game is over
+- Coffee \- Monkey gets more energy, spins around and jumps higher
+- Beer \- Monkey gets drunk, spins around, and can't collect bits
+- Banana \- Monkey becomes invicible, and doesn't lose bytes or die when it collides with Viruses or Trojan Horses
+
 
 Coding Monkey collecting code (0's & 1's) among branches and trying to survive (not fall).
 
@@ -13,15 +35,15 @@ Avoiding bugs & virus.
 
 Coffee, beer & banana change Monkey's jumping ability.
 
-Monkey jumps vertically upwards. Can land on branches.
+The game is over when:
 
-# States
+# States included in the game
 Boot, preload, title screen, etc.
 
-# Background
-Environment: Tree trunk & branches
+# Game mechanism
+Controls
 
-Bg tiles: Plain bg & tree trunk
+# Programming resources
 
 # Sprites
 1. Main character: Monkey
@@ -67,6 +89,8 @@ become invincible
   - decrease with catching bugs $ virus
 3\*. Monkey can jump across screen
 
+# Process
+
 # To-do
 1. Auto jump
 2. Move monkey left to right on keyboard
@@ -111,20 +135,16 @@ become invincible
 
 - platform, auto jump, tree bgtile
 
+# Problems encountered
 
-## 26-6-2017 (Mon)
-#### Corah
-#### Herman
-#### Nick
+# ????? Things learnt
+Reduce number of images used by combining them into one image if possible.
 
-
-## 27-6-2017 (Tue)
-#### Corah
-#### Herman
-#### Nick
+# Possible improvement/upgrade
+Elements, special item sprites
 
 
-## 28-6-2017 (Wed)
-#### Corah
-#### Herman
-#### Nick
+### Music credit
+http://www.bensound.com, http://www.noiseforfun.com
+### Image credit
+https://www.iconfinder.com/
