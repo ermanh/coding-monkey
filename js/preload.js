@@ -4,13 +4,13 @@ preload.prototype = {
 		var loadingBar = this.add.sprite(game.width / 2, game.height / 2, "loading");
 		loadingBar.anchor.setTo(0.5,0.5);
 		game.load.setPreloadSprite(loadingBar);
-		game.load.image("title", "assets/sprites/title.png");
-		game.load.image("playbutton", "assets/sprites/playbutton.png");
+		game.load.image("title", "assets/images/title.png");
+		game.load.image("playbutton", "assets/images/start.png");
 		game.load.image("titlebg", "assets/images/titlebg.png");
 		game.load.image("infobg", "assets/images/infobg.png");
+		game.load.image("restart", "assets/images/restart.png");
 
-
-		//C: info text images:
+		// info text images:
 		game.load.image("goal", "assets/images/info.png")
 		game.load.image("getAsManyBytes", "assets/images/info0.png")
 		game.load.image("asPossible", "assets/images/info2.png")
@@ -26,11 +26,13 @@ preload.prototype = {
 		game.load.image("clickMouse", "assets/images/info_clickmouse.png")
 
 		game.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
-		game.load.image("monkey", "assets/images/monkey_left_75x73.png");
-		game.load.image("monkeyBig", "assets/images/monkey_left_100x97.png");
+		game.load.image("monkey", "assets/images/monkey_75x73.png");
+		game.load.image("monkeyBig", "assets/images/monkey_100x97.png");
+		game.load.spritesheet("monkeyRun", "assets/images/monkey_sheet.png", 180, 100, 16);
 		game.load.image("tree", "assets/images/trees_640.png");
 		game.load.image("branch", "assets/images/branch.png");
 		game.load.image("ground", "assets/images/platform.png");
+		game.load.image("grass", "assets/images/grass.png");
 		game.load.image("beer", "assets/images/beer_50x62.png");
 		game.load.image("coffee", "assets/images/coffee_50x50.png");
 		game.load.image("virus", "assets/images/virus_50x50.png");
@@ -49,9 +51,7 @@ preload.prototype = {
 		game.load.image("0Particle", "assets/images/0_small.png");
 		game.load.image("1Particle", "assets/images/1_small.png");
 		game.load.image("bananaDart", "assets/images/bananaDart_25x27.png");
-
 		game.load.image("star", "assets/images/star.png");
-
 		game.load.image("horse", "assets/images/horse_75x74.png");
 		game.load.image("horseParticle", "assets/images/horse_50x49.png");
 

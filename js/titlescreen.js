@@ -1,75 +1,110 @@
+/*jshint esversion: 6 */
+
+var byteGap = 60;
+
 var titlescreen = function(game){};
 titlescreen.prototype = {
-    create: function(){
-        //C: need to change background image
-        var titleBG = game.add.tileSprite(0, 0, game.width, game.height,"titlebg");
+    create: function() {
+
+        game.stage.backgroundColor = 0x021b45;
+        //treeBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
+
+        // Raining bytes
+        this.bytesGroup = game.add.group();
+        for (var i=0; i < 200; i++) {
+            var bytesArr = ["0Particle","1Particle"];
+            var choice = bytesArr[game.rnd.between(0,1)];
+            var byte = game.add.sprite(Math.round(Math.random()*(game.width)), Math.round(Math.random()*(game.height)), choice);
+            game.physics.enable(byte, Phaser.Physics.ARCADE);
+            byte.anchor.set(0.5);
+            byte.body.velocity.y = [200,200][game.rnd.between(0,1)];
+            byte.body.velocity.x = Math.random() * [-1,1][game.rnd.between(0,1)];
+            this.bytesGroup.add(byte);
+        }
+        var otherSprites = ['banana', 'beer', 'coffee', 'virus', 'virusSuper', 'banana', 'beer', 'coffee', 'virus', 'virusSuper'];
+        spriteGroup = this.bytesGroup;
+        otherSprites.forEach(function(item){
+            var sprite = game.add.sprite(Math.round(Math.random()*(game.width)), Math.round(Math.random()*(game.height)), item);
+            game.physics.enable(sprite, Phaser.Physics.ARCADE);
+            sprite.anchor.set(0.5);
+            sprite.scale.setTo(0.5,0.5);
+            sprite.body.velocity.y = [200,200][game.rnd.between(0,1)];
+            sprite.body.velocity.x = Math.random() * [-1,1][game.rnd.between(0,1)];
+            spriteGroup.add(sprite);
+        });
 
         //title - Coding Monkey
-        var title = game.add.image(game.width / 2, 60, "title");
-        	title.anchor.set(0.5,0);
-            title.scale.setTo(0.6, 0.6);
+        var title = game.add.image(game.width / 2, 75, "title");
+    	title.anchor.set(0.5,0);
+        title.scale.setTo(0.6, 0.6);
 
         // Monkey image
-        var monkeyImage = game.add.image(game.width / 2, 650, "monkey");
-            monkeyImage.anchor.set(0.5,0);
-        var monkeyTween = game.add.tween(monkeyImage).to({
-        		y: 400
-        	}, 1100, "Linear", true, 0, -1);
-            monkeyTween.yoyo(true);
+        this.monkeyRun = game.add.sprite(game.width/4*3, 650, 'monkeyRun');
+        this.monkeyRun.anchor.set(0.5);
+        this.monkeyRun.animations.add('walk');
+        this.monkeyRun.animations.play('walk', 1000, true);
+        game.physics.enable(this.monkeyRun, Phaser.Physics.ARCADE);
 
-        //Other images (for making bg image)
-        // var branchImage = game.add.image(120, 355, "branch");
-        //     branchImage.anchor.set(0.5,0);
-        //     var branchImage = game.add.image(570, 480, "branch");
-        //         branchImage.anchor.set(0.5,0);
-        //         var branchImage = game.add.image(390, 700, "branch");
-        //             branchImage.anchor.set(0.5,0);
-        //             var branchImage = game.add.image(250, 235, "branch");
-        //                 branchImage.anchor.set(0.5,0);
-        //
-        // var zero = game.add.image(360, 355, "0");
-        //     zero.anchor.set(0.5,0);
-        // var one = game.add.image(452, 600, "1");
-        //     one.anchor.set(0.5,0);
-        // var onezerozero = game.add.image(321, 789, "100");
-        //     onezerozero.anchor.set(0.5,0);
-        // var onezeroone = game.add.image(500, 452, "101");
-        //     onezeroone.anchor.set(0.5,0);
-        // var onezero = game.add.image(96, 173, "10");
-        //     onezero.anchor.set(0.5,0);
-        // var oneone = game.add.image(90, 385, "11");
-        //     oneone.anchor.set(0.5,0);
-        // var oneonezero = game.add.image(400, 876, "110");
-        //     oneonezero.anchor.set(0.5,0);
-        // var oneoneone = game.add.image(558, 234, "111");
-        //     oneoneone.anchor.set(0.5,0);
-        // var virus = game.add.image(446, 180, "virus");
-        //     virus.anchor.set(0.5,0);
-        // var virusSuper = game.add.image(210, 617, "virusSuper");
-        //     virusSuper.anchor.set(0.5,0);
-        // var coffee = game.add.image(400, 510, "coffee");
-        //     coffee.anchor.set(0.5,0);
-        // var beer = game.add.image(130, 680, "beer");
-        //     beer.anchor.set(0.5,0);
-        // var banana = game.add.image(180, 256, "banana");
-        //     banana.anchor.set(0.5,0);
+        // Byte being chased image
+        this.byteChased = game.add.sprite(game.width/4*3-165, 625, '101');
+        this.byteChased.anchor.set(0.5);
 
+        // Random monkey movement on screen
+        this.timer = setInterval(this.changeJump(this.monkeyRun), 3000);
 
         // playbutton
         var playButton = game.add.button(game.width / 2, game.height - 120, "playbutton", this.startInfo);
-        	playButton.anchor.set(0.5);
-            playButton.scale.setTo(0.25, 0.25);
+        playButton.tint = 0x7cff7c;
+    	playButton.anchor.set(0.5);
+        playButton.scale.setTo(1, 1);
         var tween = game.add.tween(playButton).to({
-        		width: 180,
-        		height:180
-        	}, 900, "Linear", true, 0, -1);
-        	tween.yoyo(true);
-        	console.log("titlescreen started");
+    		width: 120,
+    		height:120
+    	}, 1800, "Linear", true, 0, -1);
+    	tween.yoyo(true);
+    	console.log("titlescreen started");
     },
-    startInfo: function(){
+
+    update: function() {
+        if (this.monkeyRun.x <= 0) {
+            this.monkeyRun.x += game.width;
+        } else if (this.monkeyRun.x > game.width) {
+            this.monkeyRun.x -= game.width;
+        }
+        if (this.monkeyRun.y <= 0) {
+            this.monkeyRun.y += game.height;
+            this.monkeyRun.scale.x *= -1;
+            this.monkeyRun.body.velocity.x *= -1;
+        }
+
+        if (this.monkeyRun.scale.x === -1) {
+            this.byteChased.x = this.monkeyRun.x + 165;
+        } else {
+            this.byteChased.x = this.monkeyRun.x - 165;
+        }
+        this.byteChased.y = this.monkeyRun.y - 25;
+
+        this.bytesGroup.forEach(function(item){
+            if (item.y > game.height) {
+                item.y -= game.height;
+                item.x = Math.round(Math.random()*(game.width));
+            }
+        }, this);
+    },
+
+    startInfo: function() {
         game.state.start("Info");
         console.log("playButton pressed");
+    },
+
+    changeJump: function(monkey) {
+        var speeds = [325,-325];
+        var dir = game.rnd.between(0,1);
+        if (dir === 0) {
+            monkey.scale.x = -1;
+        }
+        monkey.body.velocity.x = speeds[dir];
+        monkey.body.velocity.y = (Math.floor(Math.random()*-150))-100;
     }
 
-
-}
+};
