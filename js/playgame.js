@@ -31,6 +31,7 @@ playgame.prototype = {
 
         bgmusic = game.add.audio("bgmusic");
         bgmusic.play();
+        bgmusic.loopFull();
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -75,8 +76,7 @@ playgame.prototype = {
         game.world.setBounds(-80, 0, 850, 1000);
 
         this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
-        //  Stop the following keys from propagating up to the browser
-        //game.input.keyboard.addKeyCapture(Phaser.Keyboard.SPACEBAR);
+
         // Bytes score setup
         score = 0;
         this.scoreText = game.add.bitmapText(game.width-20, game.height-65, "font", "0", 48);
@@ -113,22 +113,6 @@ playgame.prototype = {
         this.dartsGroup = game.add.group(); // only add dart when mouseTouchDown (see lower down)
         this.horseGroup = game.add.group();
         this.addHorse(this.horseGroup);
-        //play on the mobile
-
-        // if (window.DeviceMotionEvent) {
-        //     var self = this;
-        //     window.addEventListener('devicemotion', function(e) {
-        //         var x = e.gamma; // range [-90,90], left-right
-        //
-        //         self.monkey.body.velocity.x += x;
-        //         // Acceleration
-        //         console.log(e.acceleration.x);
-        //         // Acceleration including gravity
-        //         console.log(e.accelerationIncludingGravity.x);
-        //         // Rotation rate
-        //         console.log(e.rotationRate.gamma);
-        //     }, false);
-        // }
 
         // declare audio
         touchVirus = game.add.audio("touchVirus");
@@ -162,6 +146,8 @@ playgame.prototype = {
         }
         if(this.monkey.y > 960) {
             this.monkey.destroy();
+            fallToDeath.play();
+            bgmusic.stop();
             game.state.start("GameOverScreen");
         }
 
@@ -406,6 +392,7 @@ playgame.prototype = {
                     //velocity becomes zero, otherwise trail of emitters follow
                     this.monkey.body.velocity.x = 0;
                     this.monkey.body.velocity.y = 0;
+                    branchSpeed = 0;
                     this.monkey.destroyed = true;
 
                     console.log("monkey killed");
@@ -470,7 +457,7 @@ playgame.prototype = {
                 }
             }
             // play audio horse on screen
-            if (horse.y > 0 && horse.y < game.height){
+            if (horse.y > -450 && horse.y < game.height){
                 horseOnScreen.play();
             }
         }, this);
@@ -514,7 +501,7 @@ playgame.prototype = {
     adjustFallSpeed: function(){
         branchIncreaseSpeed = savedBranchIncreaseSpeed + 65 * Math.floor(score/10000);
     },
-
+    //play on the mobile
     handleOrientation:function(e){
         var tilting = e.gamma; // range [-90,90], left-right
         if (tilting < 0)
@@ -654,10 +641,10 @@ playgame.prototype = {
         // effects of colliding into banana
         var monkey = this.monkey;
         monkey.invincible = true;
-        console.log("Monkey invincible for 5 seconds after banana collide");
+        console.log("Monkey invincible for 4 seconds after banana collide");
         var monkeyTween = game.add.tween(monkey).to({
              tint: 0x0000ff,
-        }, 5000, Phaser.Easing.Bounce.InOut, true);
+        }, 4000, Phaser.Easing.Bounce.InOut, true);
         monkeyTween.onComplete.add(function(){
             monkey.tint = 0xffffff;
             monkey.invincible = false;

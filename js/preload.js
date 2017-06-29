@@ -9,36 +9,25 @@ preload.prototype = {
 		loadingBar.tint = 0x098216;
 		loadingBar.anchor.setTo(0.5,0.5);
 		game.load.setPreloadSprite(loadingBar);
-
+		//percentage
 		var loadingText = game.add.bitmapText(game.width / 2-150, 650,'font', 'loading... 0%',50);
 		loadingText.tint = 0x098216;
         var progressDisplay = 0;
-
         var timerEvt = game.time.events.loop(100, function (){
-
             if(progressDisplay < 100){
-
                 if(progressDisplay < game.load.progress){
-
                     loadingText.text = 'loading... '+(++progressDisplay)+'%';
-
                 }
-
             }else{
-
                 loadingText.text = 'Ready, Go!';
-
                 game.time.events.remove(timerEvt);
-
             }
-
         }, this);
 
 		game.load.image("title", "assets/sprites/title.png");
 		game.load.image("playbutton", "assets/sprites/playbutton.png");
 		game.load.image("titlebg", "assets/images/titlebg.png");
 		game.load.image("infobg", "assets/images/infobg.png");
-
 
 		//C: info text images:
 		game.load.image("goal", "assets/images/info.png")
@@ -54,7 +43,6 @@ preload.prototype = {
 		game.load.image("useArrowToMove", "assets/images/info_usearrowtomove.png")
 		game.load.image("leftAndRight", "assets/images/info_leftandright.png")
 		game.load.image("clickMouse", "assets/images/info_clickmouse.png")
-
 		game.load.image("monkey", "assets/images/monkey_left_75x73.png");
 		game.load.image("monkeyBig", "assets/images/monkey_left_100x97.png");
 		game.load.image("tree", "assets/images/trees_640.png");
@@ -78,7 +66,6 @@ preload.prototype = {
 		game.load.image("0Particle", "assets/images/0_small.png");
 		game.load.image("1Particle", "assets/images/1_small.png");
 		game.load.image("bananaDart", "assets/images/bananaDart_25x27.png");
-
 		game.load.image("star", "assets/images/star.png");
 
 		game.load.image("horse", "assets/images/horse_75x74.png");
@@ -99,22 +86,7 @@ preload.prototype = {
 
 		},
 	create: function(){
-
-		// game.load.onLoadStart.add(loadStart, this);
-	    // game.load.onFileComplete.add(fileComplete, this);
-	    // game.load.onLoadComplete.add(loadComplete, this);
-		//	Progress report
-		//text = game.add.text(32, 32, 'Click to start load', { fill: '#ffffff' });
 		game.state.start("Titlescreen");
 		console.log("preload started");
-	},
-	// loadStart:function(){
-	// 	text.setText("Loading ...");
-	// },
-	// fileComplete:function(progress, cacheKey, success, totalLoaded, totalFiles){
-	// 	text.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles);
-	// },
-	// loadComplete:function(){
-	// 	text.setText("Load Complete");
-	// }
+	}
 };
