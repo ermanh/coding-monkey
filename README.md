@@ -95,7 +95,7 @@ Elements, special item sprites
 Working on the mobile version
 
 # Credits
-### Music credit
+### Music credits
 http://www.bensound.com, http://www.noiseforfun.com
-### Image credit
+### Image credits
 https://www.iconfinder.com/
