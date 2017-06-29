@@ -1,30 +1,33 @@
+/*jshint esversion: 6 */
+
 var treeBG;
 var ground;
 var startLine = 600;
 var stopLine = 800;
-var savedMonkeyJumpHeight = -500;
-// monkeyJumpHeight moved to create() function [Herman]
-var itemsSpeed = 0; // Herman: this should be related to the screen moving down when the monkey jumps up
-                 //         need this for movement of sprites down the screen
-var branchSpeed = 0; //not sure about the speed as it will move with monkey
-var branchGap = 200;
-var moveBranchGap = 250;
-var savedBranchIncreaseSpeed = 250;
-var branchIncreaseSpeed;
-var byteGap = 10;          // controls how often bytes appear
-var virusGap = 800;         // controls how often viruses appear (once every 600px)
+var savedMonkeyJumpHeight = -500; // monkeyJumpHeight moved to create() function, allowing reset at game restart
+
+var itemsSpeed = 0; // CLEANING: itemsSpeed and branchSpeed can be combined
+var branchSpeed = 0;
+var savedBranchIncreaseSpeed = 250;  // saved value for resetting on game restart  CLEANING: can be renamed
+var branchIncreaseSpeed;    // controls how fast sprites move down                 CLEANING: can be renamed
+
+var branchGap = 200;        // controls how often branches appear
+var moveBranchGap = 220;    // controls how often moveable branches appear (branches that fall off tree when touched)
+var byteGap = 10;           // controls how often bytes appear
+var virusGap = 800;         // controls how often viruses appear
 var virusSuperGap = 2000;   // controls how often super viruses appear
-var beerGap = 1000;         // controls how often beer appears
-var coffeeGap = 1200;       // controls how often coffee appears
-var bananaGap = 3000;       // controls how often banana appears
-var horseGap = 5000;
+var beerGap = 1000;         // controls how often beers appear
+var coffeeGap = 1200;       // controls how often coffees appear
+var bananaGap = 3000;       // controls how often bananas appear
+var horseGap = 5000;        // controls how often trojan horses appear
 
 var scoreKey = {'0':1, '1':100, '10':200, '11':300, '100':400, '101':500, '110':600, '111':700};
 var mouseTouchDown = false;
-
 var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
+
+        game.stage.backgroundColor = 0x021b45;
   	    treeBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
 
         monkeyJumpHeight = savedMonkeyJumpHeight;
@@ -38,27 +41,20 @@ playgame.prototype = {
 
         console.log("playgame started");
 
-        //  The platforms group contains the ground and the 2 ledges we can jump on
-        platforms = game.add.group();
-
-        //  We will enable physics for any object that is created in this group
-        platforms.enableBody = true;
-
-        // Here we create the ground.
-        ground = platforms.create(0, game.height - 50, 'ground');
-
-        //  Scale it to fit the width of the game (the original sprite is 400x32 in size)
-        ground.scale.setTo(2, 2);
-
-        //  This stops it from falling away when you jump on it
+        // Here we create the ground and the grass
+        ground = game.add.sprite(0, game.height - 20, 'ground');
+        game.physics.arcade.enable(ground);
         ground.body.immovable = true;
-        ground.body.velocity.y = 0;
         ground.destroyed = false;
+
+        grass = game.add.sprite(0, game.height - 84, 'grass');
+        game.physics.arcade.enable(grass);
+        grass.body.immovable = true;
+        grass.destroyed = false;
 
         // The monkey and its settings
         this.monkey = game.add.sprite(200, game.height - 150, 'monkey');
         this.monkey.anchor.set( 0.5 );
-        //  We need to enable physics on the monkey
         game.physics.arcade.enable(this.monkey);
         this.monkey.destroyed = false;
         this.monkey.invincible = false;
@@ -76,12 +72,13 @@ playgame.prototype = {
         this.monkey.body.checkCollision.right = false;
         game.world.setBounds(-80, 0, 850, 1000);
 
+        this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
         // Bytes score setup
         score = 0;
         this.scoreText = game.add.bitmapText(game.width-20, game.height-65, "font", "0", 48);
         this.scoreText.alpha = 0.75;
         this.scoreText.anchor.set(1,0);
-
 
         //create branches
         this.branchGroup = game.add.group();
@@ -112,22 +109,6 @@ playgame.prototype = {
         this.dartsGroup = game.add.group(); // only add dart when mouseTouchDown (see lower down)
         this.horseGroup = game.add.group();
         this.addHorse(this.horseGroup);
-        //play on the mobile
-
-        // if (window.DeviceMotionEvent) {
-        //     var self = this;
-        //     window.addEventListener('devicemotion', function(e) {
-        //         var x = e.gamma; // range [-90,90], left-right
-        //
-        //         self.monkey.body.velocity.x += x;
-        //         // Acceleration
-        //         console.log(e.acceleration.x);
-        //         // Acceleration including gravity
-        //         console.log(e.accelerationIncludingGravity.x);
-        //         // Rotation rate
-        //         console.log(e.rotationRate.gamma);
-        //     }, false);
-        // }
 
         // declare audio
         touchVirus = game.add.audio("touchVirus");
@@ -145,9 +126,9 @@ playgame.prototype = {
 
     update: function() {
 
-        hitPlatform = game.physics.arcade.collide(this.monkey, platforms);
-        hitPlatform1 = game.physics.arcade.collide(this.monkey, this.branchGroup);
-        hitPlatform2 = game.physics.arcade.collide(this.monkey, this.moveBranchGroup);
+        hitGround = game.physics.arcade.collide(this.monkey, ground);
+        hitGround1 = game.physics.arcade.collide(this.monkey, this.branchGroup);
+        hitGround2 = game.physics.arcade.collide(this.monkey, this.moveBranchGroup);
         this.monkeyMove();
 
         selfPlayer = this.monkey;
@@ -166,14 +147,22 @@ playgame.prototype = {
             game.state.start("GameOverScreen");
         }
 
-        /* Collision conditions - belongs inside the "update" function [Herman] */
-        if (!this.monkey.destroyed && this.monkey.alpha == 1){
+        /* Collision (overlap) conditions - belongs inside the "update" function [Herman] */
+        if (!this.monkey.destroyed){
+
+            game.physics.arcade.collide(this.monkey, this.moveBranchGroup, function(m,mb){
+                if (!mb.movable) {
+                    mb.movable = true;
+                    mb.body.velocity.y += monkeyJumpHeight * -0.65;
+                }
+            });
 
             game.physics.arcade.overlap(this.monkey, this.bytesGroup, function(m,b){
                 // collide action between monkey and byte sprite
                 var scoreText = this.scoreText;
                 var addScore = scoreKey[b.byteValue];
                 if (!b.destroyed & !m.drinkingBeer) {
+                    // when not drinking beer, increases score
                     b.destroyed = true;
                     var byteTween = game.add.tween(b).to({
                         alpha: 0
@@ -183,6 +172,7 @@ playgame.prototype = {
                     // play audio
                     touchByte.play();
                 } else if (!b.destroyed && m.drinkingBeer) {
+                    // when drinking beer, knocks away bytes
                     b.destroyed = true;
                     game.add.tween(b).to({
                         angle: 1080
@@ -382,14 +372,11 @@ playgame.prototype = {
                 setTimeout(function(){
                    smokeEmitter.on = false;
                 }, 600);
-
-                //monkey blinks on banana --> Herman moved to becomeInvincible() function
-
             }, null, this);
             game.physics.arcade.overlap(this.monkey, this.horseGroup, function(m,h){
                 // collide action between monkey and a trojan horse
-                //monkey emits 0 & 1 on horse
                 if (!this.monkey.invincible){
+                    // monkey breaks into 0s & 1s
                     this.smokeEmitter = game.add.emitter(this.monkey.x, this.monkey.y, 500);
                     this.smokeEmitter.makeParticles(["0Particle","1Particle"]);
                     this.smokeEmitter.setSize(10,10);
@@ -398,10 +385,11 @@ playgame.prototype = {
                     setTimeout(function(){
                         smokeEmitter.on = false;
                     }, 3000);
+
                     // play audio
                     touchHorse.play();
 
-                    //monkey disappear
+                    //monkey disappears
                     this.monkey.visible = false;
 
                     //velocity becomes zero, otherwise trail of emitters follow
@@ -442,7 +430,7 @@ playgame.prototype = {
         }
 
         // Shooting banana darts
-        if (game.input.activePointer.isDown) {
+        if (game.input.activePointer.isDown || this.spaceKey.isDown) {
             if (!mouseTouchDown) {
                 this.touchDown();
             }
@@ -463,10 +451,12 @@ playgame.prototype = {
         // Trojan horse loop along x-axis
         this.horseGroup.forEach(function(horse){
             if (horse.body.velocity.x < 0) {
+                // if moving left
                 if (horse.x < 0) {
                     horse.x += 640;
                 }
             } else {
+                // if moving right
                 if (horse.x > 640) {
                     horse.x -= 640;
                 }
@@ -477,29 +467,39 @@ playgame.prototype = {
             }
         }, this);
 
-        // increase falling speed when score gets higher
+        // increase falling speed when score gets higher than 10,000
         if (!this.monkey.drinkingCoffee) {
             if (score / 10000 > 1) {
                 this.adjustFallSpeed();
             }
         }
+
+        // change monkey posture between up and down
+        // if (this.monkey.body.velocity > 0) {
+        //     this.monkey.loadTexture('')
+        // }
+
     },
     startScroll: function(){
         treeBG.autoScroll(0,branchIncreaseSpeed);
-        if (!ground.destroyed) {
+        if (!ground.destroyed && !grass.destroyed) {
+            // move down ground and grass and destroy them off stage
             ground.destroyed = true;
+            grass.destroyed = true;
             ground.body.velocity.y = branchIncreaseSpeed;
+            grass.body.velocity.y = branchIncreaseSpeed;
             setTimeout(function(){
                 ground.destroy();
+                grass.destroy();
             }, 1000);
         }
-        if(branchSpeed === 0){
+        if (branchSpeed === 0) {
             branchSpeed = branchIncreaseSpeed;
 			for(var i = 0; i < this.branchGroup.length; i++){
 				this.branchGroup.getChildAt(i).body.velocity.y = branchSpeed;
 			}
-            for(var i=0; i<this.moveBranchGroup.length; i++) {
-                this.moveBranchGroup.getChildAt(i).body.velocity.y = branchSpeed;
+            for(var j=0; j<this.moveBranchGroup.length; j++) {
+                this.moveBranchGroup.getChildAt(j).body.velocity.y = branchSpeed;
             }
         }
     },
@@ -509,32 +509,33 @@ playgame.prototype = {
         for (var i=0; i<this.branchGroup.length; i++) {
             this.branchGroup.getChildAt(i).body.velocity.y = branchSpeed;
         }
-        for(var i=0; i<this.moveBranchGroup.length; i++) {
-            this.moveBranchGroup.getChildAt(i).body.velocity.y = branchSpeed;
+        for(var j=0; j<this.moveBranchGroup.length; j++) {
+            this.moveBranchGroup.getChildAt(j).body.velocity.y = branchSpeed;
         }
     },
     adjustFallSpeed: function(){
+        // increase speed by another 65 for every increase in score of 10,000
         branchIncreaseSpeed = savedBranchIncreaseSpeed + 65 * Math.floor(score/10000);
     },
-
+    //play on the mobile
     handleOrientation:function(e){
-        var x = e.gamma; // range [-90,90], left-right
-        if (x < 0)
+        var tilting = e.gamma; // range [-90,90], left-right
+        if (tilting < 0)
         {
-            //image turn left
+            // image turn left
             selfPlayer.scale.x = 1;
             //  Move to the left
-            selfPlayer.body.velocity.x += x-300;
+            selfPlayer.body.velocity.x = tilting*20;
             if (selfPlayer.x < 0) {
                 selfPlayer.x += 640;
             }
         }
-        else if (x > 0)
+        else if (tilting > 0)
         {
-            //image turn right
+            // image turn right
             selfPlayer.scale.x = -1;
             //  Move to the right
-            selfPlayer.body.velocity.x += x+300;
+            selfPlayer.body.velocity.x = tilting*20;
             if (selfPlayer.x > 640) {
                 selfPlayer.x -= 640;
             }
@@ -547,7 +548,7 @@ playgame.prototype = {
 
             if (this.cursors.left.isDown)
             {
-                //image turn left
+                // image turn left
                 this.monkey.scale.x = 1;
                 //  Move to the left
                 this.monkey.body.velocity.x = -500;
@@ -558,7 +559,7 @@ playgame.prototype = {
             }
             else if (this.cursors.right.isDown)
             {
-                //image turn right
+                // image turn right
                 this.monkey.scale.x = -1;
                 //  Move to the right
                 this.monkey.body.velocity.x = 500;
@@ -569,7 +570,7 @@ playgame.prototype = {
             }
 
             //  Allow the monkey to jump if they are touching the ground.
-            if (hitPlatform || hitPlatform1 || hitPlatform2)
+            if (hitGround || hitGround1 || hitGround2)
             {
                 this.monkey.body.velocity.y = monkeyJumpHeight;
             }
@@ -628,7 +629,6 @@ playgame.prototype = {
     },
 
     // Shooting banana darts
-
     touchDown: function() {
         mouseTouchDown = true;
         this.fireDart();
@@ -664,14 +664,11 @@ playgame.prototype = {
             monkey.tint = 0xffffff;
             monkey.invincible = false;
             console.log("Monkey no longer invincible.");
-        })
-        // game.time.events.add(Phaser.Timer.SECOND * 5, function(){
-        //     monkey.invincible = false;console.log("Monkey no longer invincible.");
-        //     monkey.tint = 0xffffff;
-        // }, this);
+        });
     }
 };
 
+/* Sprites */
 
 // Generate branches
 var Branch = function (game, speed, currentBranchPosition=0, placement=true) {
@@ -697,7 +694,7 @@ Branch.prototype.update = function(){
         playgame.prototype.addBranch(this.parent);
 	}
     if (branchSpeed > 0) {
-        this.body.velocity.y = branchIncreaseSpeed;;
+        this.body.velocity.y = branchIncreaseSpeed;
     } else {
         this.body.velocity.y = 0;
     }
@@ -719,6 +716,7 @@ var MoveBranch = function (game, speed, currentBranchPosition=0, placement=true)
 	this.anchor.set(0, 0);
 	this.body.velocity.y = speed;
 	this.placeMoveBranch = placement;
+    this.movable = false;
     //this.body.immovable = true;
 };
 MoveBranch.prototype = Object.create(Phaser.Sprite.prototype);
@@ -728,9 +726,9 @@ MoveBranch.prototype.update = function(){
         this.placeMoveBranch = false;
         playgame.prototype.addMoveBranch(this.parent);
 	}
-    if (branchSpeed > 0) {
-        this.body.velocity.y = branchIncreaseSpeed;;
-    } else {
+    if (branchSpeed > 0 && !this.movable) {
+        this.body.velocity.y = branchIncreaseSpeed;
+    } else if (branchSpeed === 0 && !this.movable) {
         this.body.velocity.y = 0;
     }
 	if(this.y > game.height){
@@ -926,7 +924,7 @@ Banana.prototype.update = function() {
     }
 };
 
-// Dart
+// Darts
 var Dart = function(game, speed, monkeyX, monkeyY) {
     Phaser.Sprite.call(this, game, monkeyX, monkeyY, "bananaDart");
     game.physics.enable(this, Phaser.Physics.ARCADE);
@@ -942,6 +940,7 @@ Dart.prototype.update = function() {
     }
 };
 
+// Trojan horses
 var Horse = function(game, speed, positionY=-5000) {
     var directions = [-100, 100];
     Phaser.Sprite.call(this, game, Math.round(Math.random()*(game.width-100))+50, positionY, "horse");

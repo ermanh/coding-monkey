@@ -1,20 +1,41 @@
 var preload = function(game){};
 preload.prototype = {
 	preload: function(){
-		var loadingBar = this.add.sprite(game.width / 2, game.height / 2, "loading");
+		var loadingMonkey = this.add.sprite(game.width / 2-70, game.height / 2, "loadingMonkey");
+		loadingMonkey.animations.add('walk');
+		loadingMonkey.animations.play('walk', 1000, true);
+
+		var loadingBar = this.add.sprite(game.width / 2, game.height / 2+150, "loading");
+		loadingBar.tint = 0x098216;
 		loadingBar.anchor.setTo(0.5,0.5);
 		game.load.setPreloadSprite(loadingBar);
+		//percentage
+		var loadingText = game.add.bitmapText(game.width / 2-150, 650,'font', 'loading... 0%',50);
+		loadingText.tint = 0x098216;
+        var progressDisplay = 0;
+        var timerEvt = game.time.events.loop(100, function (){
+            if(progressDisplay < 100){
+                if(progressDisplay < game.load.progress){
+                    loadingText.text = 'loading... '+(++progressDisplay)+'%';
+                }
+            }else{
+                loadingText.text = 'Ready, Go!';
+                game.time.events.remove(timerEvt);
+            }
+        }, this);
+
 		game.load.image("title", "assets/sprites/title.png");
-		game.load.image("playbutton", "assets/sprites/playbutton.png");
+		game.load.image("playbutton", "assets/images/start.png");
 		game.load.image("titlebg", "assets/images/titlebg.png");
 		game.load.image("infobg", "assets/images/infobg.png");
-
-		game.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
+		game.load.image("restart", "assets/images/restart.png");
 		game.load.image("monkey", "assets/images/monkey_left_75x73.png");
 		game.load.image("monkeyBig", "assets/images/monkey_left_100x97.png");
+		game.load.spritesheet("monkeyRun", "assets/images/monkey_sheet.png", 180, 100, 16);
 		game.load.image("tree", "assets/images/trees_640.png");
 		game.load.image("branch", "assets/images/branch.png");
 		game.load.image("ground", "assets/images/platform.png");
+		game.load.image("grass", "assets/images/grass.png");
 		game.load.image("beer", "assets/images/beer_50x62.png");
 		game.load.image("coffee", "assets/images/coffee_50x50.png");
 		game.load.image("virus", "assets/images/virus_50x50.png");
@@ -34,7 +55,6 @@ preload.prototype = {
 		game.load.image("1Particle", "assets/images/1_small.png");
 		game.load.image("bananaDart", "assets/images/bananaDart_25x27.png");
 		game.load.image("star", "assets/images/star.png");
-
 		game.load.image("horse", "assets/images/horse_75x74.png");
 		game.load.image("horseParticle", "assets/images/horse_50x49.png");
 
