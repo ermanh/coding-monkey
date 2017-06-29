@@ -12,7 +12,7 @@ var savedBranchIncreaseSpeed = 250;  // saved value for resetting on game restar
 var branchIncreaseSpeed;    // controls how fast sprites move down                 CLEANING: can be renamed
 
 var branchGap = 200;        // controls how often branches appear
-var moveBranchGap = 250;    // controls how often moveable branches appear (branches that fall off tree when touched)
+var moveBranchGap = 220;    // controls how often moveable branches appear (branches that fall off tree when touched)
 var byteGap = 10;           // controls how often bytes appear
 var virusGap = 800;         // controls how often viruses appear
 var virusSuperGap = 2000;   // controls how often super viruses appear
@@ -23,7 +23,6 @@ var horseGap = 5000;        // controls how often trojan horses appear
 
 var scoreKey = {'0':1, '1':100, '10':200, '11':300, '100':400, '101':500, '110':600, '111':700};
 var mouseTouchDown = false;
-
 var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
@@ -36,6 +35,7 @@ playgame.prototype = {
 
         bgmusic = game.add.audio("bgmusic");
         bgmusic.play();
+        bgmusic.loopFull();
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -72,6 +72,8 @@ playgame.prototype = {
         this.monkey.body.checkCollision.right = false;
         game.world.setBounds(-80, 0, 850, 1000);
 
+        this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+
         // Bytes score setup
         score = 0;
         this.scoreText = game.add.bitmapText(game.width-20, game.height-65, "font", "0", 48);
@@ -107,22 +109,6 @@ playgame.prototype = {
         this.dartsGroup = game.add.group(); // only add dart when mouseTouchDown (see lower down)
         this.horseGroup = game.add.group();
         this.addHorse(this.horseGroup);
-        //play on the mobile
-
-        // if (window.DeviceMotionEvent) {
-        //     var self = this;
-        //     window.addEventListener('devicemotion', function(e) {
-        //         var x = e.gamma; // range [-90,90], left-right
-        //
-        //         self.monkey.body.velocity.x += x;
-        //         // Acceleration
-        //         console.log(e.acceleration.x);
-        //         // Acceleration including gravity
-        //         console.log(e.accelerationIncludingGravity.x);
-        //         // Rotation rate
-        //         console.log(e.rotationRate.gamma);
-        //     }, false);
-        // }
 
         // declare audio
         touchVirus = game.add.audio("touchVirus");
@@ -156,6 +142,8 @@ playgame.prototype = {
         }
         if(this.monkey.y > 960) {
             this.monkey.destroy();
+            fallToDeath.play();
+            bgmusic.stop();
             game.state.start("GameOverScreen");
         }
 
@@ -407,6 +395,7 @@ playgame.prototype = {
                     //velocity becomes zero, otherwise trail of emitters follow
                     this.monkey.body.velocity.x = 0;
                     this.monkey.body.velocity.y = 0;
+                    branchSpeed = 0;
                     this.monkey.destroyed = true;
 
                     console.log("monkey killed");
@@ -441,7 +430,7 @@ playgame.prototype = {
         }
 
         // Shooting banana darts
-        if (game.input.activePointer.isDown) {
+        if (game.input.activePointer.isDown || this.spaceKey.isDown) {
             if (!mouseTouchDown) {
                 this.touchDown();
             }
@@ -473,7 +462,7 @@ playgame.prototype = {
                 }
             }
             // play audio horse on screen
-            if (horse.y > 0 && horse.y < game.height){
+            if (horse.y > -450 && horse.y < game.height){
                 horseOnScreen.play();
             }
         }, this);
@@ -489,7 +478,7 @@ playgame.prototype = {
         // if (this.monkey.body.velocity > 0) {
         //     this.monkey.loadTexture('')
         // }
-        
+
     },
     startScroll: function(){
         treeBG.autoScroll(0,branchIncreaseSpeed);
@@ -528,25 +517,25 @@ playgame.prototype = {
         // increase speed by another 65 for every increase in score of 10,000
         branchIncreaseSpeed = savedBranchIncreaseSpeed + 65 * Math.floor(score/10000);
     },
-
+    //play on the mobile
     handleOrientation:function(e){
-        var x = e.gamma; // range [-90,90], left-right
-        if (x < 0)
+        var tilting = e.gamma; // range [-90,90], left-right
+        if (tilting < 0)
         {
             // image turn left
             selfPlayer.scale.x = 1;
             //  Move to the left
-            selfPlayer.body.velocity.x += x-300;
+            selfPlayer.body.velocity.x = tilting*20;
             if (selfPlayer.x < 0) {
                 selfPlayer.x += 640;
             }
         }
-        else if (x > 0)
+        else if (tilting > 0)
         {
             // image turn right
             selfPlayer.scale.x = -1;
             //  Move to the right
-            selfPlayer.body.velocity.x += x+300;
+            selfPlayer.body.velocity.x = tilting*20;
             if (selfPlayer.x > 640) {
                 selfPlayer.x -= 640;
             }
@@ -667,10 +656,10 @@ playgame.prototype = {
         // effects of colliding into banana
         var monkey = this.monkey;
         monkey.invincible = true;
-        console.log("Monkey invincible for 5 seconds after banana collide");
+        console.log("Monkey invincible for 4 seconds after banana collide");
         var monkeyTween = game.add.tween(monkey).to({
              tint: 0x0000ff,
-        }, 5000, Phaser.Easing.Bounce.InOut, true);
+        }, 4000, Phaser.Easing.Bounce.InOut, true);
         monkeyTween.onComplete.add(function(){
             monkey.tint = 0xffffff;
             monkey.invincible = false;

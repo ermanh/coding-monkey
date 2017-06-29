@@ -1,33 +1,36 @@
 var preload = function(game){};
 preload.prototype = {
 	preload: function(){
-		var loadingBar = this.add.sprite(game.width / 2, game.height / 2, "loading");
+		var loadingMonkey = this.add.sprite(game.width / 2-70, game.height / 2, "loadingMonkey");
+		loadingMonkey.animations.add('walk');
+		loadingMonkey.animations.play('walk', 1000, true);
+
+		var loadingBar = this.add.sprite(game.width / 2, game.height / 2+150, "loading");
+		loadingBar.tint = 0x098216;
 		loadingBar.anchor.setTo(0.5,0.5);
 		game.load.setPreloadSprite(loadingBar);
-		game.load.image("title", "assets/images/title.png");
+		//percentage
+		var loadingText = game.add.bitmapText(game.width / 2-150, 650,'font', 'loading... 0%',50);
+		loadingText.tint = 0x098216;
+        var progressDisplay = 0;
+        var timerEvt = game.time.events.loop(100, function (){
+            if(progressDisplay < 100){
+                if(progressDisplay < game.load.progress){
+                    loadingText.text = 'loading... '+(++progressDisplay)+'%';
+                }
+            }else{
+                loadingText.text = 'Ready, Go!';
+                game.time.events.remove(timerEvt);
+            }
+        }, this);
+
+		game.load.image("title", "assets/sprites/title.png");
 		game.load.image("playbutton", "assets/images/start.png");
 		game.load.image("titlebg", "assets/images/titlebg.png");
 		game.load.image("infobg", "assets/images/infobg.png");
 		game.load.image("restart", "assets/images/restart.png");
-
-		// info text images:
-		game.load.image("goal", "assets/images/info.png")
-		game.load.image("getAsManyBytes", "assets/images/info0.png")
-		game.load.image("asPossible", "assets/images/info2.png")
-		game.load.image("catchTheseTo", "assets/images/info3.png")
-		game.load.image("increaseBytes", "assets/images/info4.png")
-		game.load.image("loseBytes", "assets/images/info5.png")
-		game.load.image("jumpHigher", "assets/images/info6.png")
-		game.load.image("jumpLower", "assets/images/info7.png")
-		game.load.image("becomeInvincible", "assets/images/info8.png")
-		game.load.image("howTo", "assets/images/info_howto.png")
-		game.load.image("useArrowToMove", "assets/images/info_usearrowtomove.png")
-		game.load.image("leftAndRight", "assets/images/info_leftandright.png")
-		game.load.image("clickMouse", "assets/images/info_clickmouse.png")
-
-		game.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
-		game.load.image("monkey", "assets/images/monkey_75x73.png");
-		game.load.image("monkeyBig", "assets/images/monkey_100x97.png");
+		game.load.image("monkey", "assets/images/monkey_left_75x73.png");
+		game.load.image("monkeyBig", "assets/images/monkey_left_100x97.png");
 		game.load.spritesheet("monkeyRun", "assets/images/monkey_sheet.png", 180, 100, 16);
 		game.load.image("tree", "assets/images/trees_640.png");
 		game.load.image("branch", "assets/images/branch.png");

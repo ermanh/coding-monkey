@@ -6,6 +6,7 @@ gameoverscreen.prototype = {
         game.stage.backgroundColor = 0x1a4ca3;
         var finalScore = score.toString();
 
+        // Words printed according to final score
         if (finalScore < 0){
             game.add.bitmapText(game.width / 2, 80 , "font", "Stop drinking", 80).anchor.x = 0.5;
             game.add.bitmapText(game.width / 2, 170 , "font", "so much beer!", 80).anchor.x = 0.5;
@@ -45,12 +46,6 @@ gameoverscreen.prototype = {
         tween.yoyo(true);
         console.log("info started");
     },
-
-    // update: function() {
-    //     if (this.monkeyRun.x < -800) {
-    //         this.monkeyRun.x = 800;
-    //     }
-    // },
 
     startGame: function(){
         game.state.start("Playgame");
