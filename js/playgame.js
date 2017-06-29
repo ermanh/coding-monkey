@@ -32,6 +32,7 @@ playgame.prototype = {
 
         bgmusic = game.add.audio("bgmusic");
         bgmusic.play();
+        bgmusic.loopFull();
 
         game.physics.startSystem(Phaser.Physics.ARCADE);
 
@@ -160,6 +161,8 @@ playgame.prototype = {
         }
         if(this.monkey.y > 960) {
             this.monkey.destroy();
+            fallToDeath.play();
+            bgmusic.stop();
             game.state.start("GameOverScreen");
         }
 
@@ -404,6 +407,7 @@ playgame.prototype = {
                     //velocity becomes zero, otherwise trail of emitters follow
                     this.monkey.body.velocity.x = 0;
                     this.monkey.body.velocity.y = 0;
+                    branchSpeed = 0;
                     this.monkey.destroyed = true;
 
                     console.log("monkey killed");
@@ -468,7 +472,7 @@ playgame.prototype = {
                 }
             }
             // play audio horse on screen
-            if (horse.y > 0 && horse.y < game.height){
+            if (horse.y > -450 && horse.y < game.height){
                 horseOnScreen.play();
             }
         }, this);
@@ -652,10 +656,10 @@ playgame.prototype = {
         // effects of colliding into banana
         var monkey = this.monkey;
         monkey.invincible = true;
-        console.log("Monkey invincible for 5 seconds after banana collide");
+        console.log("Monkey invincible for 4 seconds after banana collide");
         var monkeyTween = game.add.tween(monkey).to({
              tint: 0x0000ff,
-        }, 5000, Phaser.Easing.Bounce.InOut, true);
+        }, 4000, Phaser.Easing.Bounce.InOut, true);
         monkeyTween.onComplete.add(function(){
             monkey.tint = 0xffffff;
             monkey.invincible = false;
