@@ -1,9 +1,39 @@
 var preload = function(game){};
 preload.prototype = {
 	preload: function(){
-		var loadingBar = this.add.sprite(game.width / 2, game.height / 2, "loading");
+		var loadingMonkey = this.add.sprite(game.width / 2-70, game.height / 2, "loadingMonkey");
+		loadingMonkey.animations.add('walk');
+		loadingMonkey.animations.play('walk', 1000, true);
+
+		var loadingBar = this.add.sprite(game.width / 2, game.height / 2+150, "loading");
+		loadingBar.tint = 0x098216;
 		loadingBar.anchor.setTo(0.5,0.5);
 		game.load.setPreloadSprite(loadingBar);
+
+		var loadingText = game.add.bitmapText(game.width / 2-150, 650,'font', 'loading... 0%',50);
+		loadingText.tint = 0x098216;
+        var progressDisplay = 0;
+
+        var timerEvt = game.time.events.loop(100, function (){
+
+            if(progressDisplay < 100){
+
+                if(progressDisplay < game.load.progress){
+
+                    loadingText.text = 'loading... '+(++progressDisplay)+'%';
+
+                }
+
+            }else{
+
+                loadingText.text = 'Ready, Go!';
+
+                game.time.events.remove(timerEvt);
+
+            }
+
+        }, this);
+
 		game.load.image("title", "assets/sprites/title.png");
 		game.load.image("playbutton", "assets/sprites/playbutton.png");
 		game.load.image("titlebg", "assets/images/titlebg.png");
@@ -25,9 +55,8 @@ preload.prototype = {
 		game.load.image("leftAndRight", "assets/images/info_leftandright.png")
 		game.load.image("clickMouse", "assets/images/info_clickmouse.png")
 
-		game.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
 		game.load.image("monkey", "assets/images/monkey_left_75x73.png");
-		game.load.image("monkeyBig", "assets/images/monkey_left_100x97");
+		game.load.image("monkeyBig", "assets/images/monkey_left_100x97.png");
 		game.load.image("tree", "assets/images/trees_640.png");
 		game.load.image("branch", "assets/images/branch.png");
 		game.load.image("ground", "assets/images/platform.png");
@@ -53,7 +82,7 @@ preload.prototype = {
 		game.load.image("star", "assets/images/star.png");
 
 		game.load.image("horse", "assets/images/horse_75x74.png");
-		game.load.image("horseParticle", "assets/images/horse_50x49");
+		game.load.image("horseParticle", "assets/images/horse_50x49.png");
 
 		//audio
 		game.load.audio("bgmusic", "assets/audio/bensound-funkyelement.mp3")
@@ -70,7 +99,22 @@ preload.prototype = {
 
 		},
 	create: function(){
+
+		// game.load.onLoadStart.add(loadStart, this);
+	    // game.load.onFileComplete.add(fileComplete, this);
+	    // game.load.onLoadComplete.add(loadComplete, this);
+		//	Progress report
+		//text = game.add.text(32, 32, 'Click to start load', { fill: '#ffffff' });
 		game.state.start("Titlescreen");
 		console.log("preload started");
-	}
+	},
+	// loadStart:function(){
+	// 	text.setText("Loading ...");
+	// },
+	// fileComplete:function(progress, cacheKey, success, totalLoaded, totalFiles){
+	// 	text.setText("File Complete: " + progress + "% - " + totalLoaded + " out of " + totalFiles);
+	// },
+	// loadComplete:function(){
+	// 	text.setText("Load Complete");
+	// }
 };

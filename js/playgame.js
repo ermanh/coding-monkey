@@ -8,7 +8,7 @@ var itemsSpeed = 0; // Herman: this should be related to the screen moving down 
                  //         need this for movement of sprites down the screen
 var branchSpeed = 0; //not sure about the speed as it will move with monkey
 var branchGap = 200;
-var moveBranchGap = 250;
+var moveBranchGap = 220;
 var savedBranchIncreaseSpeed = 250;
 var branchIncreaseSpeed;
 var byteGap = 10;          // controls how often bytes appear
@@ -21,7 +21,6 @@ var horseGap = 5000;
 
 var scoreKey = {'0':1, '1':100, '10':200, '11':300, '100':400, '101':500, '110':600, '111':700};
 var mouseTouchDown = false;
-
 var playgame = function(game) {};
 playgame.prototype = {
     create: function(){
@@ -75,6 +74,9 @@ playgame.prototype = {
         this.monkey.body.checkCollision.right = false;
         game.world.setBounds(-80, 0, 850, 1000);
 
+        this.spaceKey = game.input.keyboard.addKey(Phaser.Keyboard.SPACEBAR);
+        //  Stop the following keys from propagating up to the browser
+        //game.input.keyboard.addKeyCapture(Phaser.Keyboard.SPACEBAR);
         // Bytes score setup
         score = 0;
         this.scoreText = game.add.bitmapText(game.width-20, game.height-65, "font", "0", 48);
@@ -438,7 +440,7 @@ playgame.prototype = {
         }
 
         // Shooting banana darts
-        if (game.input.activePointer.isDown) {
+        if (game.input.activePointer.isDown || this.spaceKey.isDown) {
             if (!mouseTouchDown) {
                 this.touchDown();
             }
@@ -514,23 +516,23 @@ playgame.prototype = {
     },
 
     handleOrientation:function(e){
-        var x = e.gamma; // range [-90,90], left-right
-        if (x < 0)
+        var tilting = e.gamma; // range [-90,90], left-right
+        if (tilting < 0)
         {
             //image turn left
             selfPlayer.scale.x = 1;
             //  Move to the left
-            selfPlayer.body.velocity.x += x-300;
+            selfPlayer.body.velocity.x = tilting*20;
             if (selfPlayer.x < 0) {
                 selfPlayer.x += 640;
             }
         }
-        else if (x > 0)
+        else if (tilting > 0)
         {
             //image turn right
             selfPlayer.scale.x = -1;
             //  Move to the right
-            selfPlayer.body.velocity.x += x+300;
+            selfPlayer.body.velocity.x = tilting*20;
             if (selfPlayer.x > 640) {
                 selfPlayer.x -= 640;
             }
