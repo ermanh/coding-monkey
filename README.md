@@ -11,59 +11,45 @@ The hero can move forward in the game infinitely by 'jumping upwards'. It moves 
 # Gameplay
 The goal of the game is for the Coding Monkey (the hero) to collect as many bits as possible. 
 
-The Monkey has the ability to:
+#### About the Sprites
+##### The Monkey has the ability to:
 - jump upwards
 - bounce upwards when it lands on a branch (barrier sprite)
 - collect bits (reward items) to increase its bytes (score)
 - collide with special item sprites to change its interaction with the environments and the other sprites
 
-Other sprites and their effects on Monkey's collision:
+##### Other sprites and their effects on collision with Monkey:
+###### Barrier sprite:
 - Branches \- Monkey can jump upwards
+###### Reward sprite:
 - Bits (0, 1, 10, 11, 100, 101, 110, 111) \- increase bytes
+###### Penalty sprites:
 - Viruses (purple viruse, red super virus) \- lose bytes
 - Trojan horse \- Monkey dies and the game is over
+###### Special item sprites: 
 - Coffee \- Monkey gets more energy, spins around and jumps higher
 - Beer \- Monkey gets drunk, spins around, and can't collect bits
-- Banana \- Monkey becomes invicible, and doesn't lose bytes or die when it collides with Viruses or Trojan Horses
+- Banana \- Monkey becomes invicible, and doesn't lose bytes or die when it collides with Viruses or the Trojan Horse
 
+##### Scoring sprite:
+Bytes bar \- number increases or decreases depending on which sprite the Monkey collides with
 
-Coding Monkey collecting code (0's & 1's) among branches and trying to survive (not fall).
+#### The game is over when:
+- The Monkey falls below the screen view.
+- The Monkey dies from touching the Trojan Horse
 
-Scoring in bytes.
-
-Avoiding bugs & virus.
-
-Coffee, beer & banana change Monkey's jumping ability.
-
-The game is over when:
+#### Game control:
+###### On computer:
+Use arrows to move left and right, and spacebar to shoot penalty and special item sprites.
+###### On mobile device:
+Move Monkey left or right by tilting, and shoot penalty and special item sprites by tapping screen.
 
 # States included in the game
-Boot, preload, title screen, etc.
-
-# Game mechanism
-Controls
+Boot, preload, title, info, play game, game over
 
 # Programming resources
-
-# Sprites
-1. Main character: Monkey
-2. Reward: 0,1,10,11,100,101,111
-  - sprite disappear
-  - increase bytes
-3. Penalty - bugs & virus (\*different color, trojan horse)
-  - sprite disappear
-  - decrease bytes
-  - Monkey blinks & scream
-  - \*Effect: 0's & 1's fly out from Monkey
-4. Helping/special effect items - coffee, beer, \*banana
-  - Coffee - Monkey jump higher
-  - Beer - Monkey jump lower
-  - \*Banana - Monkey invincible
-5. Bytes bar
-6. Group sprites: branches
-  - Monkey can land on branches, can't go through from bottom
-  (- \*Can go through from bottom)
-
+- Phaser
+- Javascript
 #### for Info screen
 Goal: Get as many bytes as you can!
 Catch these to:
