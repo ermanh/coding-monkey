@@ -67,18 +67,12 @@ Boot, preload, title, info, play game, game over
 - Has a play button that leads back to the game screen
 
 # Resources used
-- Phaser
-- Javascript
-- Music download
-- Images download
-- Editor - Atom
-- Image editor - Inkscape
+- Javascript library: Phaser
+- Music and images downloaded from the Internet
+- Text editor: Atom
+- Image editor: Inkscape
 
-# The process of making the game
-
-Old stuff:
-
-# To-do
+# ???????? The process of making the game
 1. Auto jump
 2. Move monkey left to right on keyboard
 3. Accelerometer
@@ -89,49 +83,18 @@ Old stuff:
 8. titlescreen
 9. gamoverscreen
 10. music
-! 11. instructions
+11. instructions
 
-# Diary (Done/Goal)
-## 23-6-2017 (Fri)
-#### Corah
-- ! Added code for Accelerometer, NEED TESTING
-
-- ! Added code for branches (create and destroy), NEED TESTING
-
-- ! Haven't coded how Monkey will stand on branches
-
-#### Herman
-#### Nick
-
-
-## 24-6-2017, 25-6-2017 (Weekend)
-### To-do
-#### Corah
-
-- titlescren
-- instructions
-- gameoverscreen
-- playgame: branches - NO PUSHING
-
-#### Herman
-- wait for Nick, playgame
-
-- sprite items (bytes, virus, beer, coffee, banana)
-#### Nick
-- playgame
-
-- platform, auto jump, tree bgtile
-
-# Problems encountered
+# ??????? Problems encountered
 
 # ????? Things learnt
 Reduce number of images used by combining them into one image if possible.
 
-# Possible improvement/upgrade
+# ??????? Possible improvement/upgrade
 Elements, special item sprites
 Working on the mobile version
 
-
+# Credits
 ### Music credit
 http://www.bensound.com, http://www.noiseforfun.com
 ### Image credit
