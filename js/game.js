@@ -13,7 +13,7 @@ window.onload = function() {
 var boot = function(game){};
 boot.prototype = {
 	preload: function(){
-		game.load.image("loading","assets/sprites/loading.png");
+		game.load.image("loading","assets/images/loading.png");
 		game.load.spritesheet("loadingMonkey", "assets/images/monkey_sheet.png", 180, 100, 16);
 		game.load.bitmapFont("font", "assets/fonts/font.png", "assets/fonts/font.fnt");
 	},

@@ -24,13 +24,13 @@ preload.prototype = {
             }
         }, this);
 
-		game.load.image("title", "assets/sprites/title.png");
+		game.load.image("title", "assets/images/title.png");
 		game.load.image("playbutton", "assets/images/start.png");
 		game.load.image("titlebg", "assets/images/titlebg.png");
 		game.load.image("infobg", "assets/images/infobg.png");
 		game.load.image("restart", "assets/images/restart.png");
-		game.load.image("monkey", "assets/images/monkey_left_75x73.png");
-		game.load.image("monkeyBig", "assets/images/monkey_left_100x97.png");
+		game.load.image("monkey", "assets/images/monkey_75x73.png");
+		game.load.image("monkeyBig", "assets/images/monkey_100x97.png");
 		game.load.spritesheet("monkeyRun", "assets/images/monkey_sheet.png", 180, 100, 16);
 		game.load.image("tree", "assets/images/trees_640.png");
 		game.load.image("branch", "assets/images/branch.png");
