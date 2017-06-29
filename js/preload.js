@@ -28,21 +28,6 @@ preload.prototype = {
 		game.load.image("playbutton", "assets/sprites/playbutton.png");
 		game.load.image("titlebg", "assets/images/titlebg.png");
 		game.load.image("infobg", "assets/images/infobg.png");
-
-		//C: info text images:
-		game.load.image("goal", "assets/images/info.png")
-		game.load.image("getAsManyBytes", "assets/images/info0.png")
-		game.load.image("asPossible", "assets/images/info2.png")
-		game.load.image("catchTheseTo", "assets/images/info3.png")
-		game.load.image("increaseBytes", "assets/images/info4.png")
-		game.load.image("loseBytes", "assets/images/info5.png")
-		game.load.image("jumpHigher", "assets/images/info6.png")
-		game.load.image("jumpLower", "assets/images/info7.png")
-		game.load.image("becomeInvincible", "assets/images/info8.png")
-		game.load.image("howTo", "assets/images/info_howto.png")
-		game.load.image("useArrowToMove", "assets/images/info_usearrowtomove.png")
-		game.load.image("leftAndRight", "assets/images/info_leftandright.png")
-		game.load.image("clickMouse", "assets/images/info_clickmouse.png")
 		game.load.image("monkey", "assets/images/monkey_left_75x73.png");
 		game.load.image("monkeyBig", "assets/images/monkey_left_100x97.png");
 		game.load.image("tree", "assets/images/trees_640.png");
