@@ -52,7 +52,6 @@ preload.prototype = {
 		game.load.image("1Particle", "assets/images/1_small.png");
 		game.load.image("bananaDart", "assets/images/bananaDart_25x27.png");
 		game.load.image("star", "assets/images/star.png");
-
 		game.load.image("horse", "assets/images/horse_75x74.png");
 		game.load.image("horseParticle", "assets/images/horse_50x49.png");
 
