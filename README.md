@@ -5,8 +5,8 @@
 Corah Chiu, Herman Leung, Nick Tsai
 
 # Game concept
-Coding Monkey is an endless runner game. It can be played on the computer and ??????? on any mobile device.
-The hero can move forward in the game infinitely by 'jumping upwards'. It moves up and down automatically according to Phaser's physics and gravity setup, while its environment moves downwards with reference to the hero's coordination or other special conditions (such as the hero touching a special item sprite). The hero would appear to be jumping upwards as it lands on barriers and bounce back. The hero collect reward items to score points and loses points when it collides with penalty items. Colliding with other special effect items will have different effects on the hero and its interaction with other sprite items. The hero can shoot certain item sprites. The game becomes more difficult as it goes on, or when the hero collides with certain special item sprites. The game is over when the hero moves lower than the game height (falls out of the screen), or when it hits a certain special item sprites. The user controls the hero sprite by using the keyboard on the computer,??????? and by tilting or tapping on a mobile device.
+Coding Monkey is an endless runner game. It is designed to be played on the computer.
+The hero can move forward in the game infinitely by 'jumping upwards'. It moves up and down automatically according to Phaser's physics and gravity setup, while its environment moves downwards with reference to the hero's coordination or other special conditions (such as the hero touching a special item sprite). The hero would appear to be jumping upwards as it lands on barriers and bounce back. The hero collect reward items to score points and loses points when it collides with penalty items. Colliding with other special effect items will have different effects on the hero and its interaction with other sprite items. The hero can shoot certain item sprites. The game becomes more difficult as it goes on, or when the hero collides with certain special item sprites. The game is over when the hero moves lower than the game height (falls out of the screen), or when it hits a certain special item sprites. The user controls the hero sprite by using the keyboard on the computer.
 
 # Gameplay
 The goal of the game is for the Coding Monkey (the hero) to collect as many bits as possible. 
@@ -41,8 +41,6 @@ The goal of the game is for the Coding Monkey (the hero) to collect as many bits
 ## Game control:
 ### 1. On computer:
 - Use arrows to move left and right, and spacebar to shoot penalty and special item sprites.
-### 2. On mobile device:
-- Move Monkey left or right by tilting, and shoot penalty and special item sprites by tapping screen.
 
 # States included in the game and their functionalities
 Boot, preload, title, info, play game, game over
@@ -61,16 +59,12 @@ Boot, preload, title, info, play game, game over
 - Has a play button that leads to the game screen
 ## 5. Play game
 - Game played
-- The Monkey jumps and interacts with other sprites
-- The background of tree backgroundtiles
+- The Monkey jumps and interacts with other sprites. It can jump through one side of the screen to go to the other side
+- Sprites except the Monkey are randomly generated onto the screen, and destroyed when they have moved out of the screen
+- The tree background tiles moves along the game
 ## 6. Game over
-1. Group sprites & Bg tiles:
-  - move downwards as Monkey jumps
-  - destroyed when out of screen
-2. Scoring: bytes bar
-  - increase with catching 0's & 1's
-  - decrease with catching bugs $ virus
-3. Monkey can jump across screen
+- Score is recorded
+- Has a play button that leads back to the game screen
 
 # Resources used
 - Phaser
@@ -81,6 +75,8 @@ Boot, preload, title, info, play game, game over
 - Image editor - Inkscape
 
 # The process of making the game
+
+Old stuff:
 
 # To-do
 1. Auto jump
@@ -133,6 +129,7 @@ Reduce number of images used by combining them into one image if possible.
 
 # Possible improvement/upgrade
 Elements, special item sprites
+Working on the mobile version
 
 
 ### Music credit
