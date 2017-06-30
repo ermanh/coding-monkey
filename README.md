@@ -98,12 +98,12 @@ Working on the mobile version
 ### Music credits
 http://www.bensound.com, http://www.noiseforfun.com
 ### Image credits
-picturetopeople.org/text_generator/others/transparent/transparent-text-generator.html \- title font ("Coding Monkey")
-iconfinder.com \- star
-flaticons.net \- banana dart
-freeiconspng.com \- banana, coffee, trojan horse (with modifications)
-weclipart.com \- grass
-iconscout.com \- tree trunk (adaptation of part of an image by Danil Polshin)
-icons8.com \- viruses
-Twemoji-1.0 (Twitter emoji) \- monkey (with modifications for animation effects)
+- picturetopeople.org/text_generator/others/transparent/transparent-text-generator.html \- title font ("Coding Monkey")
+- iconfinder.com \- star
+- flaticons.net \- banana dart
+- freeiconspng.com \- banana, coffee, trojan horse (with modifications)
+- weclipart.com \- grass
+- iconscout.com \- tree trunk (adaptation of part of an image by Danil Polshin)
+- icons8.com \- viruses
+- Twemoji-1.0 (Twitter emoji) \- monkey (with modifications for animation effects)
 
