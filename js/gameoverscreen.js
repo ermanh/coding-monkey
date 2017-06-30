@@ -13,9 +13,9 @@ gameoverscreen.prototype = {
         } else if (finalScore <= 3000){
             game.add.bitmapText(game.width / 2, 80 , "font", "Drink more", 80).anchor.x = 0.5;
             game.add.bitmapText(game.width / 2, 170 , "font", "coffee!", 80).anchor.x = 0.5;
-        } else if (finalScore <= 10000){
+        } else if (finalScore < 20000){
             game.add.bitmapText(game.width / 2, 145 , "font", "Keep coding!", 80).anchor.x = 0.5;
-        } else if (finalScore > 10000){
+        } else if (finalScore >= 20000){
             game.add.bitmapText(game.width / 2, 80 , "font", "You are the", 80).anchor.x = 0.5;
             game.add.bitmapText(game.width / 2, 170 , "font", "Monkey King!", 80).anchor.x = 0.5;
         }
@@ -32,8 +32,6 @@ gameoverscreen.prototype = {
         this.monkeyRun.anchor.set(0.5);
         this.monkeyRun.animations.add('walk');
         this.monkeyRun.animations.play('walk', 1000, true);
-        //game.physics.enable(this.monkeyRun, Phaser.Physics.ARCADE);
-        //this.monkeyRun.body.velocity.x = -350;
 
         var playButton = game.add.button(game.width / 2, game.height - 150, "restart", this.startGame);
         playButton.tint = 0x82abed;
