@@ -24,9 +24,9 @@ info.prototype = {
         virusSuper.scale.setTo(0.8,0.8);
         game.add.bitmapText(spriteTextStart, 230, "font", "lose bytes", descriptionSize).anchor.y = 0.5;
 
-        var banana = game.add.sprite(spriteStart, 290, "beer");
-        banana.anchor.y = 0.5;
-        banana.scale.setTo(0.8,0.8);
+        var beer = game.add.sprite(spriteStart, 290, "beer");
+        beer.anchor.y = 0.5;
+        beer.scale.setTo(0.8,0.8);
         game.add.bitmapText(spriteTextStart, 290, "font", "get drunk", descriptionSize).anchor.y = 0.5;
 
         var coffee = game.add.sprite(spriteStart, 350, "coffee");
@@ -54,7 +54,7 @@ info.prototype = {
         var tilt = game.add.bitmapText(game.width/2.6, 620 , "font", "tilt", descriptionSize);
         tilt.anchor.x = 0.5;
         tilt.tint = 0xffa777;
-        var leftRight = game.add.bitmapText(game.width/3*2.1, 620 , "font", "left, right", descriptionSize)
+        var leftRight = game.add.bitmapText(game.width/3*2.1, 620 , "font", "left, right", descriptionSize);
         leftRight.anchor.x = 0.5;
         leftRight.tint = 0x60e1ff;
 
@@ -62,7 +62,7 @@ info.prototype = {
         var tap = game.add.bitmapText(game.width/2.6, 680 , "font", "tap", descriptionSize);
         tap.anchor.x = 0.5;
         tap.tint = 0xffa777;
-        var clickSpace = game.add.bitmapText(game.width/3*2.1, 680 , "font", "click / space", descriptionSize)
+        var clickSpace = game.add.bitmapText(game.width/3*2.1, 680 , "font", "click / space", descriptionSize);
         clickSpace.anchor.x = 0.5;
         clickSpace.tint = 0x60e1ff;
 
@@ -82,4 +82,4 @@ info.prototype = {
         game.state.start("Playgame");
         console.log("playButton pressed");
     }
-}
+};

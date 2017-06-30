@@ -1,6 +1,8 @@
 var preload = function(game){};
 preload.prototype = {
+
 	preload: function(){
+
 		var loadingMonkey = this.add.sprite(game.width / 2-70, game.height / 2, "loadingMonkey");
 		loadingMonkey.animations.add('walk');
 		loadingMonkey.animations.play('walk', 1000, true);
@@ -9,7 +11,8 @@ preload.prototype = {
 		loadingBar.tint = 0x098216;
 		loadingBar.anchor.setTo(0.5,0.5);
 		game.load.setPreloadSprite(loadingBar);
-		//percentage
+
+		// Percentage Indicator
 		var loadingText = game.add.bitmapText(game.width / 2-150, 650,'font', 'loading... 0%',50);
 		loadingText.tint = 0x098216;
         var progressDisplay = 0;
@@ -24,6 +27,7 @@ preload.prototype = {
             }
         }, this);
 
+		// Sprites
 		game.load.image("title", "assets/images/title.png");
 		game.load.image("playbutton", "assets/images/start.png");
 		game.load.image("titlebg", "assets/images/titlebg.png");
@@ -72,9 +76,11 @@ preload.prototype = {
 		game.load.audio("shootDart", "assets/audio/shootdart.wav");
 		game.load.audio("horseOnScreen", "assets/audio/horseonscreen.wav");
 
-		},
+	},
+
 	create: function(){
 		game.state.start("Titlescreen");
 		console.log("preload started");
 	}
+
 };

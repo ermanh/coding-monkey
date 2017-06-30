@@ -4,12 +4,12 @@ var byteGap = 60;
 
 var titlescreen = function(game){};
 titlescreen.prototype = {
+    
     create: function() {
 
         game.stage.backgroundColor = 0x021b45;
-        //treeBG = game.add.tileSprite(0, 0, game.width, game.height, "tree");
 
-        // Raining bytes
+        // Raining sprites
         this.bytesGroup = game.add.group();
         for (var i=0; i < 200; i++) {
             var bytesArr = ["0Particle","1Particle"];
@@ -49,10 +49,10 @@ titlescreen.prototype = {
         this.byteChased = game.add.sprite(game.width/4*3-165, 625, '101');
         this.byteChased.anchor.set(0.5);
 
-        // Random monkey movement on screen
+        // Randomized monkey movement on screen
         this.timer = setInterval(this.changeJump(this.monkeyRun), 3000);
 
-        // playbutton
+        // Play button
         var playButton = game.add.button(game.width / 2, game.height - 120, "playbutton", this.startInfo);
         playButton.tint = 0x7cff7c;
     	playButton.anchor.set(0.5);
@@ -66,6 +66,8 @@ titlescreen.prototype = {
     },
 
     update: function() {
+
+        // Update monkey direction when crossing screen boundaries
         if (this.monkeyRun.x <= 0) {
             this.monkeyRun.x += game.width;
         } else if (this.monkeyRun.x > game.width) {
@@ -77,6 +79,7 @@ titlescreen.prototype = {
             this.monkeyRun.body.velocity.x *= -1;
         }
 
+        // Update byte movement and direction according to monkey movement and direction
         if (this.monkeyRun.scale.x === -1) {
             this.byteChased.x = this.monkeyRun.x + 165;
         } else {
