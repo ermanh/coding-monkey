@@ -143,6 +143,7 @@ playgame.prototype = {
         hitGround2 = game.physics.arcade.collide(this.monkey, this.moveBranchGroup);
         this.monkeyMove();
 
+        //set to play on the mobile
         selfPlayer = this.monkey;
 		window.addEventListener("deviceorientation", this.handleOrientation, true);
 
@@ -605,7 +606,6 @@ playgame.prototype = {
         game.add.existing(moveBranch);
         group.add(moveBranch);
     },
-
     addByte: function(group) {
         var byte = new Bytes(game, itemsSpeed);
         game.add.existing(byte);
