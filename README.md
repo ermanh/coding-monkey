@@ -98,4 +98,5 @@ Working on the mobile version
 ### Music credits
 http://www.bensound.com, http://www.noiseforfun.com
 ### Image credits
+http://www.picturetopeople.org/text_generator/others/transparent/transparent-text-generator.html,
 https://www.iconfinder.com/
