@@ -2,6 +2,7 @@
 
 var treeBG;
 var ground;
+var tapOrSpacebar;
 var startLine = 600;
 var stopLine = 800;
 var savedMonkeyJumpHeight = -500; // monkeyJumpHeight moved to create() function, allowing reset at game restart
@@ -51,6 +52,15 @@ playgame.prototype = {
         game.physics.arcade.enable(grass);
         grass.body.immovable = true;
         grass.destroyed = false;
+
+        // Here we create the instruction to shoot
+        tapOrSpacebar = game.add.sprite(game.width / 2, game.height / 2, 'tapOrSpacebar');
+        tapOrSpacebar.anchor.set (0.5,0.5);
+        tapOrSpacebar.destroyed = false;
+        game.add.tween(tapOrSpacebar).to({
+            alpha: 0
+        }, 1000, "Linear", true, 0, -1, true);
+
 
         // The monkey and its settings
         this.monkey = game.add.sprite(200, game.height - 150, 'monkey');
@@ -474,10 +484,13 @@ playgame.prototype = {
             }
         }
 
-        // change monkey posture between up and down
-        // if (this.monkey.body.velocity > 0) {
-        //     this.monkey.loadTexture('')
-        // }
+        if (!tapOrSpacebar.destroyed) {
+            // tapOrSpacebar destroyed
+            tapOrSpacebar.destroyed = true;
+            setTimeout(function(){
+                tapOrSpacebar.destroy();
+            }, 5000);
+        }
 
     },
     startScroll: function(){
@@ -493,6 +506,7 @@ playgame.prototype = {
                 grass.destroy();
             }, 1000);
         }
+
         if (branchSpeed === 0) {
             branchSpeed = branchIncreaseSpeed;
 			for(var i = 0; i < this.branchGroup.length; i++){
