@@ -131,9 +131,9 @@ playgame.prototype = {
         hitGround2 = game.physics.arcade.collide(this.monkey, this.moveBranchGroup);
         this.monkeyMove();
 
+        //set to play on the mobile
         selfPlayer = this.monkey;
 		window.addEventListener("deviceorientation", this.handleOrientation, true);
-        //this.handleOrientation();
 
         if (this.monkey.y < startLine) {
             this.startScroll();
@@ -517,7 +517,7 @@ playgame.prototype = {
         // increase speed by another 65 for every increase in score of 10,000
         branchIncreaseSpeed = savedBranchIncreaseSpeed + 65 * Math.floor(score/10000);
     },
-    //play on the mobile
+    //get the move from the mobile
     handleOrientation:function(e){
         var tilting = e.gamma; // range [-90,90], left-right
         if (tilting < 0)
@@ -575,7 +575,6 @@ playgame.prototype = {
                 this.monkey.body.velocity.y = monkeyJumpHeight;
             }
     },
-
     addBranch: function(group, positionY=0, placement=true){
         var branch = new Branch(game, branchSpeed, positionY, placement);
         game.add.existing(branch);
@@ -586,7 +585,6 @@ playgame.prototype = {
         game.add.existing(moveBranch);
         group.add(moveBranch);
     },
-
     addByte: function(group) {
         var byte = new Bytes(game, itemsSpeed);
         game.add.existing(byte);
@@ -675,7 +673,6 @@ var Branch = function (game, speed, currentBranchPosition=0, placement=true) {
 
     var xpositions = [Math.random()*(220-40)+40, Math.random()*(540-360)+360];
 	var xposition = game.rnd.between(0, 1);
-    // var ypositions = Math.random()*(this.monkey.y + this.monkey.body.velocity.y)-200;
 
     Phaser.Sprite.call(this, game, xpositions[xposition], currentBranchPosition, "branch");
 
