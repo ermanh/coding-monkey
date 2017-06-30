@@ -1,12 +1,12 @@
 # Game project - Coding Monkey
-?? Link: 
+Link: nickcodingmonkey.surge.sh
 
 # Group members
 Corah Chiu, Herman Leung, Nick Tsai
 
 # Game concept
-Coding Monkey is an endless runner game. It is designed to be played on the computer.
-The hero can move forward in the game infinitely by 'jumping upwards'. It moves up and down automatically according to Phaser's physics and gravity setup, while its environment moves downwards with reference to the hero's coordination or other special conditions (such as the hero touching a special item sprite). The hero would appear to be jumping upwards as it lands on barriers and bounce back. The hero collect reward items to score points and loses points when it collides with penalty items. Colliding with other special effect items will have different effects on the hero and its interaction with other sprite items. The hero can shoot certain item sprites. The game becomes more difficult as it goes on, or when the hero collides with certain special item sprites. The game is over when the hero moves lower than the game height (falls out of the screen), or when it hits a certain special item sprites. The user controls the hero sprite by using the keyboard on the computer.
+Coding Monkey is an endless runner game. It is designed to be played on a computer as well as mobile device.
+The hero can move forward in the game infinitely by jumping upwards. It moves up and down automatically according to Phaser's physics and gravity setup, while its environment moves downwards with reference to the hero's coordination or other special conditions (such as the hero touching a special item sprite). The hero would appear to be jumping upwards as it lands on barriers and bounce back. The hero collects reward items to score points and loses points when it collides with penalty items. Colliding with other special effect items will have different effects on the hero and its interaction with other sprite items. The hero can shoot certain item sprites. The game becomes more difficult as it goes on, or when the hero collides with certain special item sprites. The game is over when the hero falls below the game stage out of the screen, or when it hits certain special item sprites. 
 
 # Gameplay
 The goal of the game is for the Coding Monkey (the hero) to collect as many bits as possible. 
@@ -14,28 +14,28 @@ The goal of the game is for the Coding Monkey (the hero) to collect as many bits
 ## About the Sprites
 ### 1. The Monkey has the ability to:
 - jump upwards
-- bounce upwards when it lands on a branch (barrier sprite)
+- bounce upwards when it touches a branch
 - collect bits (reward items) to increase its bytes (score)
-- collide with special item sprites to change its interaction with the environments and the other sprites
+- collide with special item sprites to change its interaction with the environment and other sprites
 
-### 2. Other sprites and their effects on collision with Monkey:
+### 2. Other sprites and their effects on collision or overlap with Monkey:
 #### a. Barrier sprite:
 - Branches \- Monkey can jump upwards
 #### b. Reward sprite:
-- Bits (0, 1, 10, 11, 100, 101, 110, 111) \- increase bytes
+- Bits (0, 1, 10, 11, 100, 101, 110, 111) \- Increase bytes
 #### c. Penalty sprites:
-- Viruses (purple viruse, red super virus) \- lose bytes
+- Viruses (purple virus, red super virus) \- Lose bytes
 - Trojan horse \- Monkey dies and the game is over
 #### d. Special item sprites: 
-- Coffee \- Monkey gets more energy, spins around and jumps higher
-- Beer \- Monkey gets drunk, spins around, and can't collect bits
-- Banana \- Monkey becomes invicible, and doesn't lose bytes or die when it collides with Viruses or the Trojan Horse
+- Coffee \- Monkey gets more energy, jumps higher, gets bigger
+- Beer \- Monkey gets drunk, spins around, and knocks away bits rather than collect them
+- Banana \- Monkey becomes invicible; collision effects with viruses, coffee, beer, and trojan horse are temporarily disabled
 
 ### 3. Scoring sprite:
-- Bytes bar \- number increases or decreases depending on which sprite the Monkey collides with
+- Bytes count (bottom right) \- number increases or decreases depending on which sprite the Monkey collides with
 
 ## The game is over when:
-- The Monkey falls below the screen view.
+- The Monkey falls below the screen view
 - The Monkey dies from touching the Trojan Horse
 
 ## Game control:
@@ -52,25 +52,25 @@ Boot, preload, title, info, play game, game over
 - Loading bar, percentage count and running monkey image show that the game is loading
 ## 3. Title
 - Shows the name of the game
-- Has a background color, raining some sprite images, and the Monkey running across the screen
+- Has a background color, raining some sprite images, and the Monkey chasing a bit across the screen
 - Has a play button that leads to the info screen
 ## 4. Info
 - Shows instructions of how to play the game
 - Has a play button that leads to the game screen
 ## 5. Play game
-- Game played
+- Game starts
 - The Monkey jumps and interacts with other sprites. It can jump through one side of the screen to go to the other side
-- Sprites except the Monkey are randomly generated onto the screen, and destroyed when they have moved out of the screen
+- Sprites except the Monkey are semi-randomly generated on the screen, and destroyed when they have moved out of the screen
 - The tree background tiles moves along the game
 ## 6. Game over
 - Score is recorded
-- Has a play button that leads back to the game screen
+- Has a restart button that leads back to the game screen
 
 # Resources used
 - Javascript library: Phaser
-- Music and images downloaded from the Internet
+- Music and images downloaded from the Internet and some images adapted
 - Text editor: Atom
-- Image editor: Inkscape
+- Image editors: Inkscape, Gimp
 
 # ???????? The process of making the game
 1. Auto jump
@@ -98,5 +98,12 @@ Working on the mobile version
 ### Music credits
 http://www.bensound.com, http://www.noiseforfun.com
 ### Image credits
-http://www.picturetopeople.org/text_generator/others/transparent/transparent-text-generator.html,
-https://www.iconfinder.com/
+picturetopeople.org/text_generator/others/transparent/transparent-text-generator.html \- title font ("Coding Monkey")
+iconfinder.com \- star
+flaticons.net \- banana dart
+freeiconspng.com \- banana, coffee, trojan horse (with modifications)
+weclipart.com \- grass
+iconscout.com \- tree trunk (adaptation of part of an image by Danil Polshin)
+icons8.com \- viruses
+Twemoji-1.0 (Twitter emoji) \- monkey (with modifications for animation effects)
+
