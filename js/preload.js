@@ -29,6 +29,7 @@ preload.prototype = {
 		game.load.image("titlebg", "assets/images/titlebg.png");
 		game.load.image("infobg", "assets/images/infobg.png");
 		game.load.image("restart", "assets/images/restart.png");
+		game.load.image("tapOrSpacebar", "assets/images/tapOrSpacebarToShoot.png");
 		game.load.image("monkey", "assets/images/monkey_75x73.png");
 		game.load.image("monkeyBig", "assets/images/monkey_100x97.png");
 		game.load.spritesheet("monkeyRun", "assets/images/monkey_sheet.png", 180, 100, 16);
@@ -58,7 +59,7 @@ preload.prototype = {
 		game.load.image("horse", "assets/images/horse_75x74.png");
 		game.load.image("horseParticle", "assets/images/horse_50x49.png");
 
-		//audio
+		// Audio
 		game.load.audio("bgmusic", "assets/audio/bensound-funkyelement.mp3")
 		game.load.audio("touchHorse", "assets/audio/horse.wav");
 		game.load.audio("touchVirus", "assets/audio/virus.wav");
