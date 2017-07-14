@@ -43,26 +43,25 @@ The goal of the game is for the Coding Monkey (the hero) to collect as many bits
 - Use arrows to move left and right, and spacebar to shoot penalty and special item sprites.
 
 # States included in the game and their functionalities
-Boot, preload, title, info, play game, game over
-## 1. Boot
+## 1. game.js
 - Game boots
-## 2. Preload
+## 2. preload.js
 - Images and audios load into the game
 - Game loads
 - Loading bar, percentage count and running monkey image show that the game is loading
-## 3. Title
+## 3. titlescreen.js
 - Shows the name of the game
 - Has a background color, raining some sprite images, and the Monkey chasing a bit across the screen
 - Has a play button that leads to the info screen
-## 4. Info
+## 4. info.js
 - Shows instructions of how to play the game
 - Has a play button that leads to the game screen
-## 5. Play game
+## 5. playgame.js
 - Game starts
 - The Monkey jumps and interacts with other sprites. It can jump through one side of the screen to go to the other side
 - Sprites except the Monkey are semi-randomly generated on the screen, and destroyed when they have moved out of the screen
 - The tree background tiles moves along the game
-## 6. Game over
+## 6. gameoverscreen.js
 - Score is recorded
 - Has a restart button that leads back to the game screen
 
@@ -71,28 +70,6 @@ Boot, preload, title, info, play game, game over
 - Music and images downloaded from the Internet and some images adapted
 - Text editor: Atom
 - Image editors: Inkscape, Gimp
-
-# ???????? The process of making the game
-1. Auto jump
-2. Move monkey left to right on keyboard
-3. Accelerometer
-4. Generating random branches
-5. Generating random item sprites
-6. Set up bytes count, reward and penalty items (\*different scoring & penalty)
-7. Set up helping/special items
-8. titlescreen
-9. gamoverscreen
-10. music
-11. instructions
-
-# ??????? Problems encountered
-
-# ????? Things learnt
-Reduce number of images used by combining them into one image if possible.
-
-# ??????? Possible improvement/upgrade
-Elements, special item sprites
-Working on the mobile version
 
 # Credits
 ### Music credits
