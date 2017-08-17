@@ -40,7 +40,9 @@ The goal of the game is for the Coding Monkey (the hero) to collect as many bits
 
 ## Game control:
 ### 1. On computer:
-- Use arrows to move left and right, and spacebar to shoot penalty and special item sprites.
+- Use arrows to move left and right, and spacebar to shoot
+### 2. On mobile device:
+- Tilt screen to move left and right, and tap screen to shoot
 
 # States included in the game and their functionalities
 ## 1. game.js
@@ -68,7 +70,6 @@ The goal of the game is for the Coding Monkey (the hero) to collect as many bits
 # Resources used
 - Javascript library: Phaser
 - Music and images downloaded from the Internet and some images adapted
-- Text editor: Atom
 - Image editors: Inkscape, Gimp
 
 # Credits
