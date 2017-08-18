@@ -1,8 +1,5 @@
 # Game project - Coding Monkey
-Link: nickcodingmonkey.surge.sh
-
-# Group members
-Corah Chiu, Herman Leung, Nick Tsai
+Link: codingmonkey.surge.sh
 
 # Game concept
 Coding Monkey is an endless runner game. It is designed to be played on a computer as well as mobile device.
@@ -67,10 +64,12 @@ The goal of the game is for the Coding Monkey (the hero) to collect as many bits
 - Score is recorded
 - Has a restart button that leads back to the game screen
 
-# Resources used
+# Resources
 - Javascript library: Phaser
 - Music and images downloaded from the Internet and some images adapted
-- Image editors: Inkscape, Gimp
+
+# Authors
+Corah Chiu (Github: corahchiu), Herman Leung (Github: ermanh), Nick Tsai (Github: nicktsai1026)
 
 # Credits
 ### Music credits
